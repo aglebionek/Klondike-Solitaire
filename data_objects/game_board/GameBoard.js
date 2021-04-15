@@ -7,6 +7,8 @@ export default class Board {
   resultStacks = new Array(4);
   gameStacks = new Array(7);
 
+  startDistribution;
+
   constructor() {
     const CARDS_IN_INITIAL_DECK = 52;
 
@@ -15,6 +17,20 @@ export default class Board {
     }
 
     this.#fillGameStacks();
+    this.startDistribution = {
+      drawingCards: this.deck,
+      gameStacks: this.gameStacks
+    }
+  }
+
+  get finishState() {
+    for (let stack of this.resultStacks) {
+      if (stack.length !== Card.RANKS_IN_SUITE) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   // PRIVATE METHODS
@@ -128,15 +144,5 @@ export default class Board {
 
       this.resultStacks[targetStackIndex].push(cardPoppedFromRevealed);
     }
-  }
-
-  isGameFinished() {
-    for (let stack of this.resultStacks) {
-      if (stack.length !== Card.RANKS_IN_SUITE) {
-        return false;
-      }
-    }
-
-    return true;
   }
 }
