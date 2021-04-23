@@ -1,0 +1,65 @@
+.container {
+  width: 170px;
+  height: 40px;
+}
+
+.checkboxInput {
+  display: none;
+}
+
+.status {
+  height: 100%;
+  width: 100%;
+}
+
+.statusSwitch {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  background-color: grey;
+  color: white;
+  padding: 3px;
+  border-radius: 3px;
+  transition: all 0.4s ease;
+}
+
+.statusSwitch:before,
+.statusSwitch:after {
+  height: calc(100% - 6px);
+  width: calc(50% - 3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  border-radius: 2px;
+}
+
+.statusSwitch:before {
+  background-color: white;
+  box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.2);
+  color: black;
+  content: attr(data-unchecked);
+  left: 3px;
+  transition: all 0.3s ease;
+}
+
+.statusSwitch:after {
+  content: attr(data-checked);
+  right: 0;
+}
+
+.checkboxInput:checked + .status .statusSwitch {
+  background-color: #00921c;
+}
+
+.checkboxInput:checked + .status .statusSwitch:after {
+  left: 0;
+  content: attr(data-unchecked);
+}
+
+.checkboxInput:checked + .status .statusSwitch:before {
+  color: #00921c;
+  left: 50%;
+  content: attr(data-checked);
+}
