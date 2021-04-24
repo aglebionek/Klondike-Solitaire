@@ -6,10 +6,9 @@
   .ButtRoom{
   width: 15%;
   }
-  .button{
+  .ButtRoom > .button{
     border: none;
     width: 200px;
-    height: 60px;
     font-size: 22px;
     background-color: grey;
     border-radius: 4px;

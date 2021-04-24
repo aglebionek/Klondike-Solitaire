@@ -17,6 +17,7 @@ function MainMenu() {
                         <button onClick={() => history.push('global-stats')}>STATYSTYKI</button>
                         <button>AUTORZY</button>
                         <button>O GRZE</button> 
+                        <button onClick={() => history.push('account')}>KONTO</button> 
                     </div>
                 </div>
                 <div>
@@ -30,7 +31,7 @@ function MainMenu() {
                 </div>
                 <div className='main-elements__buttons'>
                     <button onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
-                    <button>WIELOOSOBOWA</button>
+                    <button onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
                 </div>
             </div>
         </div>        
