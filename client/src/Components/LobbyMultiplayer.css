@@ -1,0 +1,78 @@
+.Multi{
+    width: 75%;
+    font-size: 50px;
+    margin-top: 35px;
+  }
+  .ButtRoom{
+  width: 15%;
+  }
+  .button{
+    border: none;
+    width: 200px;
+    height: 60px;
+    font-size: 22px;
+    background-color: grey;
+    border-radius: 4px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    margin-top: 35px;
+  }
+  .row{
+    display: flex;
+    justify-content: flex-start;
+    
+  }
+  .container{
+    margin-top: 50px;
+    display: flex;
+    width: 100%;
+    background-color: grey;
+  }
+  .ID{
+    width:10%;
+    font-size: 20px;
+  }
+  .Name{
+    width: 45%;
+    font-size: 20px;
+  }
+  .Ppl{
+    width: 45%;
+    font-size: 20px;
+  }
+  .container1{
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .Ppl1{
+    width: 25%;
+    font-size: 20px;
+  }
+  .butt{
+    width: 15%;
+  }
+  
+  .buttonjoin{
+    width: 60px;
+    height: 20px;
+    background-color: grey;
+    border-radius: 4px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    text-align: center;
+  }
+  .row1{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    height: auto;
+    display: flex;
+  }
+  .Line{
+    border: 1px; 
+    background: black; 
+    height: 1px;
+  }
+  
