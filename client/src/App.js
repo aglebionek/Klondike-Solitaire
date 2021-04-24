@@ -5,6 +5,7 @@ import Login from "./Components/Login/Login";
 import { Switch, Route } from 'react-router-dom';
 import Settings from "./Components/Settings";
 import GlobalStats from "./Components/GlobalStats/Stats";
+import GameView from "./Components/GameView/GameView";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/settings" component={Settings} />
       <Route path="/global-stats" component={GlobalStats} />
+      <Route path="/game-view" component={GameView} />
     </Switch>
   );
 }

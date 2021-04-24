@@ -29,7 +29,7 @@ function MainMenu() {
                     <h1>Pasjans Klondike</h1>
                 </div>
                 <div className='main-elements__buttons'>
-                    <button>JEDNOOSOBOWA</button>
+                    <button onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
                     <button>WIELOOSOBOWA</button>
                 </div>
             </div>
