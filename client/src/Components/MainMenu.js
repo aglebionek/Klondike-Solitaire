@@ -1,0 +1,37 @@
+import React from "react";
+import "./MainMenu.css"
+
+function MainMenu() {
+    return (
+        <div className='main-menu'>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+            <div className='main-menu__top-bar'>
+                <div className='top-bar__dropdown'>
+                    <button><i className="fa fa-bars"></i></button>
+                    <div className="dropdown__content">
+                        <button>USTAWIENIA</button>
+                        <button>STATYSTYKI</button>
+                        <button>AUTORZY</button>
+                        <button>O GRZE</button> 
+                    </div>
+                </div>
+                <div>
+                    <button>LOGOWANIE / REJESTRACJA</button>
+                </div>
+            </div>
+
+            <div className='main-menu__main-elements'>
+                <div className='main-elements__title'>
+                    <h1>Pasjans Klondike</h1>
+                </div>
+                <div className='main-elements__buttons'>
+                    <button>JEDNOOSOBOWA</button>
+                    <button>WIELOOSOBOWA</button>
+                </div>
+            </div>
+        </div>        
+    );
+}
+
+export default MainMenu;
