@@ -7,6 +7,7 @@ import Settings from "./Components/Settings";
 import GlobalStats from "./Components/GlobalStats/Stats";
 import GameView from "./Components/GameView/GameView";
 import LobbyMultiplayer from "./Components/Mutiplayer/LobbyMultiplayer";
+import Account from "./Components/Account/Account";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Route path="/global-stats" component={GlobalStats} />
       <Route path="/game-view" component={GameView} />
       <Route path="/multiplayer" component={LobbyMultiplayer} />
+      <Route path="/account" component={Account} />
     </Switch>
   );
 }

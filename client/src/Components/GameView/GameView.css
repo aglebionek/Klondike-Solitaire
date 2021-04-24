@@ -41,7 +41,16 @@ div .points_time {
 #ostatnia_karta {
     margin-right: 0;
 }
-img {
+
+.karty_bottom > img {
+    width: 8.5vw;
+    border: solid black 1px;
+    margin-right: 3vw;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.karty_top > img {
     width: 8.5vw;
     border: solid black 1px;
     margin-right: 3vw;

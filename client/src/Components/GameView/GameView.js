@@ -1,10 +1,8 @@
 import './GameView.css';
 
-
-const score = 1234;
-const stopwatch = '12:34';
-
 function GameView() {
+  const score = 1234;
+  const stopwatch = '12:34';  
 
   return (
     <div className="App">
