@@ -1,20 +1,16 @@
 import React from "react";
 import "./Stats.css";
 
-function App() {
-  const [data, setData] = React.useState(null);
-
- 
-  }
+function GlobalStats() {
 
   return (
     <div className="App">
       <h1>Statystyki</h1>
 		<div>
-		<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+		<table cellspacing="0" cellpadding="0" border="0" style={{width: "100%"}}>
 		<tbody>
 		<tr id="header">
-		<td width="40%" aalign="center">
+		<td width="40%" align="center">
 		Gracz
 		</td>
 		<td width="30%" align="center">
@@ -24,9 +20,9 @@ function App() {
 		W/D/L
 		</td>
 		</tr>
-		<tr class="player">
+		<tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar" />Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -35,9 +31,9 @@ function App() {
 		21/3/7
         </td>
 		</tr>
-		<tr class="player">
+		<tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar" />Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -45,9 +41,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -55,9 +51,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -65,9 +61,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -75,9 +71,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -85,9 +81,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -95,9 +91,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -105,9 +101,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -115,9 +111,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -125,9 +121,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -135,9 +131,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -145,9 +141,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -155,9 +151,9 @@ function App() {
 		<td align="center">
 		21/3/7
         </td>
-		</tr><tr class="player">
+		</tr><tr className="player">
 		<td>
-		1 <img src="public/images/awatar.png" class="avatar"> </img>Nazwa
+		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
 		</td>
 		<td align="center">
 		2137
@@ -171,6 +167,6 @@ function App() {
         </div>
     </div>
   );
+}
 
-
-export default App;
+export default GlobalStats;

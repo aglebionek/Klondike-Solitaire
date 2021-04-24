@@ -14,7 +14,7 @@ function MainMenu() {
                     <button><i className="fa fa-bars"></i></button>
                     <div className="dropdown__content">
                         <button onClick={() => history.push('settings')}>USTAWIENIA</button>
-                        <button>STATYSTYKI</button>
+                        <button onClick={() => history.push('global-stats')}>STATYSTYKI</button>
                         <button>AUTORZY</button>
                         <button>O GRZE</button> 
                     </div>

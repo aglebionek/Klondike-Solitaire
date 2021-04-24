@@ -1,12 +1,9 @@
-html,body {
-    font-family: Arial, Verdana, sans-serif;
-}
-h1 {  
+/* h1 {  
     font-family: "Great Vibes", cursive; 
     font-size: 50px;  
     font-weight: normal;
     text-align: center; 
-    text-shadow: 0 1px 1px #fff; }
+    text-shadow: 0 1px 1px #fff; } */
 #header {
     background-color: #A79C9C;
     height:40px;
