@@ -1,12 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './LobbyMultiplayer.css';
 
 function LobbyMultiplayer() {
     return (
       <>
         <div className="row">
-            <div className="Multi">Tryb Wieloosobowy</div>
-              <div className="ButtRoom"><button className="button">Stwórz nowy pokój</button> </div>
+          <div className="Multi">Tryb Wieloosobowy</div>
+          <div className="ButtRoom">
+            <Link to="/multiplayer/create-room">
+              <button className="button">Stwórz nowy pokój</button>
+            </Link>
+          </div>
         </div>
         <div className="container">
         <div className="ID">ID</div>

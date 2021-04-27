@@ -8,6 +8,8 @@ CREATE TABLE `Players` (
   `registration_date` datetime DEFAULT (NOW()),
   `last_login` datetime,
   `active` boolean COMMENT 'Check if account is active after registration'
+  `music` boolean
+  `sounds` boolean
 );
 
 CREATE TABLE `GameOccurrences` (
