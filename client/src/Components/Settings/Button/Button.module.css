@@ -1,0 +1,31 @@
+.container {
+  width: 170px;
+  height: 40px;
+}
+
+.button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #00921c;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.button:focus {
+  outline: 0;
+}
+
+.button:hover {
+  background-color: #737373;
+}
+
+.activeButton {
+  background-color: #db2828;
+}
+
+.activeButton:hover {
+  background-color: #c52424;
+}

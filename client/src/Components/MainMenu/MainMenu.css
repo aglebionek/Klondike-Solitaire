@@ -1,0 +1,46 @@
+.main-menu__top-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 12vh;
+    padding: 5px;
+}
+
+.main-menu__top-bar > div > button {
+    font-size: 24px;
+}
+
+.dropdown__content {
+    display: none;
+}
+
+.top-bar__dropdown:hover > .dropdown__content {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.main-menu__main-elements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-elements__title > h1 {
+    font-size: 50px;
+    margin-bottom: 15vh;
+}
+
+.main-elements__buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-elements__buttons > button {
+    margin-top: 1.5vh;
+    margin-bottom: 1.5vh;
+    padding: 4px;
+    font-size: 30px;
+    width: 70vw;
+}
