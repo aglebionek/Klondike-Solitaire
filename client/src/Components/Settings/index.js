@@ -52,7 +52,7 @@ const Settings = () => {
             <div className={`${styles.arrow} ${styles.arrowLeft}`}>&lt;</div>
             <div>
               <img
-                src="./assets/card.png"
+                src="./images/card.png"
                 alt="karta"
                 className={styles.card}
               />
