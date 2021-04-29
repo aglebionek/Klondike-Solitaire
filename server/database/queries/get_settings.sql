@@ -1,0 +1,1 @@
+select * from settings where user_id = ?
