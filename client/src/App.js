@@ -22,7 +22,6 @@ function App() {
       <Route path="/multiplayer/create-room" component={CreateRoom} />
       <Route path="/multiplayer" component={LobbyMultiplayer} />
       <Route path="/account" component={Account} />
-      
     </Switch>
   );
 }
