@@ -1,0 +1,1 @@
+INSERT INTO Players (username, email, password) VALUES (?,?,?)
