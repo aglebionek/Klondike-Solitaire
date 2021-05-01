@@ -1,8 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Account.css";
+import axios from "axios";
 
-function Account() {
+const Account =() => {
     const [show, setShow] = useState(false);
+    const [userName, setuUserName] = useState('Nazwa użytkownika');
+    const [accountCreation, setAccountCreation] = useState('2020-01-01');
+    const [country, setCountry] = useState('Polska');
+    const [avatar, setAvatar] = useState('profile_picture.jpg');
+
+    const userId = 3;
+
+
+    useEffect(() => {
+        axios.get(`http://localhost:3000/settings/credentials/edit/${userId}`).then(({ data }) => {
+            console.log(data);
+          const { username, registration_date, country, icon_id} = data[0];
+          console.log(username);
+          setuUserName(username);
+          setAccountCreation(registration_date);
+          setCountry(country);
+          setAvatar(icon_id)
+        });
+      }, []);
+
+    //   const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     axios.put(`http://localhost:3000/settings/credentials/edit/${userId}`, {
+    //       username: userName,
+    //       whenAccountCreated: accountCreation,
+    //       country_name: country,
+    //       avatar_srv: avatar,
+    //     });
+    //   };
 
     return (<>
         <div className = "profile-container">
@@ -12,16 +42,16 @@ function Account() {
                     <img className="account-avatar" src="./images/profile_picture.jpg" alt="Awatar użytkownika" width="150" height="150" />
                 </div> 
                 <div className="profile-header-info"> 
-                    <div className="profile-username">Nazwa użytkownika</div>
+                    <div className="profile-username">{userName}</div>
                     <div className="profile-creation-date">
-                        Profil utworzono: <span className = "profile-header-date">01.01.2001</span>
+                        Profil utworzono: <span className = "profile-header-date">{accountCreation}</span>
                     </div>
                     <div className="profile-country-info">
                         <div className="country-img">
                             <span><img id="flag-picture"src="./images/polska.png" alt="Flag " width="25" height="20" /></span>
                         </div>
                         <div className="country-name">
-                            Polska
+                            {country}
                         </div>
                     </div>
                 </div>

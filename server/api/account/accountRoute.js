@@ -6,12 +6,19 @@ const router = express.Router();
 const mysqlQuery = require("../../database/connection/mysql_query");
 
 //account jest dodawany automatycznie
-router.get("/edit/:userId", async (req, res) => {
-    const id = req.params.userId;
+router.get("/edit/:id", async (req, res) => {
+    const id = req.params.id;
+    const query = fs
+    .readFileSync(path.join(__dirname, "../../database/queries/userAccountEdit.sql")) 
+    .toString();
 
-    res.send(id);
+    const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
 
+    res.send(resp);
 
+    res.status(200).json({ resp });
 });
+
+
 
 module.exports = router;
