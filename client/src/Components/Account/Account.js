@@ -14,13 +14,12 @@ const Account =() => {
 
     useEffect(() => {
         axios.get(`http://localhost:3000/settings/credentials/edit/${userId}`).then(({ data }) => {
-            console.log(data);
-          const { username, registration_date, country, icon_id} = data[0];
-          console.log(username);
+          const { username, registration_date, country, icon_id} = data.resp[0];     
           setuUserName(username);
           setAccountCreation(registration_date);
           setCountry(country);
           setAvatar(icon_id)
+          
         });
       }, []);
 
@@ -128,6 +127,10 @@ const Account =() => {
                 <div className="modal-country">
                     <div className="modal-country-text row-one">Kraj</div>
 
+                </div>
+                <div className="modal-avatar">
+                    <div className="modal-avatar-text row-one">Awatar</div>
+                    <img className="modal-avatar-image" src="./images/profile_picture.jpg" alt="Awatar użytkownika" width="150" height="150" />
                 </div>
                 <div className="modal-button">
                     <button className="modal-button-save">Zmień</button>

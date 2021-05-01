@@ -14,10 +14,23 @@ router.get("/edit/:id", async (req, res) => {
 
     const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
 
-    res.send(resp);
+    // res.send(resp);
 
     res.status(200).json({ resp });
 });
+
+// router.get("/edit/avatar/:id", async (req, res) => {
+//     const id = req.params.id;
+//     const query = fs
+//     .readFileSync(path.join(__dirname, "../../database/queries/userAccountAvatar.sql")) 
+//     .toString();
+
+//     const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
+
+//     // res.send(resp);
+
+//     res.status(200).json({ resp });
+// });
 
 
 
