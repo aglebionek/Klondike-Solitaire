@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Stats.css";
+import Axios from "axios";
 
 function GlobalStats() {
+    const [id, setId] = useState("");
+    const [nazwa, setNazwa] = useState("");
+    const [ranking, setRanking] = useState("");
+    const [wygrane, setWygrane] = useState("");
+    const [remis, setRemis] = useState("");
+    const [przegrane, setPrzegrane] = useState("");
+    const [statsList, setStatsList] = useState([]);
+
+    useEffect(() => {
+        Axios.get("http://localhost:3000/example/test").then((resp) => {
+            const {data} = resp;
+            setStatsList(data)
+        });
+    }, [] );
 
   return (
     <div className="App">
@@ -19,154 +34,38 @@ function GlobalStats() {
 		<td width="30%" align="center" id="header">
 		W/D/L
 		</td>
-		</tr>
-		<tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar" />Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr>
-		<tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar" />Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr><tr className="player">
-		<td>
-		1 <img src="./images/awatar.png" className="avatar" alt="avatar"/> Nazwa
-		</td>
-		<td align="center">
-		2137
-		</td>
-		<td align="center">
-		21/3/7
-        </td>
-		</tr>
-		</tbody>
+        </tr>
+        
+        </tbody>
 		</table>
         </div>
+        <div>
+        {statsList.map((val) => {
+            return (
+
+                <div>
+                <table>
+                <tr>
+                <td>{val.id}</td>
+                <td>{val.nazwa}</td>
+                <td>{val.ranking}</td>
+                <td>{val.wygrane}/{val.remis}/{val.przegrane}</td>
+                </tr>
+                </table>
+                </div>
+           
+            );
+        })}
+        </div>
+		
+		
+	
     </div>
-  );
+    
+    );	
+		
+    
+  
 }
 
 export default GlobalStats;

@@ -1,0 +1,1 @@
+select * from stats where user_id = ?;
