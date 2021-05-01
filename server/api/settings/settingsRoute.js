@@ -38,7 +38,7 @@ router.put("/edit/:userId", async (req, res) => {
 
   await mysqlQuery(query, [cardset_id, music, effect, card_animation, userId]);
 
-  return res.status(200);
+  return res.status(200).json("settings updated successfully");
 });
 
 router.get("/:userId", async (req, res) => {
