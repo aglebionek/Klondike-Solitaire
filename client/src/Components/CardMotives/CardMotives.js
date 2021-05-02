@@ -5,7 +5,7 @@ import "./CardMotives.css"
 
 function CardMotives() {
   return (
-    <div className="card">
+    <div className="card v10 spades cyberpunk">
         <span className="card__value"></span>
         <span className="card__minisuit"></span>
         <span className="card__mainsuit"></span>        

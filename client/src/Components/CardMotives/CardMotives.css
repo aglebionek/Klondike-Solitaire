@@ -28,6 +28,7 @@ position: relative;
 font-family: Tahoma;
 color: var(--color);
 box-shadow: var(--shadow);
+background-color: var(--bg-color);
 }
 
 
@@ -112,6 +113,14 @@ right: 0.13em;
 }
 
 /*---------------------------------------COLORS---------------------------------------*/
+.card.cyberpunk {
+    --bg-color: black;
+}
+
+.card {
+    --bg-color: white;
+}
+
 .card.diamonds, .card.hearts {
 border: 0.03em solid red;
 --color: red;
