@@ -1,6 +1,8 @@
 import React from "react";
 import "./CardMotives.css"
 
+//Instruction on card generation can be found in CardMotives.css
+
 function CardMotives() {
   return (
     <div className="card">

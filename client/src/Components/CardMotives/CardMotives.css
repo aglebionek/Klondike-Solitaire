@@ -2,10 +2,10 @@
 The 'card' div is the entire card;
 The 'card__value' span displays card values in the corners;
 The 'card__minisuit' span displays card suit below the values;
-The 'card__mainsuit' span displays big suits on the middle;
+The 'card__mainsuit' span displays big suits in the middle;
 
 To create a card, add suit and value to the 'card' div. For example, to create King of Spades, the 'card' div should also have
-    'vK' class and 'spades' class (<div className="card vK spades">);
+'vK' class and 'spades' class (<div className="card vK spades">);
 A 'card' div without any additional classes will appear as an empty frame;
 Available suit classes: 'spades', 'hearts', 'diamonds', 'clubs';
 Available value classes: 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10', 'vJ', 'vQ', 'vK', 'vA';
@@ -13,21 +13,21 @@ To apply cyberpunk look to the cards, add 'cyberpunk' class to the 'card' div (<
 Order of applying the classes shouldn't matter.
 To change card size, change 'font-size' in .card;
 
-
 If there are any problems with the way cards display, contact @aglebionek.
 */
 
 /*---------------------------------------LOOK---------------------------------------*/
-/*main look*/
+/*regular cards look*/
 .card {
-font-size: 1.5em; /* change to resize card */
+font-size: 7em; /* change to resize card */
 height: 4.45em;
 width: 3.2em;
 border: 0.03em solid black;
 border-radius: 0.1em;
 position: relative;
-color: rgba(0, 214, 252, 1);
 font-family: Tahoma;
+color: var(--color);
+box-shadow: var(--shadow);
 }
 
 
@@ -35,7 +35,8 @@ font-family: Tahoma;
 .card__value::before, .card__value::after {
 position: absolute;
 font-size: 60%;
-color: black;
+color: var(--color);
+text-shadow: var(--text-shadow);
 }
 
 .card__value::before {
@@ -54,7 +55,8 @@ transform: rotate(180deg);
 .card__minisuit::before, .card__minisuit::after {
 position: absolute;
 font-size: 60%;
-color: black;
+color: var(--color);
+text-shadow: var(--text-shadow);
 }
 
 .card__minisuit::before {
@@ -83,7 +85,8 @@ position: absolute;
 text-align: center;
 line-height: 1.5em;
 letter-spacing: -.05em;
-color: black;
+color: var(--color);
+text-shadow: var(--text-shadow);
 }
 
 /*scale down mainsuits to fit*/
@@ -108,36 +111,36 @@ left: 0.13em;
 right: 0.13em;
 }
 
-/*cyberpunk cards look*/
-.card.cyberpunk {
-border: 0.03em solid rgba(0, 235, 252, 0.925);
-box-shadow: 0px 0px 0.1em rgba(0, 214, 252, 1),
+/*---------------------------------------COLORS---------------------------------------*/
+.card.diamonds, .card.hearts {
+border: 0.03em solid red;
+--color: red;
+--box-shadow: none;
+--text-shadow: none;
+}
+
+.card.clubs, .card.spades {
+border: 0.03em solid black;
+--color: black;
+--box-shadow: none;
+--text-shadow: none;
+}
+
+.card.cyberpunk.spades, .card.cyberpunk.clubs {
+border: 0.03em solid rgba(0, 214, 252, 1);
+--color: rgba(0, 214, 252, 1);
+--box-shadow: 0px 0px 0.1em rgba(0, 214, 252, 1),
 0px 0px 0.1em rgba(0, 214, 252, 1) inset;
+--text-shadow: 0px 0px 0.2em rgba(0, 214, 252, 1);
 }
 
-
-
-.card.cyberpunk > .card__value::before, .card.cyberpunk > .card__value::after {
-color: rgba(0, 214, 252, 1);
-text-shadow: 0px 0px 0.2em rgba(0, 214, 252, 1);
+.card.cyberpunk.diamonds, .card.cyberpunk.hearts {
+border: 0.03em solid rgba(57, 255, 20, 1);
+--color: rgba(57, 255, 20, 1);
+--box-shadow: 0px 0px 0.1em rgba(57, 255, 20, 1),
+0px 0px 0.1em rgba(57, 255, 20, 1) inset;
+--text-shadow: 0px 0px 0.2em rgba(57, 255, 20, 1);
 }
-
-
-
-.card.cyberpunk > .card__minisuit::before, .card.cyberpunk > .card__minisuit::after {
-color: rgba(0, 214, 252, 1);
-text-shadow: 0px 0px 0.15em rgba(0, 214, 252, 1),
-0px 0px 0.1em rgba(0, 214, 252, 0.5);
-}
-
-
-
-.card.cyberpunk > .card__mainsuit::before {
-text-shadow: 0px 0px 0.2em rgba(0, 214, 252, 1);
-color: rgba(0, 214, 252, 1);
-}
-
-
 
 /*---------------------------------------VALUES---------------------------------------*/
 /*display value*/
