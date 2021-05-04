@@ -7,38 +7,59 @@ const Account =() => {
     const [userName, setuUserName] = useState('Nazwa użytkownika');
     const [accountCreation, setAccountCreation] = useState('2020-01-01');
     const [country, setCountry] = useState('Polska');
-    const [avatar, setAvatar] = useState('profile_picture.jpg');
+    const [avatar, setAvatar] = useState('avatar1');
+    const [idAvatar, setIdAvatar] = useState('1');
+    const [temporaryAvatar, setTemporaryAvatar] = useState('avatar1');
 
     const userId = 3;
+    const avatars =["avatar1", "avatar2"];
 
+    const nextAvatar = () => {
+        let index = avatars.indexOf(temporaryAvatar);
+        if (index === avatars.length - 1) index = 0;
+        else index++;
+        setTemporaryAvatar(avatars[index]);
+      };
+    
+      const previousAvatar = () => {
+        let index = avatars.indexOf(temporaryAvatar);
+        if (index === 0) index = avatars.length - 1;
+        else index--;
+        setTemporaryAvatar(avatars[index]);
+      };
+
+      const setNewAvatar = () => {
+        const num = temporaryAvatar.match(/\d+/)[0];
+        setIdAvatar(Number(num));
+      };
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/settings/credentials/edit/${userId}`).then(({ data }) => {
+        axios.get(`http://localhost:3000/settings/credentials/${userId}`).then(({ data }) => {
           const { username, registration_date, country, icon_id} = data.resp[0];     
           setuUserName(username);
           setAccountCreation(registration_date);
           setCountry(country);
-          setAvatar(icon_id)
-          
+          setTemporaryAvatar("avatar"+icon_id);
+          setAvatar("avatar"+icon_id) ;
         });
       }, []);
 
-    //   const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     axios.put(`http://localhost:3000/settings/credentials/edit/${userId}`, {
-    //       username: userName,
-    //       whenAccountCreated: accountCreation,
-    //       country_name: country,
-    //       avatar_srv: avatar,
-    //     });
-    //   };
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:3000/settings/credentials/edit/${userId}`, {
+        //   cardset_id: card,
+        //   music: musicVolume,
+        //   effect: effectVolume,
+        //   card_animation: isCardAnimation,
+        });
+      };
 
     return (<>
         <div className = "profile-container">
             <div className="profile-heading">KONTO</div>
             <div className="profile-header">
                 <div className="profile-avatar">
-                    <img className="account-avatar" src="./images/profile_picture.jpg" alt="Awatar użytkownika" width="150" height="150" />
+                    <img className="account-avatar" src={`./images/${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                 </div> 
                 <div className="profile-header-info"> 
                     <div className="profile-username">{userName}</div>
@@ -104,17 +125,19 @@ const Account =() => {
                     <div className="modak-nick-text row-one">
                         Nazwa użytkownika
                     </div>
-                    <div className="modal-nick-current"></div>
-                    <input className="modal-nick-input"/>
+                    <div className="modal-nick-current">
+                        <input className="modal-nick-input"/>
+                    </div> 
                 </div>
-                <div className="modal-email">
-                    <div className="modal-email-text row-one">Email</div>
-                    <input className="modal-email-input"/>
-                </div>
+                <div className="modal-nick-current">
+                        <input type="button" className="modal-nick-button" value="Zmień"/>
+                 </div>
 
                 <div className="modal-password-old">
                     <div className="row-one">Stare hasło</div>
-                    <input className="modal-password-input-old"/>
+                    <div className="modal-password-old-current">
+                        <input className="modal-password-old-input"/>
+                    </div>
                 </div>
                 <div className="modal-password-new">
                     <div className="row-one">Nowe hasło</div>
@@ -124,16 +147,32 @@ const Account =() => {
                     <div className="row-one">Powtórz hasło</div>
                     <input className="modal-password-input-new-repeat"/>
                 </div>
+                <div className="modal-password">
+                    <input type="button" className="modal-password-button" value="Zmień"/>
+                    </div>
                 <div className="modal-country">
                     <div className="modal-country-text row-one">Kraj</div>
 
                 </div>
                 <div className="modal-avatar">
                     <div className="modal-avatar-text row-one">Awatar</div>
-                    <img className="modal-avatar-image" src="./images/profile_picture.jpg" alt="Awatar użytkownika" width="150" height="150" />
+                    <div className="modal-left-arrow" onClick={() => previousAvatar()}>&lt;</div>
+                    <div>
+                        <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
+                    </div>
+                    <div className="modal-right-arrow"  onClick={() => nextAvatar()}>&gt;</div>
                 </div>
+                <div className="modal-avatar-current">
+                    <button
+                    //className={styles.saveCardButton}
+                    onClick={() => setNewAvatar()}
+                    type="button"
+                    >
+                    Wybierz
+                </button>
+                    </div>
                 <div className="modal-button">
-                    <button className="modal-button-save">Zmień</button>
+                    <button className="modal-button-save">Ok</button>
                     <button className="modal-button-cancel" onClick={() => setShow(false)}>Anuluj</button>
                 </div>
             </div>

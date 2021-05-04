@@ -6,7 +6,7 @@ const router = express.Router();
 const mysqlQuery = require("../../database/connection/mysql_query");
 
 //account jest dodawany automatycznie
-router.get("/edit/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
     const id = req.params.id;
     const query = fs
     .readFileSync(path.join(__dirname, "../../database/queries/userAccountEdit.sql")) 
