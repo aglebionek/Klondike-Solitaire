@@ -1,1 +1,0 @@
-SELECT username, registration_date, country, icon_id FROM players where ?;

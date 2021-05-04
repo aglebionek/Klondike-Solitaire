@@ -4,14 +4,23 @@ import axios from "axios";
 
 const Account =() => {
     const [show, setShow] = useState(false);
-    const [userName, setuUserName] = useState('Nazwa użytkownika');
+    const [userName, setUserName] = useState('Nazwa użytkownika');
     const [accountCreation, setAccountCreation] = useState('2020-01-01');
     const [country, setCountry] = useState('Polska');
     const [avatar, setAvatar] = useState('avatar1');
     const [idAvatar, setIdAvatar] = useState('1');
     const [temporaryAvatar, setTemporaryAvatar] = useState('avatar1');
+    const [newUsername, setNewUsername] = useState('');
+    const [newCountry, setNewCountry] = useState('');
+    
+    const [currentPassword, setCurrentPassword] = useState('admin');
 
-    const userId = 3;
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState(''); 
+    
+
+    const userId = 2;
     const avatars =["avatar1", "avatar2"];
 
     const nextAvatar = () => {
@@ -28,19 +37,43 @@ const Account =() => {
         setTemporaryAvatar(avatars[index]);
       };
 
-      const setNewAvatar = () => {
+      const setNewData = () => {
         const num = temporaryAvatar.match(/\d+/)[0];
         setIdAvatar(Number(num));
+        if(newUsername === '') {
+            setNewUsername(userName);
+        };
+        if(oldPassword===currentPassword && newPassword===repeatPassword){
+            setCurrentPassword(newPassword);
+        };
+        if(newCountry===''){
+            setNewCountry(country);
+        }
+
+
+        clearSettings();
+        
       };
+
+      const clearSettings = () => {
+        setNewPassword('');
+        setOldPassword('');
+        setRepeatPassword('');
+        document.getElementsByName('editForm')[0].reset();
+        setShow(false);
+      }
+
+      
 
     useEffect(() => {
         axios.get(`http://localhost:3000/settings/credentials/${userId}`).then(({ data }) => {
-          const { username, registration_date, country, icon_id} = data.resp[0];     
-          setuUserName(username);
+          const { username, registration_date, country, icon_id, password} = data.resp[0];     
+          setUserName(username);
           setAccountCreation(registration_date);
           setCountry(country);
           setTemporaryAvatar("avatar"+icon_id);
           setAvatar("avatar"+icon_id) ;
+          setCurrentPassword(password);
         });
       }, []);
 
@@ -48,7 +81,9 @@ const Account =() => {
         e.preventDefault();
         axios.put(`http://localhost:3000/settings/credentials/edit/${userId}`, {
         icon_id: idAvatar,
-
+        username: newUsername,
+        password: currentPassword,
+        country: newCountry,
         });
       };
 
@@ -119,62 +154,85 @@ const Account =() => {
         <div style={show ? {display: 'flex'} : {display: 'none'}} className="background-modal">
 
             <div className="modal-content">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} name="editForm">
                 <div className="modal-settings">Ustawienia</div>
                 <div className="modal-nick">
                     <div className="modak-nick-text row-one">
                         Nazwa użytkownika
                     </div>
                     <div className="modal-nick-current">
-                        <input className="modal-nick-input"/>
+                        <input 
+                            className="modal-nick-input" 
+                            type="text" 
+                            onChange={(event) => {
+                                setNewUsername(event.target.value);
+                        }}
+                        />
                     </div> 
-                </div>
-                <div className="modal-nick-current">
-                        <input type="button" className="modal-nick-button" value="Zmień"/>
-                 </div>
-
+                </div>         
                 <div className="modal-password-old">
                     <div className="row-one">Stare hasło</div>
                     <div className="modal-password-old-current">
-                        <input className="modal-password-old-input"/>
+                        <input 
+                            className="modal-password-old-input"
+                            type="password"
+                            onChange={(event) => {
+                                setOldPassword(event.target.value);
+                            }}
+                        />
+
                     </div>
+                    {!(currentPassword===oldPassword || oldPassword==='')&&(<span class="red-star">niepoprawne hasło</span>)}
                 </div>
                 <div className="modal-password-new">
                     <div className="row-one">Nowe hasło</div>
-                    <input className="modal-password-input-new"/>
+                        <input 
+                            className="modal-password-input-new"
+                            type="password"
+                            onChange={(event) => {
+                                setNewPassword(event.target.value);
+                            }}
+                        />
                 </div>
                 <div className="modal-password-new-repeat">
                     <div className="row-one">Powtórz hasło</div>
-                    <input className="modal-password-input-new-repeat"/>
+                        <input 
+                            className="modal-password-input-new-repeat"
+                            type="password"
+                            onChange={(event) => {
+                                setRepeatPassword(event.target.value);
+                            }}
+                        />
+                        {!(repeatPassword===newPassword||repeatPassword==='')&&(<span class="red-star">powtórz hasło</span>)}
                 </div>
-                <div className="modal-password">
-                    <input type="button" className="modal-password-button" value="Zmień"/>
-                    </div>
                 <div className="modal-country">
                     <div className="modal-country-text row-one">Kraj</div>
-
+                    <div className="modal-country-input">
+                        <input 
+                        type="text"
+                        onChange={(event) => {
+                            setNewCountry(event.target.value);
+                        }}
+                        />
+                    </div>
                 </div>
                 <div className="modal-avatar">
-                    <div className="modal-avatar-text row-one">Awatar</div>
-                    <div className="modal-left-arrow" onClick={() => previousAvatar()}>&lt;</div>
+                    <div className="modal-avatar-text row-one"></div>
+                    <div className="arrow modal-left-arrow" onClick={() => previousAvatar()}>&lt;</div>
                     <div>
                         <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                     </div>
-                    <div className="modal-right-arrow"  onClick={() => nextAvatar()}>&gt;</div>
+                    <div className="arrow modal-right-arrow"  onClick={() => nextAvatar()}>&gt;</div>
                 </div>
                 <div className="modal-avatar-current">
-                    <button
-                    onClick={() => setNewAvatar()}
-                    type="button"
-                    >
-                    Wybierz
-                </button>
+                  
                     </div>
                 <div className="modal-button">
-                    <button className="modal-button-save" type="submit" >Ok</button>
-                    <button className="modal-button-cancel" onClick={() => setShow(false)}>Anuluj</button>
+                    <button className="modal-button-save" type="submit" onClick={() => setNewData()} >Ok</button>
+                    <button className="modal-button-cancel" type = "button" onClick={() => clearSettings()}>Anuluj</button>
                 </div>
                 </form>
+
             </div>
         </div>
     </>)

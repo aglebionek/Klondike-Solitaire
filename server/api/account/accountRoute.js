@@ -9,7 +9,7 @@ const mysqlQuery = require("../../database/connection/mysql_query");
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     const query = fs
-    .readFileSync(path.join(__dirname, "../../database/queries/userAccountEdit.sql")) 
+    .readFileSync(path.join(__dirname, "../../database/queries/account_select.sql")) 
     .toString();
 
     const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
@@ -22,7 +22,7 @@ router.get("/:id", async (req, res) => {
 router.put("/edit/:userId", async (req, res) => {
 
 
-    const { icon_id } = req.body;
+    const { icon_id, username, password, country } = req.body;
 
     const avatar = {
         1: true,
@@ -34,11 +34,11 @@ router.put("/edit/:userId", async (req, res) => {
 
     const query = fs
     .readFileSync(
-      path.join(__dirname, "../../database/queries/update_account.sql")
+      path.join(__dirname, "../../database/queries/account_update.sql")
     )
     .toString();
     //     console.log(query, [icon_id, userId]);
-    await mysqlQuery(query, [icon_id, userId]);
+    await mysqlQuery(query, [icon_id,username,password,country, userId]);
 
     return res.status(200).json("settings updated successfully");
 });

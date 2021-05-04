@@ -165,3 +165,16 @@ body, ::after, ::before{
 .modal-button-save, .modal-button-cancel{
     margin: 10px;
 }
+
+.red-star{
+    color:red;
+    padding-left: 5px;
+    font-size:medium;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    font-size: 3.5rem;
+    color: #00921c;
+  }
