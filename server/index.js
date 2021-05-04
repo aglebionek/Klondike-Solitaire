@@ -24,6 +24,6 @@ app.use("/rooms", roomsRoute);
 app.use("/settingsRoute", settingsRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
-app.use("/settings/credentials", accountRoute);
+app.use("/account", accountRoute);
 
 app.listen(PORT);

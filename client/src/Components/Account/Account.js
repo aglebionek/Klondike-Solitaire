@@ -66,7 +66,7 @@ const Account =() => {
       
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/settings/credentials/${userId}`).then(({ data }) => {
+        axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
           const { username, registration_date, country, icon_id, password} = data.resp[0];     
           setUserName(username);
           setAccountCreation(registration_date);
@@ -79,7 +79,7 @@ const Account =() => {
 
       const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:3000/settings/credentials/edit/${userId}`, {
+        axios.put(`http://localhost:3000/account/edit/${userId}`, {
         icon_id: idAvatar,
         username: newUsername,
         password: currentPassword,
