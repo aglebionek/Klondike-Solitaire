@@ -19,6 +19,30 @@ router.get("/:id", async (req, res) => {
     res.status(200).json({ resp });
 });
 
+router.put("/edit/:userId", async (req, res) => {
+
+
+    const { icon_id } = req.body;
+
+    const avatar = {
+        1: true,
+        2: true,
+      };
+      if (!avatar[icon_id]) return res.status(400).json("invalid icon_id");
+
+    const userId = req.params.userId;
+
+    const query = fs
+    .readFileSync(
+      path.join(__dirname, "../../database/queries/update_account.sql")
+    )
+    .toString();
+    //     console.log(query, [icon_id, userId]);
+    await mysqlQuery(query, [icon_id, userId]);
+
+    return res.status(200).json("settings updated successfully");
+});
+
 // router.get("/edit/avatar/:id", async (req, res) => {
 //     const id = req.params.id;
 //     const query = fs

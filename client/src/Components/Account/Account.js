@@ -47,10 +47,8 @@ const Account =() => {
       const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:3000/settings/credentials/edit/${userId}`, {
-        //   cardset_id: card,
-        //   music: musicVolume,
-        //   effect: effectVolume,
-        //   card_animation: isCardAnimation,
+        icon_id: idAvatar,
+
         });
       };
 
@@ -119,7 +117,9 @@ const Account =() => {
             </div>
         </div> 
         <div style={show ? {display: 'flex'} : {display: 'none'}} className="background-modal">
+
             <div className="modal-content">
+            <form onSubmit={handleSubmit}>
                 <div className="modal-settings">Ustawienia</div>
                 <div className="modal-nick">
                     <div className="modak-nick-text row-one">
@@ -164,7 +164,6 @@ const Account =() => {
                 </div>
                 <div className="modal-avatar-current">
                     <button
-                    //className={styles.saveCardButton}
                     onClick={() => setNewAvatar()}
                     type="button"
                     >
@@ -172,9 +171,10 @@ const Account =() => {
                 </button>
                     </div>
                 <div className="modal-button">
-                    <button className="modal-button-save">Ok</button>
+                    <button className="modal-button-save" type="submit" >Ok</button>
                     <button className="modal-button-cancel" onClick={() => setShow(false)}>Anuluj</button>
                 </div>
+                </form>
             </div>
         </div>
     </>)
