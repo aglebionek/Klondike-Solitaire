@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Button.module.css";
 
-const Button = () => {
-  const [isActive, setStatusOfActive] = useState(false);
+const Button = ({ isCardSelectionOpen, setCardSelectionOpen, text }) => {
   return (
     <div className={styles.container}>
       <button
-        className={`${styles.button} ${isActive ? styles.activeButton : ""}`}
-        onClick={() => setStatusOfActive((prev) => !prev)}
+        type="button"
+        className={`${styles.button} ${
+          isCardSelectionOpen ? styles.activeButton : ""
+        }`}
+        onClick={() => setCardSelectionOpen((prev) => !prev)}
       >
-        {isActive ? "Anuluj" : "Wybierz"}
+        {isCardSelectionOpen ? "Anuluj" : text}
       </button>
     </div>
   );
