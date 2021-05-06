@@ -73,29 +73,30 @@ transform: rotate(180deg);
 
 
 
-.card__mainsuit::before {
+.card__mainsuit::before, .card__mainsuit::after {
 display: flex;
+flex-direction: column;
 height: 100%;
 width: 100%;
-justify-content: center;
 align-items: center;
-margin-top: -0.06em;
 font-size: calc(250% / 2.75);
 white-space: pre;
 position: absolute;
 text-align: center;
-line-height: 1.5em;
-letter-spacing: -.05em;
 color: var(--color);
 text-shadow: var(--text-shadow);
 }
 
+.card__mainsuit::after {
+    transform: rotate(180deg);
+}
+
 /*scale down mainsuits to fit*/
-.card.hearts > .card__mainsuit::before {
+.card.hearts > .card__mainsuit::before, .card.hearts > .card__mainsuit::after {
 letter-spacing: -.08em;
 }
 
-.card.clubs > .card__mainsuit::before {
+.card.clubs > .card__mainsuit::before, .card.clubs > .card__mainsuit::after {
 letter-spacing: -.12em;
 }
 
@@ -232,18 +233,22 @@ content: var(--value);
 
 /*apply minisuit*/
 .card > .card__minisuit::before, .card > .card__minisuit::after {
-content: var(--suit);
+    content: var(--suit);
 }
 
 /*mainsuits patterns*/
-.card.v2 > .card__mainsuit::before {
-content: var(--suit) "\A\A" var(--suit);
-font-size: calc(250% / 1.875);
-line-height: 0.75em;
+.card.v2 > .card__mainsuit::before, .card.v2 > .card__mainsuit::after {
+    content: var(--suit);
+    font-size: calc(250% / 1.875);
 }
 
 .card.v3 > .card__mainsuit::before {
-content: var(--suit) "\A" var(--suit) "\A" var(--suit);
+    content: var(--suit) "\A" var(--suit);
+    line-height: 1.5em;
+}
+
+.card.v3 > .card__mainsuit::after {
+    content: var(--suit);
 }
 
 .card.v4 > .card__mainsuit::before {
