@@ -16,8 +16,8 @@ const Index = () => {
       <div>
         {state.map((item) => (
           <div key={item.ID}>
-            <p>{item.ID} {item.username}</p>
-            <p></p>
+            <p>{item.ID}</p>
+            <p>{item.FirstName}</p>
           </div>
         ))}
       </div>

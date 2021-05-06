@@ -21,7 +21,7 @@ const Account =() => {
     
 
     const userId = 2;
-    const avatars =["avatar1", "avatar2"];
+    const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {
         let index = avatars.indexOf(temporaryAvatar);
@@ -61,6 +61,7 @@ const Account =() => {
         setRepeatPassword('');
         document.getElementsByName('editForm')[0].reset();
         setShow(false);
+        window.location.reload(false);
       }
 
       
