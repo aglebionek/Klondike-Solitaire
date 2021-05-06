@@ -1,1 +1,1 @@
-select * from stats
+select * from statstable;

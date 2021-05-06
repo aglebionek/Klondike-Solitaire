@@ -1,1 +1,1 @@
-select * from stats where user_id = ?;
+select * from statstable where ?;
