@@ -7,8 +7,7 @@ const Account =() => {
     const [userName, setUserName] = useState('Nazwa użytkownika');
     const [accountCreation, setAccountCreation] = useState('2020-01-01');
     const [country, setCountry] = useState('Polska');
-    const [avatar, setAvatar] = useState('avatar1');
-    const [idAvatar, setIdAvatar] = useState('1');
+    const [avatar, setAvatar] = useState('1');
     const [temporaryAvatar, setTemporaryAvatar] = useState('avatar1');
     const [newUsername, setNewUsername] = useState('');
     const [newCountry, setNewCountry] = useState('');
@@ -39,18 +38,17 @@ const Account =() => {
 
       const setNewData = () => {
         const num = temporaryAvatar.match(/\d+/)[0];
-        setIdAvatar(Number(num));
-        if(newUsername === '') {
-            setNewUsername(userName);
-        };
+        setAvatar(Number(num));
+        if(newUsername != '') {
+            setUserName(newUsername);
+        } 
         if(oldPassword===currentPassword && newPassword===repeatPassword){
             setCurrentPassword(newPassword);
+        }else {
         };
-        if(newCountry===''){
-            setNewCountry(country);
+        if(newCountry!=''){
+            setCountry(newCountry);
         }
-
-
         clearSettings();
         
       };
@@ -61,7 +59,6 @@ const Account =() => {
         setRepeatPassword('');
         document.getElementsByName('editForm')[0].reset();
         setShow(false);
-        window.location.reload(false);
       }
 
       
@@ -73,7 +70,7 @@ const Account =() => {
           setAccountCreation(registration_date);
           setCountry(country);
           setTemporaryAvatar("avatar"+icon_id);
-          setAvatar("avatar"+icon_id) ;
+          setAvatar(icon_id) ;
           setCurrentPassword(password);
         });
       }, []);
@@ -81,10 +78,10 @@ const Account =() => {
       const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:3000/account/edit/${userId}`, {
-        icon_id: idAvatar,
-        username: newUsername,
+        icon_id: avatar,
+        username: userName,
         password: currentPassword,
-        country: newCountry,
+        country: country,
         });
       };
 
@@ -93,7 +90,7 @@ const Account =() => {
             <div className="profile-heading">KONTO</div>
             <div className="profile-header">
                 <div className="profile-avatar">
-                    <img className="account-avatar" src={`./images/${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
+                    <img className="account-avatar" src={`./images/avatar${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                 </div> 
                 <div className="profile-header-info"> 
                     <div className="profile-username">{userName}</div>
