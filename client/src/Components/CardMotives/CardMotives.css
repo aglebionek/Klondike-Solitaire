@@ -301,13 +301,11 @@ If there are any problems with the way cards display, contact @aglebionek.
 .card.v9 > .card__mainsuit::before {
     content: var(--suit) "\00A0\00A0" var(--suit) "\A\A" var(--suit) "\00A0\00A0" var(--suit) "\A" var(--suit);
     line-height: 0.5em;
-    margin-top: 0.6em;
 }
 
 .card.v9>.card__mainsuit::after {
     content: var(--suit) "\00A0\00A0" var(--suit) "\A\A" var(--suit) "\00A0\00A0" var(--suit);
     line-height: 0.5em;
-    margin-top: -0.6em;
 }
 
 
