@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import "./CreateRoom.css";
 
+import { Link } from 'react-router-dom';
+import socket from './../socketConfig.js';
+
+const player = 'player';
+
+/*
+  TODO:
+    - obsługa refresha podczas tworzenia pokoju
+*/
+
 function CreateRoom() {
   const initialRoomData = {
     isCreated: false,
     isBeingModified: false,
     name: "Nowy pokój",
-    maxPlayers: 2,
-    players: [],
   };
 
   const [roomData, updateRoomData] = useState(initialRoomData);
+  const [roomNameBuffer, updateRoomBuffer] = useState(roomData.name);
 
   const handleNameChange = (evt) => {
     updateRoomData((prevData) => ({
@@ -19,15 +28,21 @@ function CreateRoom() {
     }));
   };
 
-  const handleMaxNumberChange = (evt) => {
-    updateRoomData((prevData) => ({
-      ...prevData,
-      maxPlayers: parseInt(evt.target.value),
-    }));
-  };
-
   const handleRoomCreateButton = (evt) => {
     evt.preventDefault();
+
+    if(roomData.isBeingModified){
+      socket.emit('lobby-modify', {
+        room: roomNameBuffer,
+        newName: roomData.name
+      });
+    }
+    else{
+      socket.emit('lobby-join', { 
+        player, 
+        room: roomData.name 
+      });
+    }
 
     updateRoomData((prevData) => ({
       ...prevData,
@@ -35,8 +50,7 @@ function CreateRoom() {
       isBeingModified: false,
     }));
 
-    // dopisanie pokoju do listy, zapamietanie w zmiennych sesji/cokolwiek, że pokój istnieje
-    // dopisanie do graczy w pokoju zalogowanego usera
+    updateRoomBuffer(roomData.name);
   };
 
   const handleRoomModifyButton = (evt) => {
@@ -46,16 +60,6 @@ function CreateRoom() {
       ...prevData,
       isBeingModified: true,
     }));
-
-    // aktualizacja danych w socketach
-  };
-
-  const handleRoomDisbandButton = (evt) => {
-    evt.preventDefault();
-
-    updateRoomData(() => initialRoomData);
-
-    // usuwanie socketa dla pokoju
   };
 
   if (roomData.isCreated && !roomData.isBeingModified) {
@@ -67,12 +71,10 @@ function CreateRoom() {
             <p>Nazwa:</p>
             <p>{roomData.name}</p>
           </div>
-          <div className="lobby__created-data">
-            <p>Maks. ilość graczy:</p>
-            <p>{roomData.maxPlayers}</p>
-          </div>
           <div className="lobby__created-data__btns">
-            <button onClick={handleRoomDisbandButton}>Rozwiąż</button>
+            <Link to="/multiplayer">
+              <button onClick={() => socket.emit('lobby-leave')}>Rozwiąż</button>
+            </Link>
             <button onClick={handleRoomModifyButton}>Modyfikuj</button>
           </div>
         </div>
@@ -96,19 +98,6 @@ function CreateRoom() {
                 id="room-name"
                 name="room-name"
                 type="text"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="room-maxplayers">Ilość osób</label>
-              <input
-                onChange={handleMaxNumberChange}
-                value={roomData.maxPlayers.toString()}
-                id="room-maxplayers"
-                name="room-maxplayers"
-                type="number"
-                min="2"
-                max="5"
                 required
               />
             </div>
