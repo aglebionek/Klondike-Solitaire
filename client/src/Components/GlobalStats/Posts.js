@@ -9,7 +9,7 @@ const Posts = ({statsList, loading}) => {
         <tbody>
         {statsList.map(statsList => (
             <tr key={statsList.ID}>
-                <td width="40%" align="left">{statsList.ID}. {statsList.Nazwa}</td>
+                <td width="40%" align="left">{statsList.ID} <img src={statsList.Avatar} width="50" height="50"/> {statsList.Nazwa} </td>
                 <td width="30%" align="center">{statsList.Ranking}</td>
                 <td width="30%" align="center">{statsList.Wygrane}/{statsList.Remisy}/{statsList.Przegrane}</td>
             </tr>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Posts from "./Posts";
-import Pagination from "./Pagination";
 import "./Stats.css";
 import axios from 'axios';
 
@@ -9,7 +8,11 @@ function GlobalStats() {
     const [statsList, setStatsList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage] = useState(20);
+    const [postPerPage] = useState(10);
+
+    const [pageNumberLimit, setPageNumberLimit] = useState(5);
+    const [maxPageNumberLimit, setPageMaxNumberLimit] = useState(5);
+    const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
    
         useEffect(() => {
@@ -27,25 +30,64 @@ function GlobalStats() {
     const indexOfLastPost = currentPage * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
     const currentPosts = statsList.slice(indexOfFirstPost,indexOfLastPost);
-    const [numberOfButtons, setNumberOfButoons] = useState(
-      Math.ceil(statsList.length / postPerPage)
-    );
+
+    const handleClick = (event) =>{
+      setCurrentPage(Number(event.target.id));
+    }
+
+    const pages =[];
+    for (let i = 1; i <= Math.ceil(statsList.length/postPerPage);i++) {
+      pages.push(i);
+    }
+
+    const renderPageNumbers = pages.map((number) => {
+      if(number <maxPageNumberLimit + 1 && number>minPageNumberLimit)
+      {
+        return (
+          <li key={number} id={number} onClick={handleClick} className={currentPage === number ? "active" : null}>
+            {number}
+          </li>
+        )
+      }
+      else {
+        return null;
+      }
+    });
       
-    const minus = (pageNumber) => {
-      if (currentPage === 1) {
-      setCurrentPage(1);
-    } else {
-      setCurrentPage(currentPage - 1);
+    
+  
+  
+   
+
+  const handleNextBtn = () => {
+    setCurrentPage(currentPage + 1);
+    
+    if(currentPage + 1 > maxPageNumberLimit)
+    {
+      setPageMaxNumberLimit(maxPageNumberLimit+pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit+pageNumberLimit);
     }
   }
-  const plus = (pageNumber) => {
-    if (currentPage === 8 ) {
-    setCurrentPage(currentPage);
-  } else {
-    setCurrentPage(currentPage + 1);
+
+  const handlePrevBtn = () => {
+    setCurrentPage(currentPage - 1);
+    
+    if((currentPage - 1) % pageNumberLimit === 0)
+    {
+      setPageMaxNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
   }
-}
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  let pageIncrementBtn = null;
+  if(pages.length > maxPageNumberLimit){
+    pageIncrementBtn=<li onClick={handleNextBtn}> &hellip; </li>
+  }
+
+  let pageDecrementBtn = null;
+  if(pages.length >= 1){
+    pageDecrementBtn=<li onClick={handlePrevBtn}> &hellip; </li>
+  }
 
 
   return (
@@ -67,8 +109,27 @@ function GlobalStats() {
         </thead>
       </table>
       <Posts statsList={currentPosts} loading={loading}/>
-      <Pagination postPerPage={postPerPage} totalPosts={statsList.length} paginate={paginate} minus={minus} plus={plus}/>
-        
+      <ul className="pageNumbers">
+        <li>
+          <button 
+            onClick={handlePrevBtn}
+            disabled={currentPage === pages[0] ? true : false}
+          >
+            Poprzednia
+          </button>
+        </li>
+          {pageDecrementBtn}
+          {renderPageNumbers}
+          {pageIncrementBtn}
+        <li>
+          <button 
+            onClick={handleNextBtn}
+            disabled={currentPage === pages[pages.length-1] ? true : false}
+          >
+            Następna
+          </button>
+        </li>
+      </ul>
     </div>
     
     );	
