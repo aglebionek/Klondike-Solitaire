@@ -1,1 +1,1 @@
-INSERT INTO Players (username, email, password) VALUES (?,?,?)
+INSERT INTO players (username, email, password, registration_date, last_login, active) VALUES (?,?,?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true)

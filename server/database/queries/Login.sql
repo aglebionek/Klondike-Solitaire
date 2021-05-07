@@ -1,1 +1,1 @@
-SELECT * FROM Players WHERE username = ?
+select id,email,username, password from players where email = ?
