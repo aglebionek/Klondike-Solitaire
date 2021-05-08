@@ -15,12 +15,12 @@ import Test from "./Components/Test";
 function App() {
   return (
     <Switch>
-      <PublicRoute path="/" component={MainMenu} exact />
-      <PublicRoute path="/login" component={Login} />
-      <PublicRoute path="/register" component={Register} />
+      <Route path="/" component={MainMenu} exact />
+      <AuthRoute path="/login" component={Login} />
+      <AuthRoute path="/register" component={Register} />
       <PrivateRoute path="/settings" component={Settings} />
       <PrivateRoute path="/global-stats" component={GlobalStats} />
-      <PublicRoute path="/game-view" component={GameView} />
+      <Route path="/game-view" component={GameView} />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
       <PrivateRoute path="/account" component={Account} />
       <PrivateRoute path="/test" component={Test} />
@@ -63,7 +63,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-function PublicRoute({ component: Component, ...rest }) {
+function AuthRoute({ component: Component, ...rest }) {
   const [isAuth, setAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
