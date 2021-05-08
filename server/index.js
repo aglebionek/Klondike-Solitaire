@@ -20,6 +20,13 @@ app.get("/", (req, res) => {
   res.send("Some shit");
 });
 
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 app.use("/example", exampleRoute);
 app.use("/rooms", roomsRoute);
 app.use("/auth", authRoute);

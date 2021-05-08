@@ -2,7 +2,7 @@
   "db": {
     "host": "localhost",
     "user": "root",
-    "password": "Vrataski9029!",
-    "database": "world"
+    "password": "",
+    "database": "Statystyki"
   }
 }
