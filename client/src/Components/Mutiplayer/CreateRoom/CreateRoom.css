@@ -1,0 +1,54 @@
+.lobby__container{
+  width: 100vw;
+  height: 90vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.lobby__inner-container{
+  width: 320px;
+}
+
+/* BEFORE CREATION PART */
+.lobby__create-room-form, .lobby__create-room-form > div{
+  display: flex;
+  flex-direction: column;
+}
+
+.lobby__create-room-form > div{
+  margin: 10px 0;
+}
+
+.lobby__create-room-form > button{
+  margin: 15px 0;
+}
+
+/* AFTER CREATION PART */ 
+.lobby__created-data{
+  display: flex;
+  align-self: flex-start;
+}
+
+.lobby__created-data p:first-child{
+  width: 200px;
+}
+
+.lobby__created-data p:last-child{
+  flex: 1;
+}
+
+.lobby__created-data button{
+  width: 100%;
+}
+
+.lobby__created-data__btns{
+  display: flex;
+  margin-top: 20px;
+}
+
+.lobby__created-data__btns button{
+  margin-right: 10px;
+}
