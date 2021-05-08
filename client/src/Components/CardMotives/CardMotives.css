@@ -7,11 +7,13 @@ The 'card__mainsuit' span displays big suits in the middle;
 To create a card, add suit and value to the 'card' div. For example, to create King of Spades, the 'card' div should also have
 'vK' class and 'spades' class (<div className="card vK spades">);
 A 'card' div without any additional classes will appear as an empty frame;
+To display the back of a card, add 'back' class to the 'card' div (<div className="card back">);
 Available suit classes: 'spades', 'hearts', 'diamonds', 'clubs';
 Available value classes: 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10', 'vJ', 'vQ', 'vK', 'vA';
 To apply cyberpunk look to the cards, add 'cyberpunk' class to the 'card' div (<div className="card vK spades cyberpunk">);
 Order of applying the classes shouldn't matter.
 To change card size, change 'font-size' in .card;
+
 
 If there are any problems with the way cards display, contact @aglebionek.
 */
@@ -32,7 +34,7 @@ If there are any problems with the way cards display, contact @aglebionek.
     font-family: Tahoma;
     color: var(--color);
     box-shadow: var(--box-shadow);
-    background-color: var(--bg-color);
+    background: var(--bg-color);
 }
 
 
@@ -101,8 +103,6 @@ If there are any problems with the way cards display, contact @aglebionek.
     margin-top: -0.6em;
 }
 
-
-
 /*scale down value for 10 to fit*/
 .card.v10 > .card__value::before, .card.v10 > .card__value::after {
     letter-spacing: -.08em;
@@ -126,8 +126,8 @@ If there are any problems with the way cards display, contact @aglebionek.
 }
 
 .card.diamonds, .card.hearts {
-    border: 0.03em solid red;
-    --color: red;
+    border: 0.03em solid lightblue;
+    --color: lightblue;
     --box-shadow: none;
     --text-shadow: none;
 }
@@ -153,7 +153,13 @@ If there are any problems with the way cards display, contact @aglebionek.
     --text-shadow: 0px 0px 0.2em rgba(57, 255, 20, 1);
 }
 
-
+/*card backs*/
+.card.back {
+    --bg-color: radial-gradient(lightblue 20%, black 60%);
+}
+.card.back.cyberpunk {
+    --bg-color: linear-gradient(180deg, lightblue 0%, black 20%, black 30%, lightblue 50%, black 70%, black 80%, lightblue 100%);
+}
 
 /*---------------------------------------VALUES---------------------------------------*/
 /*display value*/
