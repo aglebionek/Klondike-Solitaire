@@ -1,0 +1,1 @@
+SELECT username, registration_date, country, icon_id, password FROM players where ?;

@@ -3,6 +3,7 @@ const exampleRoute = require("./api/example/exampleRoute");
 const roomsRoute = require("./api/rooms/roomsRoute");
 const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
+const accountRoute = require("./api/account/accountRoute");
 const authRoute = require("./api/auth/authRoute");
 
 const PORT = process.env.PORT || 3001;
@@ -24,5 +25,6 @@ app.use("/rooms", roomsRoute);
 app.use("/auth", authRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
+app.use("/account", accountRoute);
 
 app.listen(PORT);
