@@ -126,8 +126,8 @@ If there are any problems with the way cards display, contact @aglebionek.
 }
 
 .card.diamonds, .card.hearts {
-    border: 0.03em solid lightblue;
-    --color: lightblue;
+    border: 0.03em solid red;
+    --color: red;
     --box-shadow: none;
     --text-shadow: none;
 }
