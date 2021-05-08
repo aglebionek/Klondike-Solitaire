@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./AudioSlider.module.css";
 
-const Index = () => {
-  const [value, setValue] = useState(20);
+const Index = ({ volume, setVolume }) => {
   return (
     <div className={styles.container}>
       <input
@@ -10,13 +9,13 @@ const Index = () => {
         min="0"
         max="100"
         className={styles.slider}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={volume}
+        onChange={(e) => setVolume(e.target.value)}
         style={{
-          background: `linear-gradient(90deg,#00921c ${value}%,rgb(214, 214, 214) ${value}%)`,
+          background: `linear-gradient(90deg,#00921c ${volume}%,rgb(214, 214, 214) ${volume}%)`,
         }}
       />
-      <p className={styles.label}>{value}%</p>
+      <p className={styles.label}>{volume}%</p>
     </div>
   );
 };
