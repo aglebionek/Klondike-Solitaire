@@ -129,7 +129,7 @@ body, ::after, ::before{
 }
 .modal-content{
     width: 600px;
-    height: 400px;
+    height: 550px;
     background-color: white;
     border-radius: 4px;
 }
@@ -139,7 +139,7 @@ body, ::after, ::before{
     justify-content: center;
     padding: 20px;
 }
-.modal-nick,.modal-email,.modal-country{
+.modal-nick,.modal-email,.modal-country,.modal-avatar{
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -165,3 +165,16 @@ body, ::after, ::before{
 .modal-button-save, .modal-button-cancel{
     margin: 10px;
 }
+
+.red-star{
+    color:red;
+    padding-left: 5px;
+    font-size:medium;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    font-size: 3.5rem;
+    color: #00921c;
+  }

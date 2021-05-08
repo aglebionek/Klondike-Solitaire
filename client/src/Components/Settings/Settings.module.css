@@ -1,32 +1,65 @@
-/* *,
-*::before,
-*::after {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
-} */
-
 .content {
   display: flex;
-  height: 100%;
 }
 
 .container {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.menuButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 50px;
+  background-color: #00921c;
+  border-radius: 4px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  margin-top: 35px;
+  margin-left: 20px;
+}
+
+.menuButton:hover,
+.menuButton:active,
+.menuButton:link,
+.menuButton:visited {
+  color: white;
+}
+
+.menuButton:hover {
+  background-color: #008319;
+}
+
+.menuButton:link {
+  text-decoration: none;
+}
+
 .title {
-  margin-top: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+.contentWrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .itemsContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 350px;
   margin-left: 10px;
   width: 600px;
   height: 100%;
@@ -53,8 +86,8 @@
 }
 
 .selection {
-  flex: 1;
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -69,9 +102,14 @@
   align-items: center;
   font-size: 3.5rem;
   color: #00921c;
+  cursor: pointer;
 }
 
 .card {
+  max-height: 220px;
+  width: auto;
+  max-width: 300px;
+  object-fit: cover;
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 4px;
 }
@@ -81,7 +119,28 @@
 
 .arrowRight {
   margin-left: 30px;
+}
+
+.saveCardButton {
+  border: none;
+  width: 160px;
+  height: 50px;
+  background-color: #00921c;
+  border-radius: 4px;
+  color: white;
   cursor: pointer;
+  margin-top: 35px;
+  transition: background-color 0.2;
+}
+
+.saveCardButton:hover {
+  background-color: #008319;
+}
+
+.saveButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
 .saveButton {
@@ -93,4 +152,18 @@
   color: white;
   cursor: pointer;
   margin-top: 35px;
+  transition: background-color 0.2;
+}
+
+.saveButton:hover {
+  background-color: #008319;
+}
+
+.disabledButton {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+.disabledButton:hover {
+  background-color: grey;
 }
