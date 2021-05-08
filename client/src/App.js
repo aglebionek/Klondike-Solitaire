@@ -9,6 +9,8 @@ import Settings from "./Components/Settings";
 import GlobalStats from "./Components/GlobalStats/Stats";
 import GameView from "./Components/GameView/GameView";
 import LobbyMultiplayer from "./Components/Mutiplayer/LobbyMultiplayer";
+import CreateRoom from './Components/Mutiplayer/CreateRoom/CreateRoom';
+import JoinRoom from './Components/Mutiplayer/JoinRoom/JoinRoom';
 import Account from "./Components/Account/Account";
 import Test from "./Components/Test";
 
@@ -24,6 +26,8 @@ function App() {
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
       <PrivateRoute path="/account" component={Account} />
       <PrivateRoute path="/test" component={Test} />
+      <PrivateRoute path="/multiplayer/game-lobby" component={JoinRoom} />
+      <PrivateRoute path="/multiplayer/create-room" component={CreateRoom} />
     </Switch>
   );
 }
