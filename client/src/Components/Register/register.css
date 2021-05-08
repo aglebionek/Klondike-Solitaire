@@ -1,21 +1,22 @@
-.login__container {
+.register__container {
   position: relative;
   margin: 0;
   padding: 0;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.login__container__menu-button {
+.register__container__menu-button {
   position: absolute;
   top: 1em;
   left: 1em;
 }
 
-.login__container__menu-button__link {
+.register__container__menu-button__link {
   display: flex;
   padding: 1em 3em;
   color: black;
@@ -23,14 +24,14 @@
   background-color: grey;
 }
 
-.login__container__header {
+.register__container__header {
   margin-bottom: 1em;
   text-align: center;
   color: darkgrey;
   font-size: 40px;
 }
 
-.login__container__creds__field {
+.register__container__creds__field {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,20 +50,18 @@ input {
   display: block;
   margin-right: auto;
   margin-left: auto;
-  margin-bottom: 10px;
-  width: 650px;
 }
 
-.login__container__buttons {
+.register__container__buttons {
   display: flex;
   justify-content: space-between;
 }
 
-.login__container__buttons__btn {
+.register__container__buttons__btn {
   background-color: darkgrey;
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 15px 20px;
   text-align: center;
   margin-top: 30px;
   margin-bottom: 10px;
@@ -72,6 +71,6 @@ input {
   cursor: pointer;
 }
 
-.login__container__buttons__btn--link {
+.register__container__buttons__btn--link {
   text-decoration: none;
 }
