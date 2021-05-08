@@ -1,0 +1,89 @@
+body {
+  height: 100vh;
+}
+
+h3.klondike_title {
+  display: inline-block;
+  font-size: 7vh;
+  font-weight: normal;
+  margin: 0;
+  position: absolute;
+  top: 4vh;
+}
+
+header {
+  height: 15vh;
+  margin-left: 50px;
+  font-size: 50px;
+  font-style: bold;
+}
+.menu_top {
+  align-self: center;
+  width: 100%;
+  border-bottom: solid black;
+}
+div .points_time {
+  position: absolute;
+  font-size: 2vh;
+  top: 3vh;
+  right: 4vw;
+  display: inline-block;
+}
+.karty_container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 0vw;
+  margin-top: 1vh;
+  margin-left: 25vw;
+}
+.karty_top {
+  margin-bottom: 3vh;
+  display: flex;
+  justify-content: center;
+}
+.karty_bottom {
+  display: flex;
+  justify-content: center;
+}
+#druga_top {
+  margin-right: 14.5vw;
+}
+#ostatnia_karta {
+  margin-right: 0;
+}
+img {
+  width: 8.5vw;
+  border: solid black 1px;
+  margin-right: 3vw;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+div.bottom_section {
+  position: absolute;
+  margin: 4vh;
+  margin-top: 6vh;
+  margin-bottom: 2vh;
+  width: 94vw;
+  bottom: 5px;
+}
+div button.undo_button {
+  padding: 5px;
+  font-size: 1vw;
+  border: solid black 1px;
+  background-color: rgb(240, 235, 235);
+}
+
+.info_section {
+  background-color: rgb(240, 235, 235);
+  margin-top: 2vh;
+  padding-left: 10px;
+  border: solid black 1px;
+}
+
+.info_section p {
+  display: inline-block;
+
+  font-size: 1vw;
+  width: 30vw;
+}
