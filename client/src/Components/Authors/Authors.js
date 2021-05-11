@@ -10,7 +10,7 @@ function Authors() {
 
   return (
     <section className="authors__container">
-      <a class="authors__back" href="./..">
+      <a className="authors__back" href="./..">
         &#129044;
       </a>
       <h1>Autorzy</h1>

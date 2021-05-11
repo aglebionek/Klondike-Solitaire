@@ -16,7 +16,7 @@ function MainMenu() {
                         <button onClick={() => history.push('settings')}>USTAWIENIA</button>
                         <button onClick={() => history.push('global-stats')}>STATYSTYKI</button>
                         <button onClick={() => history.push('authors')}>AUTORZY</button>
-                        <button>O GRZE</button> 
+                        <button onClick={() => history.push('game-info')}>O GRZE</button> 
                         <button onClick={() => history.push('account')}>KONTO</button> 
                     </div>
                 </div>
