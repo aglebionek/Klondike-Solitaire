@@ -10,6 +10,9 @@ function Authors() {
 
   return (
     <section className="authors__container">
+      <a class="authors__back" href="./..">
+        &#129044;
+      </a>
       <h1>Autorzy</h1>
       <article className="authors__list">
         {list.people.map((person, index) => (

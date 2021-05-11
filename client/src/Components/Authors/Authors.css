@@ -11,7 +11,7 @@ h1, .authors__list{
 }
 
 .authors__author{
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 .authors__author p{
@@ -19,5 +19,20 @@ h1, .authors__list{
 }
 
 .authors__author p:first-child{
-  font-size: 0.7rem;
+  font-size: 0.9rem;
+}
+
+.authors__author p:last-child{
+  font-size: 1.2rem;
+}
+
+.authors__back{
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  text-decoration: none;
+  font-size: 2rem;
+  padding: 10px;
+  color: black;
 }
