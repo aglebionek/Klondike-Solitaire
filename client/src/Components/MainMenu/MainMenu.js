@@ -15,7 +15,7 @@ function MainMenu() {
                     <div className="dropdown__content">
                         <button onClick={() => history.push('settings')}>USTAWIENIA</button>
                         <button onClick={() => history.push('global-stats')}>STATYSTYKI</button>
-                        <button>AUTORZY</button>
+                        <button onClick={() => history.push('authors')}>AUTORZY</button>
                         <button>O GRZE</button> 
                         <button onClick={() => history.push('account')}>KONTO</button> 
                     </div>

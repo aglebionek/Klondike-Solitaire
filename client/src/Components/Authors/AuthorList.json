@@ -1,0 +1,80 @@
+{
+  "people": [
+    {
+      "name": "Rafał Kędziora",
+      "role": "Kierownik główny"
+    },
+    {
+      "name": "Gabriela Stefaniak",
+      "role": "Kierownik zespołu testowego"
+    },
+    {
+      "name": "Julia Popadowska",
+      "role": "Kierownik zespołu developerskiego"
+    },
+    {
+      "name": "Mateusz Gajo",
+      "role": "Developer"
+    },
+    {
+      "name": "Aleksander Glebionek",
+      "role": "Developer"
+    },
+    {
+      "name": "Damian Czubak",
+      "role": "Developer"
+    },
+    {
+      "name": "Dawid Wijata",
+      "role": "Developer"
+    },
+    {
+      "name": "Konrad Jażdżyk",
+      "role": "Developer"
+    },
+    {
+      "name": "Piotr Brzozowski",
+      "role": "Developer"
+    },
+    {
+      "name": "Dominik Glegoła",
+      "role": "Developer"
+    },
+    {
+      "name": "Piotr Pośpiech",
+      "role": "Developer"
+    },
+    {
+      "name": "Damian Bugaj",
+      "role": "Tester"
+    },
+    {
+      "name": "Gabriel Seroczyński",
+      "role": "Tester"
+    },
+    {
+      "name": "Jakub Podsiadły",
+      "role": "Tester"
+    },
+    {
+      "name": "Piotr Biazik",
+      "role": "Tester"
+    },
+    {
+      "name": "Robert Ciołek",
+      "role": "Tester"
+    },
+    {
+      "name": "Paulina Gayny",
+      "role": "Tester"
+    },
+    {
+      "name": "Paweł Tuzinowski",
+      "role": "Tester"
+    },
+    {
+      "name": "Piotr Czajkowski",
+      "role": "Tester"
+    }
+  ]
+}

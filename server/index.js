@@ -99,5 +99,3 @@ app.use("/auth", authRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
 app.use("/account", accountRoute);
-
-app.listen(PORT);
