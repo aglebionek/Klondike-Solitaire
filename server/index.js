@@ -12,8 +12,8 @@ const {
   userLeave,
   getRoomUsers,
   modifyRoom,
-  getAllUsers
-} = require('./utils/users');
+  getAllUsers,
+} = require("./utils/users");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
@@ -31,67 +31,54 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Some shit");
 });
 
-io.on('connection', socket => {
-  console.log('a user connected');
+io.on("connection", (socket) => {
+  console.log("a user connected");
 
-  socket.on('export-users', () => {
-    socket.emit('pass-users', getAllUsers());
+  socket.on("export-users", () => {
+    socket.emit("pass-users", getAllUsers());
   });
 
-  socket.on('export-room', () => {
+  socket.on("export-room", () => {
     const user = getCurrentUser(socket.id);
-    
-    if(user){
-      socket.emit('pass-room', { 
+
+    if (user) {
+      socket.emit("pass-room", {
         room: user.room,
-        users: getRoomUsers(user.room)
+        users: getRoomUsers(user.room),
       });
     }
   });
 
-  socket.on('lobby-modify', ({ room, newName }) => {
+  socket.on("lobby-modify", ({ room, newName }) => {
     modifyRoom(room, newName);
   });
 
-  socket.on('lobby-join', ({ player, room }) => {
+  socket.on("lobby-join", ({ player, room }) => {
     const user = userJoin(socket.id, player, room);
 
-    console.log('a user joined the room');
+    console.log("a user joined the room");
     socket.join(user.room);
-    socket.emit('export users');
+    socket.emit("export users");
   });
 
-  socket.on('lobby-leave', () => {
-    console.log('a user left the room');
+  socket.on("lobby-leave", () => {
+    console.log("a user left the room");
     userLeave(socket.id);
-    socket.emit('export users');
+    socket.emit("export users");
   });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
     userLeave(socket.id);
-    socket.emit('export users');
+    socket.emit("export users");
   });
-})
-
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+});
 
 app.use("/example", exampleRoute);
 app.use("/rooms", roomsRoute);
@@ -99,5 +86,3 @@ app.use("/auth", authRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
 app.use("/account", accountRoute);
-
-app.listen(PORT);
