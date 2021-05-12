@@ -6,7 +6,7 @@
   padding: 50px 0;
 }
 
-h1.authors__list{
+h1.authors__headline, .authors__list{
   text-align: center;
 }
 

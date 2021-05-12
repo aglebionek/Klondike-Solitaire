@@ -13,7 +13,7 @@ function Authors() {
       <a className="authors__back" href="./..">
         &#129044;
       </a>
-      <h1>Autorzy</h1>
+      <h1 className="authors__headline">Autorzy</h1>
       <article className="authors__list">
         {list.people.map((person, index) => (
           <div key={index} className="authors__author">
