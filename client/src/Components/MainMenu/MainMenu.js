@@ -34,6 +34,10 @@ function MainMenu() {
                     <button onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
                 </div>
             </div>
+
+            <div className="road">
+                
+            </div>
         </div>        
     );
 }
