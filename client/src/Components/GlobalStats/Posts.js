@@ -5,6 +5,7 @@ const Posts = ({statsList, loading}) => {
         return <h2>Loading...</h2>;
     }
 
+
     return <table width="100%">
         <tbody>
         {statsList.map(statsList => (

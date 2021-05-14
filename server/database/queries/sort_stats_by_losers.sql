@@ -1,0 +1,1 @@
+select * from statstable ORDER BY Przegrane;

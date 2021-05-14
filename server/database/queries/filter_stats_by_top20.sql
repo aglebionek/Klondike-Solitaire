@@ -1,0 +1,1 @@
+select * from statstable where Ranking <= 20 ORDER BY Ranking;
