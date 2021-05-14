@@ -9,6 +9,7 @@ import GameView from "./Components/GameView/GameView";
 import LobbyMultiplayer from "./Components/Mutiplayer/LobbyMultiplayer";
 import Account from "./Components/Account/Account";
 import Test from "./Components/Test";
+import Game1 from "./Components/App";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
       <Route path="/multiplayer" component={LobbyMultiplayer} />
       <Route path="/account" component={Account} />
       <Route path="/test" component={Test} />
-    </Switch>
+      <Route path="/aa" component={Game1} />
+    </Switch> 
   );
 }
 

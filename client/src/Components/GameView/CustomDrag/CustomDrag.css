@@ -1,0 +1,8 @@
+.game-view__dragging-container {
+  position: relative;
+  height: 110px;
+}
+
+.game-view__dragging-container__item {
+  position: absolute;
+}

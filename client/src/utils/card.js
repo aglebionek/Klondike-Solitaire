@@ -1,5 +1,5 @@
 export const processRank = function (rank) {
-  if (rank == "K" || rank == "Q" || rank == "J" || rank == "A") {
+  if (rank === "K" || rank === "Q" || rank === "J" || rank === "A") {
     switch (rank) {
       case "K":
         return 13;
@@ -16,10 +16,9 @@ export const processRank = function (rank) {
 };
 
 export const isDroppable = function (dropTarget, selectedCard) {
-  console.log(dropTarget.rank);
-  console.log(selectedCard.rank);
-  if (processRank(dropTarget.rank) - processRank(selectedCard.rank) == 1) {
-    if (dropTarget.color != selectedCard.color) {
+  if (processRank(selectedCard.rank) - processRank(dropTarget.rank) === 1) {
+    console.log("rang jest git");
+    if (dropTarget.color !== selectedCard.color) {
       return true;
     } else {
       return false;
@@ -36,10 +35,10 @@ export const isMovable = function (card, deck) {
   var currRank = processRank(card.rank);
   var currColor = card.color;
   for (var index = 1; index < ranks.length; index++) {
-    if (currRank - ranks[index] != 1) {
+    if (currRank - ranks[index] !== 1) {
       return false;
     }
-    if (currColor == colors[index]) {
+    if (currColor === colors[index]) {
       return false;
     }
     currColor = colors[index];
@@ -49,12 +48,12 @@ export const isMovable = function (card, deck) {
 };
 
 export const check4Stack = function (foundation, card) {
-  if (foundation == "" && card.rank == "A") {
+  if (foundation === "" && card.rank === "A") {
     return true;
   }
   if (
-    foundation.suit == card.suit &&
-    processRank(card.rank) - processRank(foundation.rank) == 1
+    foundation.suit === card.suit &&
+    processRank(card.rank) - processRank(foundation.rank) === 1
   ) {
     return true;
   } else {
