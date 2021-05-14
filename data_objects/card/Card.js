@@ -1,6 +1,7 @@
 export default class Card {
   #id;
   #isVisible;
+  #beenMoved;
   static RANKS_IN_SUITE = 13;
 
   constructor(id) {
@@ -10,6 +11,7 @@ export default class Card {
 
     this.#id = id;
     this.#isVisible = true;
+    this.#beenMoved = false;
   }
 
   // GETTERS
@@ -61,6 +63,10 @@ export default class Card {
     return (this.suite.charAt(0) + this.rank.charAt(0)).toUpperCase();
   }
 
+  get move() {
+    return this.#beenMoved;
+  }
+
   // PRIVATE METHODS
 
   #isOppositeColorTo = (card) => {
@@ -88,5 +94,9 @@ export default class Card {
 
   toggleVisiblity() {
     this.#isVisible = !this.#isVisible;
+  }
+
+  hasBeenMoved() {
+    this.#beenMoved = true;
   }
 }
