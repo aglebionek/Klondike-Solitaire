@@ -1,3 +1,4 @@
+import GameView from "../../client/src/Components/GameView/GameView.js";
 import Card from "./../card/Card.js";
 
 export default class Board {
@@ -6,6 +7,10 @@ export default class Board {
 
   resultStacks = new Array(4);
   gameStacks = new Array(7);
+
+  moves = 0;
+  points = 0;
+  
 
   startDistribution;
 
@@ -75,15 +80,18 @@ export default class Board {
     if(this.deck.length > 0){
       const cardFromTopOfDeck = this.deck.pop();
       cardFromTopOfDeck.toggleVisibility();
-
+      this.moves++;
       this.revealedCardStack.push(cardFromTopOfDeck);
     }
     else{
+      this.moves++;
+      this.points=this.points - 50;
       this.#moveAllCardsFromRevealedToHidden();
     }
   }
 
   moveFromRevealedToGameStack(stackNumber) {
+    
     if(this.gameStacks[stackNumber].length === 0){
       const peekedCard = this.#peek(this.deck);
 
@@ -91,6 +99,10 @@ export default class Board {
         const poppedCard = this.deck.pop();
 
         this.gameStacks[stackNumber].push(poppedCard);
+
+        this.points=this.points + 10;
+        this.moves=this.moves++;
+        this.poppedCard.hasBeenMoved();
       }
     }
     else{
@@ -101,6 +113,10 @@ export default class Board {
         const poppedCardToMatch = this.gameStacks[stackNumber].pop();
 
         this.gameStacks[stackNumber].push(poppedCardToMatch);
+
+        this.points=this.points + 10;
+        this.moves=this.moves++;
+        this.poppedCardToMatch.hasBeenMoved();
       }
     }
   }
@@ -118,8 +134,18 @@ export default class Board {
       if(cardFromSourceStack.rank === 'K'){
         let startingIndex = sourceStackCopy.length - movingCardsAmount - 1;
         let cardsToMove = this.gameStacks[sourceStackIndex].splice(startingIndex, movingCardsAmount);
-
+        
         this.gameStacks[sourceStackIndex].push(...cardsToMove);
+
+        if(cardFromSourceStack.move === false)
+        {
+        this.moves++;
+        this.points = this.points + 10;
+        this.cardFromSourceStack.hasBeenMoved();
+        }
+        else{
+          this.moves++;
+        }
       }
     }
     else{
@@ -131,6 +157,16 @@ export default class Board {
         let cardsToMove = this.gameStacks[sourceStackIndex].splice(startingIndex, movingCardsAmount);
 
         this.gameStacks[sourceStackIndex].push(...cardsToMove);
+
+        if(cardFromSourceStack.move === false)
+        {
+        this.moves++;
+        this.points = this.points + 10;
+        this.cardFromSourceStack.hasBeenMoved();
+        }
+        else{
+          this.moves++;
+        }
       }
     }
   }
@@ -143,6 +179,8 @@ export default class Board {
       const cardPoppedFromRevealed = this.revealedCardStack.pop();
 
       this.resultStacks[targetStackIndex].push(cardPoppedFromRevealed);
+      this.points = this.points + 10;
+      this.moves++;
     }
   }
 }
