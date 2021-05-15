@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import Posts from "./Posts";
 import "./Stats.css";
 import axios from 'axios';
+import _ from 'lodash';
 
 
 function GlobalStats() {
     const [statsList, setStatsList] = useState([]);
+    const [allStatsList, setAllStatsList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage] = useState(10);
+
+    const userID = 5;
 
     const [pageNumberLimit, setPageNumberLimit] = useState(5);
     const [maxPageNumberLimit, setPageMaxNumberLimit] = useState(5);
@@ -21,6 +25,7 @@ function GlobalStats() {
               const { data } = resp;
               resp.className = "red"
               setStatsList(data);
+              setAllStatsList(data);
               data.className="red";
               setLoading(false);
             });
@@ -56,11 +61,6 @@ function GlobalStats() {
       }
     });
       
-    
-  
-  
-   
-
   const handleNextBtn = () => {
     setCurrentPage(currentPage + 1);
     
@@ -93,155 +93,107 @@ function GlobalStats() {
 
   //sortowanie po nazwie rosnąco
   const sortByName = () => {
-
-    axios.get("http://localhost:3000/stats/sortStatsByName").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+    setStatsList(_.orderBy(statsList, 'Nazwa', 'asc'));
+  };
 
   //sortowanie po nazwie malejąco
   const sortByNameDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Nazwa', 'desc'));
+  };
 
-    axios.get("http://localhost:3000/stats/sortStatsByNameDesc").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
-
-    ////sortowanie po rankingu rosnąco
-    const sortByRank = () => {
-
-    axios.get("http://localhost:3000/stats/sortStatsByRank").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po rankingu rosnąco
+  const sortByRank = () => {
+    setStatsList(_.orderBy(statsList, 'Ranking', 'asc'));
+  };
 
 
-    ////sortowanie po rankingu malejąco
-     const sortByRankDesc = () => {
-
-     axios.get("http://localhost:3000/stats/sortStatsByRankDesc").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po rankingu malejąco
+  const sortByRankDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Ranking', 'desc'));
+  };
     
 
-      //sortowanie po wygranych rosnąco
-      const sortByWins = () => {
-
-     axios.get("http://localhost:3000/stats/sortStatsByWins").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po wygranych rosnąco
+  const sortByWins = () => {
+    setStatsList(_.orderBy(statsList, 'Wygrane', 'asc'));
+  };
 
 
-      //sortowanie po wygranych malejąco
-      const sortByWinsDesc = () => {
-
-     axios.get("http://localhost:3000/stats/sortStatsByWinsDesc").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po wygranych malejąco
+  const sortByWinsDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Wygrane', 'desc'));
+  };
 
 
-    //sortowanie po remisie rosnąco
-    const sortByDraw = () => {
-
-     axios.get("http://localhost:3000/stats/sortStatsByDraw").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po remisie rosnąco
+  const sortByDraw = () => {
+    setStatsList(_.orderBy(statsList, 'Remisy', 'asc'));
+  };
 
 
-    //sortowanie po remisie malejąco
-    const sortByDrawDesc = () => {
-
-     axios.get("http://localhost:3000/stats/sortStatsByDrawDesc").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po remisie malejąco
+  const sortByDrawDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Remisy', 'desc'));
+  };
 
 
-    //sortowanie po przegranych rosnąco
-    const sortByLosers = () => {
-
-     axios.get("http://localhost:3000/stats/sortStatsByLosers").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po przegranych rosnąco
+  const sortByLosers = () => {
+    setStatsList(_.orderBy(statsList, 'Przegrane', 'asc'));
+  };
 
 
-    //sortowanie po przegranych malejąco
-    const sortByLosersDesc = () => {
-
-     axios.get("http://localhost:3000/stats/sortStatsByLosersDesc").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-            });
-          };
+  //sortowanie po przegranych malejąco
+  const sortByLosersDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Przegrane', 'desc'));
+  };
 
 
-      //Pokaż wszystkie
-      const filterByAll = () => {
-
-     axios.get("http://localhost:3000/stats/filterStatsByAll").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-              setCurrentPage(1);
-            });
-          };
+  //Pokaż wszystkie
+  const filterByAll = () => {
+    setCurrentPage(1);
+    setStatsList(allStatsList);
+  };
 
 
-      //Pokaż top 10 najepszych graczy
-       const filterByTop10 = () => {
+  //Pokaż top 10 najepszych graczy
+  const filterByTop10 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 10;
+    })
 
-     axios.get("http://localhost:3000/stats/filterStatsByTop10").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-              setCurrentPage(1);
-            });
-          };
-
-
-      //pokaż top 20 najlepszych 
-      const filterByTop20 = () => {
-
-     axios.get("http://localhost:3000/stats/filterStatsByTop20").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-              setCurrentPage(1);
-            });
-          };
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
+    
+  //pokaż top 20 najlepszych 
+  const filterByTop20 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 20;
+    })
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
 
 
-      //pokaż top30 najlepszych
-      const filterByTop30 = () => {
+  //pokaż top30 najlepszych
+  const filterByTop30 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 30;
+    })
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
 
-     axios.get("http://localhost:3000/stats/filterStatsByTop30").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-              setCurrentPage(1);
-            });
-          };
 
-
-      //pokaż top 50 najlepszych
-      const filterByTop50 = () => {
-
-     axios.get("http://localhost:3000/stats/filterStatsByTop50").then((resp) => {
-              const { data } = resp;
-              setStatsList(data);
-              setCurrentPage(1);
-            });
-          };
+  //pokaż top 50 najlepszych
+  const filterByTop50 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 50;
+    })
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
 
 
   return (
@@ -262,16 +214,28 @@ function GlobalStats() {
 		    <thead>
 		      <tr id="header">
 		        <td width="40%" align="left">
-            <div class ="inline">Gracz</div> <div class ="inline"><a onClick={sortByName} class="headerSortUp-by-name"></a><a onClick={sortByNameDesc} class="headerSortDown-by-name"></a></div>
+            <div class ="inline">
+              Gracz
+            </div> 
+            <div class ="inline">
+              <a onClick={sortByName} class="headerSortUp-by-name"></a>
+              <a onClick={sortByNameDesc} class="headerSortDown-by-name"></a>
+            </div>
 		        </td>
 		        <td width="30%" align="center">
-              <div class="inline">Ranking</div><div class="inline"> <a onClick={sortByRank} class="headerSortUp-by-rank"></a><a onClick={sortByRankDesc} class="headerSortDown-by-rank"></a></div>
+              <div class="inline">
+                Ranking
+              </div>
+              <div class="inline"> 
+                <a onClick={sortByRank} class="headerSortUp-by-rank"></a>
+                <a onClick={sortByRankDesc} class="headerSortDown-by-rank"></a>
+              </div>
 		        </td>
 		        <td width="30%" align="center" id="header">
             <div class="inline-with-margin"> 
-            <div class="wdl">
-              W 
-            </div>
+              <div class="wdl">
+                W 
+              </div>
               <a onClick={sortByWins} class="headerSortUp-by-WDL"></a>
               <a onClick={sortByWinsDesc} class="headerSortDown-by-WDL"></a>
             </div>
@@ -283,9 +247,9 @@ function GlobalStats() {
               <a onClick={sortByDrawDesc} class="headerSortDown-by-WDL"></a>
             </div>
             <div class="inline-with-margin"> 
-            <div class="wdl">
-              /L 
-            </div>
+              <div class="wdl">
+                /L 
+              </div>
               <a onClick={sortByLosers} class="headerSortUp-by-WDL"></a>
               <a onClick={sortByLosersDesc} class="headerSortDown-by-WDL"></a>
             </div>
@@ -293,7 +257,7 @@ function GlobalStats() {
           </tr>
         </thead>
       </table>
-      <Posts statsList={currentPosts} loading={loading}/>
+      <Posts statsList={currentPosts} loading={loading} userID={userID}/>
       <ul className="pageNumbers">
         <li>
           <button 

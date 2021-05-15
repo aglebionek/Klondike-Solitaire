@@ -1,1 +1,0 @@
-select * from statstable where Ranking <= 50 ORDER BY Ranking;
