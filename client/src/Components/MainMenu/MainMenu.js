@@ -1,6 +1,7 @@
 import React from "react";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
+import PlaySound from '../../PlaySound';
 
 function MainMenu() {
     const history = useHistory();
@@ -32,6 +33,7 @@ function MainMenu() {
                 <div className='main-elements__buttons'>
                     <button onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
                     <button onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
+                    <PlaySound></PlaySound>
                 </div>
             </div>
         </div>        
