@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import Posts from "./Posts";
 import "./Stats.css";
 import axios from 'axios';
+import _ from 'lodash';
 
 
 function GlobalStats() {
     const [statsList, setStatsList] = useState([]);
+    const [allStatsList, setAllStatsList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage] = useState(10);
+
+    const userID = 5;
 
     const [pageNumberLimit, setPageNumberLimit] = useState(5);
     const [maxPageNumberLimit, setPageMaxNumberLimit] = useState(5);
@@ -19,7 +23,10 @@ function GlobalStats() {
             setLoading(true);
             axios.get("http://localhost:3000/stats/getStats").then((resp) => {
               const { data } = resp;
+              resp.className = "red"
               setStatsList(data);
+              setAllStatsList(data);
+              data.className="red";
               setLoading(false);
             });
           }, []);
@@ -54,11 +61,6 @@ function GlobalStats() {
       }
     });
       
-    
-  
-  
-   
-
   const handleNextBtn = () => {
     setCurrentPage(currentPage + 1);
     
@@ -89,26 +91,173 @@ function GlobalStats() {
     pageDecrementBtn=<li onClick={handlePrevBtn}> &hellip; </li>
   }
 
+  //sortowanie po nazwie rosnąco
+  const sortByName = () => {
+    setStatsList(_.orderBy(statsList, 'Nazwa', 'asc'));
+  };
+
+  //sortowanie po nazwie malejąco
+  const sortByNameDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Nazwa', 'desc'));
+  };
+
+  //sortowanie po rankingu rosnąco
+  const sortByRank = () => {
+    setStatsList(_.orderBy(statsList, 'Ranking', 'asc'));
+  };
+
+
+  //sortowanie po rankingu malejąco
+  const sortByRankDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Ranking', 'desc'));
+  };
+    
+
+  //sortowanie po wygranych rosnąco
+  const sortByWins = () => {
+    setStatsList(_.orderBy(statsList, 'Wygrane', 'asc'));
+  };
+
+
+  //sortowanie po wygranych malejąco
+  const sortByWinsDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Wygrane', 'desc'));
+  };
+
+
+  //sortowanie po remisie rosnąco
+  const sortByDraw = () => {
+    setStatsList(_.orderBy(statsList, 'Remisy', 'asc'));
+  };
+
+
+  //sortowanie po remisie malejąco
+  const sortByDrawDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Remisy', 'desc'));
+  };
+
+
+  //sortowanie po przegranych rosnąco
+  const sortByLosers = () => {
+    setStatsList(_.orderBy(statsList, 'Przegrane', 'asc'));
+  };
+
+
+  //sortowanie po przegranych malejąco
+  const sortByLosersDesc = () => {
+    setStatsList(_.orderBy(statsList, 'Przegrane', 'desc'));
+  };
+
+
+  //Pokaż wszystkie
+  const filterByAll = () => {
+    setCurrentPage(1);
+    setStatsList(allStatsList);
+  };
+
+
+  //Pokaż top 10 najepszych graczy
+  const filterByTop10 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 10;
+    })
+
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
+    
+  //pokaż top 20 najlepszych 
+  const filterByTop20 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 20;
+    })
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
+
+
+  //pokaż top30 najlepszych
+  const filterByTop30 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 30;
+    })
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
+
+
+  //pokaż top 50 najlepszych
+  const filterByTop50 = () => {
+    setCurrentPage(1);
+    const filterList = _.filter(allStatsList, oneStat => {
+      return oneStat.Ranking <= 50;
+    })
+    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+  };
+
 
   return (
     <div className="App">
       <h1>Statystyki</h1>
+      {/* przyciski filtrowania */}
+      <div class="filter">
+        <a class="buttonfilter" onClick={filterByAll} >Pokaż wszystkie</a>
+        <a class="buttonfilter"  onClick={filterByTop10} >Top 10</a>
+        <a class="buttonfilter"  onClick={filterByTop20} >Top 20</a>
+        <a class="buttonfilter"  onClick={filterByTop30} >Top 30</a>
+        <a class="buttonfilter"  onClick={filterByTop50} >Top 50</a>
+      </div>
+      
+
+
 		  <table cellSpacing="0" cellPadding="0" border="0" style={{width: "100%"}}>
 		    <thead>
 		      <tr id="header">
 		        <td width="40%" align="left">
-		          Gracz
+            <div class ="inline">
+              Gracz
+            </div> 
+            <div class ="inline">
+              <a onClick={sortByName} class="headerSortUp-by-name"></a>
+              <a onClick={sortByNameDesc} class="headerSortDown-by-name"></a>
+            </div>
 		        </td>
 		        <td width="30%" align="center">
-              Ranking
+              <div class="inline">
+                Ranking
+              </div>
+              <div class="inline"> 
+                <a onClick={sortByRank} class="headerSortUp-by-rank"></a>
+                <a onClick={sortByRankDesc} class="headerSortDown-by-rank"></a>
+              </div>
 		        </td>
 		        <td width="30%" align="center" id="header">
-             	W/D/L
+            <div class="inline-with-margin"> 
+              <div class="wdl">
+                W 
+              </div>
+              <a onClick={sortByWins} class="headerSortUp-by-WDL"></a>
+              <a onClick={sortByWinsDesc} class="headerSortDown-by-WDL"></a>
+            </div>
+            <div class="inline-with-margin"> 
+              <div class="wdl">
+              /D 
+              </div>
+              <a onClick={sortByDraw} class="headerSortUp-by-WDL"></a>
+              <a onClick={sortByDrawDesc} class="headerSortDown-by-WDL"></a>
+            </div>
+            <div class="inline-with-margin"> 
+              <div class="wdl">
+                /L 
+              </div>
+              <a onClick={sortByLosers} class="headerSortUp-by-WDL"></a>
+              <a onClick={sortByLosersDesc} class="headerSortDown-by-WDL"></a>
+            </div>
 		        </td>
           </tr>
         </thead>
       </table>
-      <Posts statsList={currentPosts} loading={loading}/>
+      <Posts statsList={currentPosts} loading={loading} userID={userID}/>
       <ul className="pageNumbers">
         <li>
           <button 

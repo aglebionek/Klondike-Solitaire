@@ -4,6 +4,16 @@
     height:40px;
     
 }
+
+.inline-with-margin {
+    display: inline-block;
+    margin:8px;
+}
+
+.inline {
+    display: inline-block;
+}
+
 .avatar {
     width: 40px;
     height:40px;
@@ -64,7 +74,172 @@
     outline: none;
 }
 
-.pageNumbers li button:hover:not(.active) {
-    background-color: #ddd;
+
+.red {
+    background-color: red;
 }
 
+td a { 
+	display: block;
+	width: 100%;
+}
+
+
+.headerSortDown-by-name:after,
+.headerSortUp-by-name:after {
+  content: ' ';
+  position: relative;
+  left: 10px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-name:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-name:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-name,
+.headerSortUp-by-name {
+  padding-right: 10px;
+}
+
+.headerSortDown-by-rank:after,
+.headerSortUp-by-rank:after {
+  content: ' ';
+  position: relative;
+  left: 10px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-rank:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-rank:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-rank,
+.headerSortUp-by-rank {
+  padding-right: 10px;
+}
+
+
+
+.headerSortDown-by-WDL:after,
+.headerSortUp-by-WDL:after {
+  content: ' ';
+  position: relative;
+  left: 20px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-WDL:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-WDL:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-WDL,
+.headerSortUp-by-WDL {
+  padding-right: 10px;
+}
+
+.headerSortDown-by-d:after,
+.headerSortUp-by-d:after {
+  content: ' ';
+  position: relative;
+  left: 20px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-d:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-d:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-d,
+.headerSortUp-by-d {
+  padding-right: 10px;
+}
+
+.headerSortDown-by-l:after,
+.headerSortUp-by-l:after {
+  content: ' ';
+  position: relative;
+  left: 20px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-l:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-l:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-l,
+.headerSortUp-by-l {
+  padding-right: 10px;
+}
+
+.buttonfilter {
+  cursor: pointer;
+  position: relative;
+  left: 999px;
+  top:-50px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: solid 1px #20538D;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+  background: #4479BA;
+  color: #FFF;
+  padding: 8px 12px;
+  text-decoration: none;
+}
+
+
+
+
+.wdl {
+  position: relative;
+  top: 35px;
+}
+
+.filter a:active {
+  background-color: blue;
+  color:black;
+} 
+
+.filter a:hover:not(.active) {
+  background-color: blue;
+  color:black;
+}
