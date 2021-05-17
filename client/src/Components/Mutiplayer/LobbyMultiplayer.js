@@ -54,6 +54,9 @@ function LobbyMultiplayer() {
 
   return (
     <>
+      <a className="stats__back" href="./..">
+         &#129044;
+      </a>
       <div className="row">
         <div className="Multi">Tryb Wieloosobowy</div>
         <div className="ButtRoom">

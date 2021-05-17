@@ -198,14 +198,17 @@ function GlobalStats() {
 
   return (
     <div className="App">
+      <a className="stats__back" href="./..">
+         &#129044;
+      </a>
       <h1>Statystyki</h1>
       {/* przyciski filtrowania */}
-      <div class="filter">
-        <a class="buttonfilter" onClick={filterByAll} >Pokaż wszystkie</a>
-        <a class="buttonfilter"  onClick={filterByTop10} >Top 10</a>
-        <a class="buttonfilter"  onClick={filterByTop20} >Top 20</a>
-        <a class="buttonfilter"  onClick={filterByTop30} >Top 30</a>
-        <a class="buttonfilter"  onClick={filterByTop50} >Top 50</a>
+      <div className="filter">
+        <a className="buttonfilter" onClick={filterByAll} >Pokaż wszystkie</a>
+        <a className="buttonfilter"  onClick={filterByTop10} >Top 10</a>
+        <a className="buttonfilter"  onClick={filterByTop20} >Top 20</a>
+        <a className="buttonfilter"  onClick={filterByTop30} >Top 30</a>
+        <a className="buttonfilter"  onClick={filterByTop50} >Top 50</a>
       </div>
       
 
@@ -214,44 +217,44 @@ function GlobalStats() {
 		    <thead>
 		      <tr id="header">
 		        <td width="40%" align="left">
-            <div class ="inline">
+            <div className ="inline">
               Gracz
             </div> 
-            <div class ="inline">
-              <a onClick={sortByName} class="headerSortUp-by-name"></a>
-              <a onClick={sortByNameDesc} class="headerSortDown-by-name"></a>
+            <div className ="inline">
+              <a onClick={sortByName} className="headerSortUp-by-name"></a>
+              <a onClick={sortByNameDesc} className="headerSortDown-by-name"></a>
             </div>
 		        </td>
 		        <td width="30%" align="center">
-              <div class="inline">
+              <div className="inline">
                 Ranking
               </div>
-              <div class="inline"> 
-                <a onClick={sortByRank} class="headerSortUp-by-rank"></a>
-                <a onClick={sortByRankDesc} class="headerSortDown-by-rank"></a>
+              <div className="inline"> 
+                <a onClick={sortByRank} className="headerSortUp-by-rank"></a>
+                <a onClick={sortByRankDesc} className="headerSortDown-by-rank"></a>
               </div>
 		        </td>
 		        <td width="30%" align="center" id="header">
-            <div class="inline-with-margin"> 
-              <div class="wdl">
+            <div className="inline-with-margin"> 
+              <div className="wdl">
                 W 
               </div>
-              <a onClick={sortByWins} class="headerSortUp-by-WDL"></a>
-              <a onClick={sortByWinsDesc} class="headerSortDown-by-WDL"></a>
+              <a onClick={sortByWins} className="headerSortUp-by-WDL"></a>
+              <a onClick={sortByWinsDesc} className="headerSortDown-by-WDL"></a>
             </div>
-            <div class="inline-with-margin"> 
-              <div class="wdl">
+            <div className="inline-with-margin"> 
+              <div className="wdl">
               /D 
               </div>
-              <a onClick={sortByDraw} class="headerSortUp-by-WDL"></a>
-              <a onClick={sortByDrawDesc} class="headerSortDown-by-WDL"></a>
+              <a onClick={sortByDraw} className="headerSortUp-by-WDL"></a>
+              <a onClick={sortByDrawDesc} className="headerSortDown-by-WDL"></a>
             </div>
-            <div class="inline-with-margin"> 
-              <div class="wdl">
+            <div className="inline-with-margin"> 
+              <div className="wdl">
                 /L 
               </div>
-              <a onClick={sortByLosers} class="headerSortUp-by-WDL"></a>
-              <a onClick={sortByLosersDesc} class="headerSortDown-by-WDL"></a>
+              <a onClick={sortByLosers} className="headerSortUp-by-WDL"></a>
+              <a onClick={sortByLosersDesc} className="headerSortDown-by-WDL"></a>
             </div>
 		        </td>
           </tr>

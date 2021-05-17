@@ -1,9 +1,9 @@
 @keyframes rotateSpinner {
   from{
-    transform: rotate(0deg);
+    transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(0deg);
   }
   to{
-    transform: rotate(360deg);
+    transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(360deg);
   }
 }
 
@@ -13,11 +13,17 @@
   width: 50px;
   height: 50px;
 
+  position: absolute;
+  top: 0;
+  left: 0;
+
   border-radius: 50%;
   border-left: 10px grey solid;
   border-top: 10px grey solid;
   border-bottom: 10px grey solid;
   border-right: 10px transparent solid;
+
+  transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(0deg);
 
   animation: rotateSpinner .8s ease-in-out .1s infinite normal forwards;
 }
