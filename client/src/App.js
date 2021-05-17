@@ -12,6 +12,8 @@ import LobbyMultiplayer from "./Components/Mutiplayer/LobbyMultiplayer";
 import CreateRoom from "./Components/Mutiplayer/CreateRoom/CreateRoom";
 import JoinRoom from "./Components/Mutiplayer/JoinRoom/JoinRoom";
 import Account from "./Components/Account/Account";
+import Authors from "./Components/Authors/Authors";
+import AppInfo from "./Components/AppInfo/AppInfo";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
       <PrivateRoute path="/settings" component={Settings} />
       <PrivateRoute path="/global-stats" component={GlobalStats} />
       <Route path="/game-view" component={GameView} />
+      <Route path="/app-info" component={AppInfo} />
+      <Route path="/authors" component={Authors} />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
       <PrivateRoute path="/account" component={Account} />
       <PrivateRoute path="/multiplayer/game-lobby" component={JoinRoom} />
