@@ -40,7 +40,7 @@ function Register({ history }) {
     }
 
     if (password.length > 15) {
-      setPasswordError("Hasło musi nie może mieć więcej niż 15 znaków");
+      setPasswordError("Hasło nie może mieć więcej niż 15 znaków");
       isValid = false;
     }
 
