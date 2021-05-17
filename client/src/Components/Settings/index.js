@@ -11,7 +11,7 @@ const Settings = () => {
   const [temporaryCard, setTemporaryCard] = useState("card1");
   const [musicVolume, setMusicVolume] = useState(10);
   const [effectVolume, setEffectVolume] = useState(40);
-  const [isCardAnimation, setCardAnimation] = useState(true);
+  const [isCardAnimation  , setCardAnimation] = useState(true);
   const [loading, setLoading] = useState(true);
 
   const cards = ["card1", "card2"];
@@ -40,12 +40,13 @@ const Settings = () => {
   useEffect(() => {
     axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
       const { carset_id, volume, effect, card_animation } = data;
+      console.log("aaaA");
       setTemporaryCard("card" + carset_id);
       setMusicVolume(Number(volume));
       setEffectVolume(effect);
       setCardAnimation(Boolean(card_animation));
       setLoading(false);
-    });
+    }).catch(error =>console.log(error.response));
   }, []);
 
   const handleSubmit = (e) => {

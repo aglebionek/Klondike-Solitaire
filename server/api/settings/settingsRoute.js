@@ -60,7 +60,7 @@ router.get("/:userId", async (req, res) => {
     .toString();
 
   resp = await mysqlQuery(query, [userId]);
-  if (resp.length == 0) return resp.status(204);
+  if (resp.length == 0) return res.sendStatus(204);
   return res.status(200).json(resp[0]);
 });
 
