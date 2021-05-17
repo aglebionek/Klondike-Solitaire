@@ -1,8 +1,8 @@
 {
   "db": {
-    "host": "localhost",
-    "user": "root",
-    "password": "",
-    "database": "Statystyki"
+    "host": "sqlserver://klondike.database.windows.net:1433",
+    "user": "adminklondike@klondike",
+    "password": ".klondike123",
+    "database": "BazaKlondike"
   }
 }
