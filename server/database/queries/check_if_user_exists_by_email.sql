@@ -1,1 +1,1 @@
-select 1 from players where email = ?
+select id from players where email = ?
