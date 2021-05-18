@@ -38,8 +38,8 @@ const Settings = () => {
     setCardSelectionOpen(false);
   };
 
-  /*useEffect(() => {
-    axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
+  useEffect(() => {
+    axios.get(`http://localhost:3001/settings/${userId}`).then(({ data }) => {
       const { carset_id, volume, effect, card_animation } = data;
       console.log("aaaA");
       setTemporaryCard("card" + carset_id);
@@ -52,7 +52,7 @@ const Settings = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3000/settings/edit/${userId}`, {
+    axios.put(`http://localhost:3001/settings/edit/${userId}`, {
       cardset_id: card,
       music: musicVolume,
       effect: effectVolume,

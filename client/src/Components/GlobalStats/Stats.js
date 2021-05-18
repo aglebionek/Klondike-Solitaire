@@ -21,7 +21,7 @@ function GlobalStats() {
    
         useEffect(() => {
             setLoading(true);
-            axios.get("http://localhost:3000/stats/getStats").then((resp) => {
+            axios.get("http://localhost:3001/stats/getStats").then((resp) => {
               const { data } = resp;
               resp.className = "red"
               setStatsList(data);

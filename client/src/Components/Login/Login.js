@@ -17,11 +17,11 @@ function Login({ history }) {
         .post("http://localhost:3001/auth/login", {
           email,
           password,
-        })
+        }, {withCredentials: true})
         .then(() => {
           history.push("/");
         })
-        .catch((err) => setServerError(err.response.data));
+        .catch((err) => setServerError(err.response));
     }
   };
 
