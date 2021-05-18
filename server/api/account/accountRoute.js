@@ -12,11 +12,14 @@ router.get("/:id", async (req, res) => {
     .readFileSync(path.join(__dirname, "../../database/queries/account_select.sql")) 
     .toString();
 
-    const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
+   // const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
 
     // res.send(resp);
+     let resp = await mysqlQuery(query, [id]);
+    if (resp.length == 0) return resp.status(204);
+    return res.status(200).json(resp[0]);
 
-    res.status(200).json({ resp });
+    //res.status(200).json({ resp });
 });
 
 router.put("/edit/:userId", async (req, res) => {

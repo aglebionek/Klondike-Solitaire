@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./Account.css";
 import axios from "axios";
+import Select from 'react-select'
+import countryList from 'react-select-country-list'
+import ReactCountryFlag from "react-country-flag"
+
 
 const Account =() => {
     const [show, setShow] = useState(false);
     const [userName, setUserName] = useState('Nazwa użytkownika');
     const [accountCreation, setAccountCreation] = useState('2020-01-01');
-    const [country, setCountry] = useState('Polska');
+    const [country, setCountry] = useState('PL');
     const [avatar, setAvatar] = useState('1');
     const [temporaryAvatar, setTemporaryAvatar] = useState('avatar1');
     const [newUsername, setNewUsername] = useState('');
@@ -18,8 +22,10 @@ const Account =() => {
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState(''); 
     
+    const [countryName, setCountryName] = useState('Poland');
+    const [newCountryName, setNewCountryName] = useState('');
 
-    const userId = 2;
+    const userId = 1;
     const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {
@@ -48,6 +54,7 @@ const Account =() => {
         };
         if(newCountry!=''){
             setCountry(newCountry);
+            setCountryName(newCountryName);
         }
         clearSettings();
         
@@ -61,29 +68,56 @@ const Account =() => {
         setShow(false);
       }
 
+      //Select configuration section
+        const [value, setValue] = useState('')
+        const options = useMemo(() => countryList().getData(), [])
+
+        const changeHandler = value => {
+            setValue(value)
+            setNewCountry(value.value)
+            setNewCountryName(value.label)
+        }
       
+
+        const selstyle ={
+            control: styles=> ({...styles, width: '225px'})
+        };
+      //End
+      
+      function isCountry(coun) {
+          return options.value === country;
+      }
 
     useEffect(() => {
         axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
-          const { username, registration_date, country, icon_id, password} = data.resp[0];     
+          const { username, registration_date, country, icon_id, password} = data;     
           setUserName(username);
           setAccountCreation(registration_date);
           setCountry(country);
           setTemporaryAvatar("avatar"+icon_id);
           setAvatar(icon_id) ;
           setCurrentPassword(password);
+          setCountryName(options.find( ({value}) => value === country).label);
+            
+                
         });
       }, []);
-
       const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:3000/account/edit/${userId}`, {
         icon_id: avatar,
         username: userName,
         password: currentPassword,
-        country: country,
+        country: newCountry,
         });
       };
+
+
+        
+      
+      
+        
+
 
     return (<>
         <div className = "profile-container">
@@ -99,10 +133,20 @@ const Account =() => {
                     </div>
                     <div className="profile-country-info">
                         <div className="country-img">
-                            <span><img id="flag-picture"src="./images/polska.png" alt="Flag " width="25" height="20" /></span>
+                            <span>
+                                <ReactCountryFlag
+                                countryCode={country} svg
+                                style={{
+                                    fontSize: '1.5em',
+                                    lineHeight: '1.5em',
+                                }}
+                                className="emojiFlag"
+                                 />
+                             
+                            </span>
                         </div>
                         <div className="country-name">
-                            {country}
+                            {countryName}
                         </div>
                     </div>
                 </div>
@@ -145,7 +189,9 @@ const Account =() => {
                     </div>
                 </div>
                 <div className="profile-return-button">
-                    <input type="button" value="Powrót" />
+                    <a href="/" className="account_menu-button">
+                    Menu
+                    </a>
                 </div> 
             </div>
         </div> 
@@ -160,7 +206,7 @@ const Account =() => {
                     </div>
                     <div className="modal-nick-current">
                         <input 
-                            className="modal-nick-input" 
+                            className="account_modal-nick-input" 
                             type="text" 
                             onChange={(event) => {
                                 setNewUsername(event.target.value);
@@ -172,7 +218,7 @@ const Account =() => {
                     <div className="row-one">Stare hasło</div>
                     <div className="modal-password-old-current">
                         <input 
-                            className="modal-password-old-input"
+                            className="account_modal-password-old-input"
                             type="password"
                             onChange={(event) => {
                                 setOldPassword(event.target.value);
@@ -185,7 +231,7 @@ const Account =() => {
                 <div className="modal-password-new">
                     <div className="row-one">Nowe hasło</div>
                         <input 
-                            className="modal-password-input-new"
+                            className="account_modal-password-input-new"
                             type="password"
                             onChange={(event) => {
                                 setNewPassword(event.target.value);
@@ -195,7 +241,7 @@ const Account =() => {
                 <div className="modal-password-new-repeat">
                     <div className="row-one">Powtórz hasło</div>
                         <input 
-                            className="modal-password-input-new-repeat"
+                            className="account_modal-password-input-new-repeat"
                             type="password"
                             onChange={(event) => {
                                 setRepeatPassword(event.target.value);
@@ -206,12 +252,8 @@ const Account =() => {
                 <div className="modal-country">
                     <div className="modal-country-text row-one">Kraj</div>
                     <div className="modal-country-input">
-                        <input 
-                        type="text"
-                        onChange={(event) => {
-                            setNewCountry(event.target.value);
-                        }}
-                        />
+                        <Select options={options} value={value} styles={selstyle} onChange={changeHandler} />
+                        
                     </div>
                 </div>
                 <div className="modal-avatar">
