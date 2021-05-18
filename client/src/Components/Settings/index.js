@@ -4,6 +4,7 @@ import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import axios from "axios";
+import Spinner from "../Spinner/Spinner";
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
@@ -37,7 +38,7 @@ const Settings = () => {
     setCardSelectionOpen(false);
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
       const { carset_id, volume, effect, card_animation } = data;
       console.log("aaaA");
@@ -58,7 +59,9 @@ const Settings = () => {
       card_animation: isCardAnimation,
     });
   };
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <Spinner></Spinner>
+  );
   return (
     <div className={styles.container}>
       <div className={styles.header}>

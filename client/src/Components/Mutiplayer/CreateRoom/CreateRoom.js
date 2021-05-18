@@ -83,6 +83,9 @@ function CreateRoom() {
   } else {
     return (
       <section className="lobby__container">
+        <a className="multiplayer__back" href="/multiplayer">
+          &#129044;
+        </a>
         <div className="lobby__inner-container">
           <h1 className="lobby__headline">Tworzenie pokoju</h1>
           <form

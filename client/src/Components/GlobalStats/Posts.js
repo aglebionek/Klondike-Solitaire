@@ -1,14 +1,13 @@
 import React from 'react';
-import "./Posts.css"
+import "./Posts.css";
+import Spinner from "../Spinner/Spinner";
 
 var _ = require('lodash')
 
 const Posts = ({statsList, loading, userID}) => {
-    if(loading) {
-        return <h2>Loading...</h2>;
-    }
-
-
+    if (loading) return (
+        <Spinner></Spinner>
+    );
 
     return <table width="100%">
         <tbody>

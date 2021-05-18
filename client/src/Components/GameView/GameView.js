@@ -7,6 +7,9 @@ function GameView() {
   return (
     <div className="App">
     <div className="menu_top">
+        <a className="game-view__back" href="./..">
+          &#129044;
+        </a>
         <header className="widok_gry_header">
             <h3 className="klondike_title">Klondike</h3>
         </header>
