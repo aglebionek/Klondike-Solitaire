@@ -15,52 +15,34 @@ import Account from "./Components/Account/Account";
 
 function App() {
 
-  const [vol, setVolume] = useState(20);
-  const userId = 10;
+  const [eff, setEffect] = useState(100);
+  const [vol, setVolume] = useState(100);
+  const userId = 2;
   
   useEffect(() => {
       axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
         const { carset_id, volume, effect, card_animation } = data;
-        setVolume(effect);
+        setEffect(effect);
+        setVolume(volume);
       });
     }, []);
   
   return (
     <Switch>
-      <Route exact path="/"  component={(props) => <MainMenu globalStore={vol} /> } />
+      <Route exact path="/"  component={(props) => <MainMenu effect={eff} volume={vol}  /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
       <PrivateRoute path="/settings" component={Settings} />
       <PrivateRoute path="/global-stats" component={GlobalStats} />
       <Route path="/game-view" component={GameView} />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
-      <PrivateRoute path="/account" component={Account} />
+      <PrivateRoute path="/account" component={(props) => <Account effect={eff}/> } />
       <PrivateRoute path="/multiplayer/game-lobby" component={JoinRoom} />
       <PrivateRoute path="/multiplayer/create-room" component={CreateRoom} />
     </Switch>
   );
 }
 
-const ButtonSound =()=> {
-
-  const [vol, setVolume] = useState(20);
-  const userId = 10;
-  
-  useEffect(() => {
-      axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
-        const { carset_id, volume, effect, card_animation } = data;
-        setVolume(effect);
-      });
-    }, []);
- 
-  
-  return (
-    <div>
-      <MainMenu volumeDlaDziecka={vol} />
-    </div>
-  )
-      
-}
 
 function PrivateRoute({ component: Component, ...rest }) {
   const [isAuth, setAuth] = useState(true);

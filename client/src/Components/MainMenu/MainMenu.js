@@ -1,22 +1,18 @@
-import React, {useState, useEffect,} from "react";
+import React from "react";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
 import MenuMusic from './MenuMusic';
-import src from '../../soundtrack/SoundDesign/menu_click.mp3';
-import axios from "axios";
-
-    
-    
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 
 
-function MainMenu({globalStore}) {
+
+function MainMenu({effect, volume}) {
     const history = useHistory();
-
-    console.log(globalStore);
+   
 
     const buttonSound = (event) => {
-            let beep = new Audio(src);
-            beep.volume=(globalStore/100);
+            let beep = new Audio(buttonMenuClick);
+            beep.volume=(effect/100);
             beep.play();   
     }
 
@@ -28,15 +24,15 @@ function MainMenu({globalStore}) {
                 <div className='top-bar__dropdown'>
                     <button><i className="fa fa-bars"></i></button>
                     <div className="dropdown__content">
-                        <button onClick={() => history.push('settings')}>USTAWIENIA</button>
-                        <button onClick={() => history.push('global-stats')}>STATYSTYKI</button>
-                        <button>AUTORZY</button>
-                        <button>O GRZE</button> 
+                        <button onMouseDown={buttonSound} onClick={() => history.push('settings')}>USTAWIENIA</button>
+                        <button onMouseDown={buttonSound} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
+                        <button onMouseDown={buttonSound}>AUTORZY</button>
+                        <button onMouseDown={buttonSound}>O GRZE</button> 
                         <button onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
                     </div>
                 </div>
                 <div>
-                    <button onClick={() => history.push('login')}>LOGOWANIE / REJESTRACJA</button>
+                    <button onMouseDown={buttonSound} onClick={() => history.push('login')}>LOGOWANIE / REJESTRACJA</button>
                 </div>
             </div>
 
@@ -47,8 +43,7 @@ function MainMenu({globalStore}) {
                 <div className='main-elements__buttons'>
                     <button onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
                     <button onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
-                    <button onMouseDown={buttonSound}>test</button>
-                    <MenuMusic></MenuMusic>
+                    <MenuMusic musicVolume = {volume}></MenuMusic>
                 </div>
             </div>
         </div>        

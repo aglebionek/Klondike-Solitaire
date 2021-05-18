@@ -4,11 +4,11 @@ import axios from "axios";
 import Select from 'react-select'
 import ReactCountryFlag from "react-country-flag"
 import dataCountry from './country-list.json';
+import buttonClickSound from '../../soundtrack/SoundDesign/button_undo.mp3';
 
 
 
-
-const Account =() => {
+const Account =({effect}) => {
     const [show, setShow] = useState(false);
     const [userName, setUserName] = useState('Nazwa użytkownika');
     const [accountCreation, setAccountCreation] = useState('2020-01-01');
@@ -27,7 +27,7 @@ const Account =() => {
     const [countryName, setCountryName] = useState('Poland');
     const [newCountryName, setNewCountryName] = useState('');
 
-    const userId = 10;
+    const userId = 2;
     const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {
@@ -72,9 +72,6 @@ const Account =() => {
       }
 
       //Select configuration section
-
-
-
         const [value, setValue] = useState('')
         const options = useMemo(() => dataCountry, [])
 
@@ -89,10 +86,15 @@ const Account =() => {
             control: styles=> ({...styles, width: '225px'})
         };
 
-
-
-
       //End
+      //button sound
+      const buttonSound = (event) => {
+            let beep = new Audio(buttonClickSound);
+            beep.volume=(effect/100);
+            beep.play();   
+    }
+
+      //end
       
 
 
@@ -120,11 +122,7 @@ const Account =() => {
         });
       };
 
-
-        
       
-      
-        
 
 
     return (<>
@@ -160,7 +158,7 @@ const Account =() => {
                 </div>
                 <div className="profile-header-edit"> 
                     <div className="edition-text">
-                        <button onClick={() => setShow(true)}>Edycja</button>
+                        <button onMouseDown={buttonSound} onClick={() => setShow(true)}>Edycja</button>
                     </div>
                 </div>
             </div>
@@ -197,7 +195,7 @@ const Account =() => {
                     </div>
                 </div>
                 <div className="profile-return-button">
-                    <a href="/" className="account_menu-button">
+                    <a href="/" className="account_menu-button" onMouseDown={buttonSound}>
                     Menu
                     </a>
                 </div> 
@@ -266,18 +264,18 @@ const Account =() => {
                 </div>
                 <div className="modal-avatar">
                     <div className="modal-avatar-text row-one"></div>
-                    <div className="arrow modal-left-arrow" onClick={() => previousAvatar()}>&lt;</div>
+                    <div className="arrow modal-left-arrow" onMouseDown={buttonSound} onClick={() => previousAvatar()}>&lt;</div>
                     <div>
                         <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                     </div>
-                    <div className="arrow modal-right-arrow"  onClick={() => nextAvatar()}>&gt;</div>
+                    <div className="arrow modal-right-arrow"  onMouseDown={buttonSound} onClick={() => nextAvatar()}>&gt;</div>
                 </div>
                 <div className="modal-avatar-current">
                   
                     </div>
                 <div className="modal-button">
-                    <button className="modal-button-save" type="submit" onClick={() => setNewData()} >Ok</button>
-                    <button className="modal-button-cancel" type = "button" onClick={() => clearSettings()}>Anuluj</button>
+                    <button className="modal-button-save" type="submit" onMouseDown={buttonSound} onClick={() => setNewData()} >Ok</button>
+                    <button className="modal-button-cancel" type = "button" onMouseDown={buttonSound} onClick={() => clearSettings()}>Anuluj</button>
                 </div>
                 </form>
 

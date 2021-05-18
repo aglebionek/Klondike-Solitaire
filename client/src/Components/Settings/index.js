@@ -4,6 +4,7 @@ import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import axios from "axios";
+import buttonClickSound from '../../soundtrack/SoundDesign/button_undo.mp3';
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
@@ -15,7 +16,7 @@ const Settings = () => {
   const [loading, setLoading] = useState(true);
 
   const cards = ["card1", "card2"];
-  const userId = 10;
+  const userId = 2;
 
   const nextCard = () => {
     let index = cards.indexOf(temporaryCard);
@@ -36,6 +37,11 @@ const Settings = () => {
     setCard(Number(num));
     setCardSelectionOpen(false);
   };
+  const buttonSound = (event) => {
+    let beep = new Audio(buttonClickSound);
+    beep.volume=(effectVolume/100);
+    beep.play();   
+  }
 
   useEffect(() => {
     axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
@@ -62,7 +68,7 @@ const Settings = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <a href="/" className={styles.menuButton}>
+        <a href="/" className={styles.menuButton} onMouseDown={buttonSound}>
           Menu
         </a>
         <h1 className={styles.title}>Ustawienia Gry</h1>
@@ -78,6 +84,7 @@ const Settings = () => {
                     name="cardAnimations"
                     status={isCardAnimation}
                     setStatus={setCardAnimation}
+                    soundEffect={effectVolume}
                   />
                 </div>
               </div>
@@ -88,6 +95,7 @@ const Settings = () => {
                     text="Zmień"
                     isCardSelectionOpen={isCardSelectionOpen}
                     setCardSelectionOpen={setCardSelectionOpen}
+                    soundEffect={effectVolume}
                   />
                 </div>
               </div>
@@ -119,6 +127,7 @@ const Settings = () => {
                 <div
                   className={`${styles.arrow} ${styles.arrowLeft}`}
                   onClick={() => previousCard()}
+                  onMouseDown={buttonSound}
                 >
                   &lt;
                 </div>
@@ -132,6 +141,7 @@ const Settings = () => {
                 <div
                   className={`${styles.arrow} ${styles.arrowRight}`}
                   onClick={() => nextCard()}
+                  onMouseDown={buttonSound}
                 >
                   &gt;
                 </div>
@@ -139,6 +149,7 @@ const Settings = () => {
               <button
                 className={styles.saveCardButton}
                 onClick={() => setNewCard()}
+                onMouseDown={buttonSound}
                 type="button"
               >
                 Wybierz
@@ -148,6 +159,7 @@ const Settings = () => {
         </div>
         <div className={styles.saveButtonContainer}>
           <button
+            onMouseDown={buttonSound}
             className={`${styles.saveButton} ${
               isCardSelectionOpen ? styles.disabledButton : ""
             }`}
