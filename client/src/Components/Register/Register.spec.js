@@ -22,35 +22,35 @@ test('use jsdom in this test file', () => {
     expect(element).not.toBeNull();
 });
 
-//  Przykład walidacji email'a
-//  ATTENTION: Nie wyświetla się komunikat emailError
-//  Jak to sprawdzić?
-//  w Register.js po {emailError} możemy wpisać np "funny mail" w sposób:
-//  linia 94 w Register.js: {emailError} funny test
-//  i wtedy test przechodzi :)
+//  Przykład walidacji email'a 1
 test("incorrect mail causes emailError", () => {
     act(() => {
         ReactDOM.render(<Register/>, container);
     });
 
     let invalidEmail = "funny mail"
+    let form = container.querySelector('form');
     let input = container.querySelector('input[placeholder="Email"]');
 
     fireEvent.change(input,{target: {value: invalidEmail}});
+    fireEvent.submit(form);
 
     expect(input.value).toBe(invalidEmail);
     expect(input.nextElementSibling.textContent.length).toBeGreaterThanOrEqual(1);
 });
 
+//  Przykład walidacji email'a 2
 test("correct mail causes no emailError", () => {
     act(() => {
         ReactDOM.render(<Register/>, container);
     });
 
-    let validEmail = "abc@abc.com"
+    let validEmail = "abc@abc.com";
+    let form = container.querySelector('form');
     let input = container.querySelector('input[placeholder="Email"]');
 
     fireEvent.change(input,{target: {value: validEmail}});
+    fireEvent.submit(form);
 
     expect(input.value).toBe(validEmail);
     expect(input.nextElementSibling.textContent.length).toBeLessThanOrEqual(0);
