@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./register.css";
+import "./RegisterCyberpunk.css";
 
 function Register({ history }) {
   const [email, setEmail] = useState("");
@@ -74,11 +74,11 @@ function Register({ history }) {
     <div className="register__container">
       <div className="register__container__menu-button">
         <a href="/" className="register__container__menu-button__link">
-          Menu
+          MENU
         </a>
       </div>
       <div>
-        <header className="register__container__header">Rejstracja</header>
+        <header className="register__container__header">Rejestracja</header>
         <form onSubmit={handleSubmit}>
           <div className="register__container__creds">
             <div className="register__container__creds__field">
@@ -97,7 +97,7 @@ function Register({ history }) {
             <div className="register__container__creds__field">
               <input
                 type="text"
-                placeholder="username"
+                placeholder="Nazwa użytkownika"
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);

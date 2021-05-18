@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./Login.css";
+import "./LoginCyberpunk.css";
 
 function Login({ history }) {
   const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ function Login({ history }) {
     <div className="login__container">
       <div className="login__container__menu-button">
         <a href="/" className="login__container__menu-button__link">
-          Menu
+          MENU
         </a>
       </div>
       <div>
@@ -80,7 +80,7 @@ function Login({ history }) {
           </div>
           <div className="login__container__buttons">
             <button type="submit" className="login__container__buttons__btn">
-              Przejdz do gry
+              Przejdź do gry
             </button>
             <a
               href="/register"
