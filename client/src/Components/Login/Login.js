@@ -14,7 +14,7 @@ function Login({ history }) {
     setServerError("");
     if (isValid()) {
       axios
-        .post("http://localhost:3000/auth/login", {
+        .post("http://localhost:3001/auth/login", {
           email,
           password,
         })

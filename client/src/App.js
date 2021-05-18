@@ -22,15 +22,15 @@ function App() {
       <Route path="/" component={MainMenu} exact />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
-      <Route path="/settings" component={Settings} />
-      <Route path="/global-stats" component={GlobalStats} />
+      <PrivateRoute path="/settings" component={Settings} />
+      <PrivateRoute path="/global-stats" component={GlobalStats} />
       <Route path="/game-view" component={GameView} />
       <Route path="/app-info" component={AppInfo} />
       <Route path="/authors" component={Authors} />
-      <Route path="/multiplayer" component={LobbyMultiplayer} />
-      <Route path="/account" component={Account} />
-      <Route path="/game-lobby" component={JoinRoom} />
-      <Route path="/create-room" component={CreateRoom} />
+      <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
+      <PrivateRoute path="/account" component={Account} />
+      <PrivateRoute path="/game-lobby" component={JoinRoom} />
+      <PrivateRoute path="/create-room" component={CreateRoom} />
     </Switch>
   );
 }
@@ -40,7 +40,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/verify")
+      .get("http://localhost:3001/auth/verify")
       .then(() => {
         setLoading(false);
         setAuth(true);
@@ -77,7 +77,7 @@ function AuthRoute({ component: Component, ...rest }) {
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/verify")
+      .get("http://localhost:3001/auth/verify")
       .then(() => {
         setLoading(false);
         setAuth(true);
