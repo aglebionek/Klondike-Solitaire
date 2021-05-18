@@ -9,8 +9,6 @@ const Posts = ({statsList, loading, userID}) => {
         <Spinner></Spinner>
     );
 
-
-
     return <table width="100%">
         <tbody>
         {statsList.map(statsList => (

@@ -211,8 +211,6 @@ function GlobalStats() {
         <a className="buttonfilter"  onClick={filterByTop50} >Top 50</a>
       </div>
       
-
-
 		  <table cellSpacing="0" cellPadding="0" border="0" style={{width: "100%"}}>
 		    <thead>
 		      <tr id="header">

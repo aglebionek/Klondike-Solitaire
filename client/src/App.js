@@ -29,8 +29,8 @@ function App() {
       <Route path="/authors" component={Authors} />
       <Route path="/multiplayer" component={LobbyMultiplayer} />
       <Route path="/account" component={Account} />
-      <Route path="/multiplayer/game-lobby" component={JoinRoom} />
-      <Route path="/multiplayer/create-room" component={CreateRoom} />
+      <Route path="/game-lobby" component={JoinRoom} />
+      <Route path="/create-room" component={CreateRoom} />
     </Switch>
   );
 }
