@@ -1,13 +1,13 @@
-import sound from '../soundtrack/Music/Music_Menu_Klondike.mp3';
+import sound from '../../soundtrack/Music/Music_Menu_Klondike.mp3';
 import Sound from 'react-sound';
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 
-const PlaySound = (props) => {
+
+const MenuMusic = (props) => {
 
     const pos = props.test;
-    console.log(pos);
-    const userId = 1;
+    const userId = 10;
     const [isPlaying, setIsPlaying] = useState(false);
     const [vol, setVolume] = useState(100);
 
@@ -36,4 +36,4 @@ const PlaySound = (props) => {
     );
   };
 
-export default PlaySound;
+export default MenuMusic;

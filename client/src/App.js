@@ -14,9 +14,20 @@ import JoinRoom from "./Components/Mutiplayer/JoinRoom/JoinRoom";
 import Account from "./Components/Account/Account";
 
 function App() {
+
+  const [vol, setVolume] = useState(20);
+  const userId = 10;
+  
+  useEffect(() => {
+      axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
+        const { carset_id, volume, effect, card_animation } = data;
+        setVolume(effect);
+      });
+    }, []);
+  
   return (
     <Switch>
-      <Route path="/" component={MainMenu} exact />
+      <Route exact path="/"  component={(props) => <MainMenu globalStore={vol} /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
       <PrivateRoute path="/settings" component={Settings} />
@@ -28,6 +39,27 @@ function App() {
       <PrivateRoute path="/multiplayer/create-room" component={CreateRoom} />
     </Switch>
   );
+}
+
+const ButtonSound =()=> {
+
+  const [vol, setVolume] = useState(20);
+  const userId = 10;
+  
+  useEffect(() => {
+      axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
+        const { carset_id, volume, effect, card_animation } = data;
+        setVolume(effect);
+      });
+    }, []);
+ 
+  
+  return (
+    <div>
+      <MainMenu volumeDlaDziecka={vol} />
+    </div>
+  )
+      
 }
 
 function PrivateRoute({ component: Component, ...rest }) {

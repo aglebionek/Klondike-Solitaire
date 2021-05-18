@@ -1,9 +1,24 @@
-import React from "react";
+import React, {useState, useEffect,} from "react";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
+import MenuMusic from './MenuMusic';
+import src from '../../soundtrack/SoundDesign/menu_click.mp3';
+import axios from "axios";
 
-function MainMenu() {
+    
+    
+
+
+function MainMenu({globalStore}) {
     const history = useHistory();
+
+    console.log(globalStore);
+
+    const buttonSound = (event) => {
+            let beep = new Audio(src);
+            beep.volume=(globalStore/100);
+            beep.play();   
+    }
 
     return (
         <div className='main-menu'>
@@ -17,7 +32,7 @@ function MainMenu() {
                         <button onClick={() => history.push('global-stats')}>STATYSTYKI</button>
                         <button>AUTORZY</button>
                         <button>O GRZE</button> 
-                        <button onClick={() => history.push('account')}>KONTO</button> 
+                        <button onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
                     </div>
                 </div>
                 <div>
@@ -30,8 +45,10 @@ function MainMenu() {
                     <h1>Pasjans Klondike</h1>
                 </div>
                 <div className='main-elements__buttons'>
-                    <button onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
-                    <button onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
+                    <button onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
+                    <button onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
+                    <button onMouseDown={buttonSound}>test</button>
+                    <MenuMusic></MenuMusic>
                 </div>
             </div>
         </div>        

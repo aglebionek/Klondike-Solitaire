@@ -2,8 +2,10 @@ import React, { useState, useEffect, useMemo } from "react";
 import "./Account.css";
 import axios from "axios";
 import Select from 'react-select'
-import countryList from 'react-select-country-list'
 import ReactCountryFlag from "react-country-flag"
+import dataCountry from './country-list.json';
+
+
 
 
 const Account =() => {
@@ -25,7 +27,7 @@ const Account =() => {
     const [countryName, setCountryName] = useState('Poland');
     const [newCountryName, setNewCountryName] = useState('');
 
-    const userId = 1;
+    const userId = 10;
     const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {
@@ -51,8 +53,8 @@ const Account =() => {
         if(oldPassword===currentPassword && newPassword===repeatPassword){
             setCurrentPassword(newPassword);
         }else {
-        };
-        if(newCountry!=''){
+        }
+        if(newCountry != ''){
             setCountry(newCountry);
             setCountryName(newCountryName);
         }
@@ -65,12 +67,16 @@ const Account =() => {
         setOldPassword('');
         setRepeatPassword('');
         document.getElementsByName('editForm')[0].reset();
+        setValue('');
         setShow(false);
       }
 
       //Select configuration section
+
+
+
         const [value, setValue] = useState('')
-        const options = useMemo(() => countryList().getData(), [])
+        const options = useMemo(() => dataCountry, [])
 
         const changeHandler = value => {
             setValue(value)
@@ -82,11 +88,13 @@ const Account =() => {
         const selstyle ={
             control: styles=> ({...styles, width: '225px'})
         };
+
+
+
+
       //End
       
-      function isCountry(coun) {
-          return options.value === country;
-      }
+
 
     useEffect(() => {
         axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
@@ -108,7 +116,7 @@ const Account =() => {
         icon_id: avatar,
         username: userName,
         password: currentPassword,
-        country: newCountry,
+        country: country,
         });
       };
 

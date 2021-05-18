@@ -5,17 +5,28 @@ const path = require("path");
 const router = express.Router();
 const mysqlQuery = require("../../database/connection/mysql_query");
 
+
 //account jest dodawany automatycznie
-router.get("/:id", async (req, res) => {
-    const id = req.params.id;
+router.get("/:userId", async (req, res) => {
+  const userId = req.params.userId;
+    
+  const userExistQuery = fs
+  .readFileSync(
+    path.join(__dirname, "../../database/queries/player_exists.sql")
+  )
+  .toString();
+
+    let resp = await mysqlQuery(userExistQuery, [userId]);
+    if (resp.length == 0) return res.status(404).json("user doesn't exist");
+
+
     const query = fs
     .readFileSync(path.join(__dirname, "../../database/queries/account_select.sql")) 
     .toString();
-
    // const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
 
     // res.send(resp);
-     let resp = await mysqlQuery(query, [id]);
+    resp = await mysqlQuery(query, [userId]);
     if (resp.length == 0) return resp.status(204);
     return res.status(200).json(resp[0]);
 
