@@ -16,9 +16,14 @@ router.get("/verify", (req, res) => {
     jwt.verify(token, key);
     return res.sendStatus(200);
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.status(401).json("invalid token");
   }
+});
+
+router.post("/logout", async (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json("ok");
 });
 
 router.post("/register", async (req, res) => {

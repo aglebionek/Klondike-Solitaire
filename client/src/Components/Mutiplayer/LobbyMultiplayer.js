@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./LobbyMultiplayer.css";
 
 // socket client
@@ -10,7 +10,6 @@ const player = 'player';
 
 function LobbyMultiplayer() {
 
-  let {path, url} = useRouteMatch();
   const [users, setUsers] = useState([]);
 
   const joinRoom = (evt) => {

@@ -6,7 +6,6 @@ const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
 const authRoute = require("./api/auth/authRoute");
 const accountRoute = require("./api/account/accountRoute");
-const cors = require('cors');
 const {
   userJoin,
   getCurrentUser,
@@ -19,7 +18,11 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+app.use(cookieParser());
+
 const server = app.listen(PORT);
+
 // socket variables
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -30,8 +33,6 @@ app.use(
     extended: true,
   })
 );
-
-app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Some shit");

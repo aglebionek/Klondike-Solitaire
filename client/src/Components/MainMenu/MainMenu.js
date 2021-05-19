@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
 
 function MainMenu(props) {
     const history = useHistory();
-    const [isLogged, setLog] = useState(props.match.params.logged);
+    const [isLogged, setLog] = useState(false);
 
-    const handleLogButton = () => {
+    const handleLogButton = (e) => {
+        e.preventDefault();
+
         if(isLogged){
-            history.push('/');
-            setLog(false);
+            axios
+                .post("http://localhost:3000/auth/logout")
+                .then(() => {
+                    setLog(false);
+                })
+                
             return;
         }
 
         history.push('login');
     }
+
+    useEffect(() => {
+        axios
+          .get("http://localhost:3000/auth/verify")
+          .then(() => {
+            setLog(true);
+          })
+          .catch(() => {
+            setLog(false);
+          });
+    }, []);
 
     return (
         <div className='main-menu'>
