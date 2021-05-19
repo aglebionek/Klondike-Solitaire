@@ -16,8 +16,7 @@ export const processRank = function (rank) {
 };
 
 export const isDroppable = function (dropTarget, selectedCard) {
-  if (processRank(selectedCard.rank) - processRank(dropTarget.rank) === 1) {
-    console.log("rang jest git");
+  if (processRank(dropTarget.rank) - processRank(selectedCard.rank) === 1) {
     if (dropTarget.color !== selectedCard.color) {
       return true;
     } else {
@@ -59,4 +58,103 @@ export const check4Stack = function (foundation, card) {
   } else {
     return false;
   }
+};
+
+const cards = [
+  { rank: "2", color: "red", shape: "hearts" },
+  { rank: "3", color: "red", shape: "hearts" },
+  { rank: "4", color: "red", shape: "hearts" },
+  { rank: "5", color: "red", shape: "hearts" },
+  { rank: "6", color: "red", shape: "hearts" },
+  { rank: "7", color: "red", shape: "hearts" },
+  { rank: "8", color: "red", shape: "hearts" },
+  { rank: "9", color: "red", shape: "hearts" },
+  { rank: "10", color: "red", shape: "hearts" },
+  { rank: "J", color: "red", shape: "hearts" },
+  { rank: "Q", color: "red", shape: "hearts" },
+  { rank: "K", color: "red", shape: "hearts" },
+  { rank: "A", color: "red", shape: "hearts" },
+  { rank: "2", color: "red", shape: "diamonds" },
+  { rank: "3", color: "red", shape: "diamonds" },
+  { rank: "4", color: "red", shape: "diamonds" },
+  { rank: "5", color: "red", shape: "diamonds" },
+  { rank: "6", color: "red", shape: "diamonds" },
+  { rank: "7", color: "red", shape: "diamonds" },
+  { rank: "8", color: "red", shape: "diamonds" },
+  { rank: "9", color: "red", shape: "diamonds" },
+  { rank: "10", color: "red", shape: "diamonds" },
+  { rank: "J", color: "red", shape: "diamonds" },
+  { rank: "Q", color: "red", shape: "diamonds" },
+  { rank: "K", color: "red", shape: "diamonds" },
+  { rank: "A", color: "red", shape: "diamonds" },
+  { rank: "2", color: "black", shape: "spades" },
+  { rank: "3", color: "black", shape: "spades" },
+  { rank: "4", color: "black", shape: "spades" },
+  { rank: "5", color: "black", shape: "spades" },
+  { rank: "6", color: "black", shape: "spades" },
+  { rank: "7", color: "black", shape: "spades" },
+  { rank: "8", color: "black", shape: "spades" },
+  { rank: "9", color: "black", shape: "spades" },
+  { rank: "10", color: "black", shape: "spades" },
+  { rank: "J", color: "black", shape: "spades" },
+  { rank: "Q", color: "black", shape: "spades" },
+  { rank: "K", color: "black", shape: "spades" },
+  { rank: "A", color: "black", shape: "spades" },
+  { rank: "2", color: "black", shape: "clubs" },
+  { rank: "3", color: "black", shape: "clubs" },
+  { rank: "4", color: "black", shape: "clubs" },
+  { rank: "5", color: "black", shape: "clubs" },
+  { rank: "6", color: "black", shape: "clubs" },
+  { rank: "7", color: "black", shape: "clubs" },
+  { rank: "8", color: "black", shape: "clubs" },
+  { rank: "9", color: "black", shape: "clubs" },
+  { rank: "10", color: "black", shape: "clubs" },
+  { rank: "J", color: "black", shape: "clubs" },
+  { rank: "Q", color: "black", shape: "clubs" },
+  { rank: "K", color: "black", shape: "clubs" },
+  { rank: "A", color: "black", shape: "clubs" },
+];
+
+export const shuffleCards = () => {
+  const deck = cards;
+
+  const startColumn1 = [];
+  const mainColumn1 = [];
+  const mainColumn2 = [];
+  const mainColumn3 = [];
+  const mainColumn4 = [];
+  const mainColumn5 = [];
+  const mainColumn6 = [];
+  const mainColumn7 = [];
+
+  const mainColumns = {
+    mainColumn1: mainColumn1,
+    mainColumn2: mainColumn2,
+    mainColumn3: mainColumn3,
+    mainColumn4: mainColumn4,
+    mainColumn5: mainColumn5,
+    mainColumn6: mainColumn6,
+    mainColumn7: mainColumn7,
+  };
+
+  for (let i = 0; i < 24; i++) {
+    const random = Math.floor(Math.random() * deck.length);
+    const card = deck[random];
+    card.isVisible = false;
+    startColumn1.push(deck[random]);
+    deck.splice(random, 1);
+  }
+
+  Object.entries(mainColumns).map(([key, item], index) => {
+    for (let j = 0; j < index + 1; j++) {
+      const random = Math.floor(Math.random() * deck.length);
+      const card = deck[random];
+      if (j === index) {
+        card.isVisible = true;
+      } else card.isVisible = false;
+      item.push(card);
+      deck.splice(random, 1);
+    }
+  });
+  return { startColumn1, ...mainColumns };
 };

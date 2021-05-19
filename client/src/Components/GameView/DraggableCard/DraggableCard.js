@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { useDrag, useDrop } from "react-dnd";
+import React from "react";
+import { useDrag } from "react-dnd";
 import styles from "./Item.module.css";
 
-const Item = ({ name, type, top, index, setDraggingCard, item }) => {
-  const [{ opacity, isDragging }, drag] = useDrag(
+const DraggableCard = ({ name, type, top, index, setDraggingCard, item }) => {
+  const [{}, drag] = useDrag(
     () => ({
       type,
-      item: { name },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -14,28 +13,22 @@ const Item = ({ name, type, top, index, setDraggingCard, item }) => {
     [name, type]
   );
 
-  const style = {
-    transform: `rotate(90deg)`,
-    width: "400px",
-    height: "400px",
-  };
-
-  const cardColors = {
-    spades: "black",
-    clubs: "black",
-    hearts: "red",
-    diamonds: "red",
-  };
-
   const handleDrag = (e) => {
-    let rank = e.target.attributes.getNamedItem("data-rank").value;
-    let shape = e.target.attributes.getNamedItem("data-shape").value;
-    let color = e.target.attributes.getNamedItem("data-color").value;
+    let el = e.target;
+    if (!e.target.classList.contains("card-parent")) {
+      el = e.target.closest(".card-parent");
+    }
+    let rank = el.attributes.getNamedItem("data-rank").value;
+    let shape = el.attributes.getNamedItem("data-shape").value;
+    let color = el.attributes.getNamedItem("data-color").value;
+    let isVisible = el.attributes.getNamedItem("data-visible").value;
+
     let arr = [];
-    arr.push({ rank, color, shape });
-    let sibling = e.target.nextElementSibling;
-    e.target.style.opacity = 0;
-    console.log(e);
+    arr.push({ rank, color, shape, isVisible });
+
+    let sibling = el.nextElementSibling;
+    el.style.opacity = 0;
+
     while (
       sibling !== null &&
       sibling.attributes.getNamedItem("data-rank") !== null
@@ -43,23 +36,29 @@ const Item = ({ name, type, top, index, setDraggingCard, item }) => {
       rank = sibling.attributes.getNamedItem("data-rank").value;
       shape = sibling.attributes.getNamedItem("data-shape").value;
       color = sibling.attributes.getNamedItem("data-color").value;
-      arr.push({ rank, color, shape });
+      isVisible = sibling.attributes.getNamedItem("data-visible").value;
+
+      arr.push({ rank, color, shape, isVisible });
+
       sibling.style.opacity = 0;
       sibling = sibling.nextElementSibling;
     }
-    console.log(arr);
     setDraggingCard({
       title: name,
       array: arr,
-      target: e.target,
+      target: el,
     });
   };
   const convertRankToClass = "v" + item.rank;
 
   const handleDragEnd = (e) => {
     setDraggingCard({ title: "", array: [] });
-    e.target.style.opacity = 1;
-    let sibling = e.target.nextElementSibling;
+    let el = e.target;
+    if (!e.target.classList.contains("card-parent")) {
+      el = e.target.closest(".card-parent");
+    }
+    el.style.opacity = 1;
+    let sibling = el.nextElementSibling;
     while (sibling !== null) {
       sibling.style.opacity = 1;
       sibling = sibling.nextElementSibling;
@@ -67,16 +66,15 @@ const Item = ({ name, type, top, index, setDraggingCard, item }) => {
   };
   return (
     <div
-      className={styles.card}
+      className={`${styles.card} card-parent`}
       data-rank={item.rank}
       data-color={item.color}
       data-shape={item.shape}
+      data-visible={item.isVisible}
       ref={drag}
       onDragStart={handleDrag}
       onDragEnd={handleDragEnd}
-      style={{ top: top + "%", zIndex: index }}
-      src="./images/sample_karta.jpg"
-      alt="karta"
+      style={{ top: top + "%", zIndex: index + 1 }}
     >
       <div className={"card " + convertRankToClass + " " + item.shape}>
         <span className="card__value"></span>
@@ -87,4 +85,4 @@ const Item = ({ name, type, top, index, setDraggingCard, item }) => {
   );
 };
 
-export default React.memo(Item);
+export default React.memo(DraggableCard);

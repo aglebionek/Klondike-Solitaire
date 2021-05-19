@@ -16,8 +16,6 @@ export const processRank = function (rank) {
 };
 
 export const isDroppable = function (dropTarget, selectedCard) {
-  console.log(dropTarget.rank);
-  console.log(selectedCard.rank);
   if (processRank(dropTarget.rank) - processRank(selectedCard.rank) == 1) {
     if (dropTarget.color != selectedCard.color) {
       return true;

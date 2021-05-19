@@ -28,6 +28,7 @@ function getItemStyles(initialOffset, currentOffset, isSnapToGrid) {
   const transform = `translate(${x}px, ${y}px)`;
   return {
     transform,
+    transition: "transform 0.15s",
     WebkitTransform: transform,
   };
 }
@@ -51,6 +52,7 @@ const Custom = ({ draggingCard }) => {
           const top = index * 20;
           return (
             <div
+              key={index}
               className="game-view__dragging-container__item"
               style={{ top: top + "%" }}
             >

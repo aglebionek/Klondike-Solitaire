@@ -1,0 +1,23 @@
+.cardBottom {
+  display: flex;
+  margin-top: 10%;
+  height: 60%;
+  width: 100%;
+}
+.mainColumn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 110px;
+  width: 14%;
+}
+
+.cardShadow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(4.8em - 2px);
+  height: calc(6.675em - 2px);
+  border: 1px solid grey;
+}

@@ -6,7 +6,6 @@ const Drop = ({
   accept,
   onDrop,
   top,
-  item,
   currentArr,
   draggingArr,
   name,

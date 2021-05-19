@@ -1,97 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./GameView.module.css";
-import Item from "./Item/Item";
-import Drop from "./Drop/drop";
 import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { isDroppable } from "../../utils/card";
+import { isDroppable, shuffleCards } from "../../utils/card";
+import Deck from "./Deck/Deck";
+import Buttons from "./Buttons/Buttons";
+import FinalColumns from "./FinalColumns/FinalColumns";
+import MainColumns from "./MainColumns/MainColumns";
+import "../CardMotives/CardMotives.css";
 
 function GameView() {
-  const score = 1234;
-  const stopwatch = "12:34";
-
-  const handleDrop = (currentCards, draggingCards) => {
-    const selectedCard = currentCards.array[currentCards.array.length - 1];
-    const dropTarget = draggingCards.array[0];
-    const dragArrayLength = draggingCards.array.length;
-    const carriedArray = mainColumns[draggingCard.title].get;
-    const carriedArrayLength = carriedArray.length;
-    const sliceEnd = carriedArrayLength - dragArrayLength;
-    const carriedTarget = draggingCard.target;
-
-    if (isDroppable(selectedCard, dropTarget)) {
-      mainColumns[currentCards.title].set([
-        ...currentCards.array,
-        ...draggingCards.array,
-      ]);
-      mainColumns[draggingCard.title].set(carriedArray.slice(0, sliceEnd));
-    } else {
-      carriedTarget.style.opacity = 1;
-      let sibling = carriedTarget.nextElementSibling;
-      while (sibling !== null) {
-        sibling.style.opacity = 1;
-        sibling = sibling.nextElementSibling;
-      }
-    }
-    setDraggingCard({ title: "", array: [] });
-  };
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
+  const [startCardIndex, setStartCardIndex] = useState(0);
 
-  const [mainColumn1, setMainColumn1] = useState([
-    { rank: "Q", color: "red", shape: "diamonds" },
-    { rank: "K", color: "black", shape: "clubs" },
-    { rank: "J", color: "red", shape: "hearts" },
-  ]);
+  const [mainColumn1, setMainColumn1] = useState([]);
+  const [mainColumn2, setMainColumn2] = useState([]);
+  const [mainColumn3, setMainColumn3] = useState([]);
+  const [mainColumn4, setMainColumn4] = useState([]);
+  const [mainColumn5, setMainColumn5] = useState([]);
+  const [mainColumn6, setMainColumn6] = useState([]);
+  const [mainColumn7, setMainColumn7] = useState([]);
 
-  const [mainColumn2, setMainColumn2] = useState([
-    { rank: "Q", color: "red", shape: "diamonds" },
-    { rank: "K", color: "black", shape: "clubs" },
-    { rank: "10", color: "black", shape: "spades" },
-  ]);
+  const [finalColumn1, setFinalColumn1] = useState([]);
+  const [finalColumn2, setFinalColumn2] = useState([]);
+  const [finalColumn3, setFinalColumn3] = useState([]);
+  const [finalColumn4, setFinalColumn4] = useState([]);
 
-  const [mainColumn3, setMainColumn3] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-    { rank: "Q", color: "black", shape: "clubs" },
-    { rank: "J", color: "black", shape: "spades" },
-  ]);
+  const [startColumn1, setStartColumn1] = useState([]);
+  const [startColumn2, setStartColumn2] = useState([]);
 
-  const [mainColumn4, setMainColumn4] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-    { rank: "Q", color: "black", shape: "clubs" },
-    { rank: "J", color: "black", shape: "spades" },
-  ]);
+  const [history, setHistory] = useState([]);
 
-  const [mainColumn5, setMainColumn5] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-    { rank: "Q", color: "black", shape: "clubs" },
-    { rank: "J", color: "black", shape: "spades" },
-  ]);
-
-  const [mainColumn6, setMainColumn6] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-    { rank: "Q", color: "black", shape: "clubs" },
-    { rank: "J", color: "black", shape: "spades" },
-  ]);
-
-  const [mainColumn7, setMainColumn7] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-    { rank: "Q", color: "black", shape: "clubs" },
-    { rank: "J", color: "black", shape: "spades" },
-  ]);
-
-  const [finalColumn1, setFinalColumn1] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-  ]);
-  const [finalColumn2, setFinalColumn2] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-  ]);
-  const [finalColumn3, setFinalColumn3] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-  ]);
-  const [finalColumn4, setFinalColumn4] = useState([
-    { rank: "5", color: "red", shape: "diamonds" },
-  ]);
+  const startColumns = {
+    startColumn1: {
+      get: startColumn1,
+      set: setStartColumn1,
+    },
+    startColumn2: {
+      get: startColumn2,
+      set: setStartColumn2,
+    },
+  };
 
   const mainColumns = {
     mainColumn1: {
@@ -143,87 +93,96 @@ function GameView() {
     },
   };
 
+  const columns = { ...finalColumns, ...mainColumns, ...startColumns };
+
+  useEffect(() => {
+    const initialShuffle = shuffleCards();
+    Object.entries(initialShuffle).map(([key, item]) => {
+      columns[key].set(item);
+    });
+  }, []);
+
+  const handleDrop = (currentCards, draggingCards) => {
+    const selectedCard = currentCards.array[currentCards.array.length - 1];
+    const dropTarget = draggingCards.array[0];
+    const dragArrayLength = draggingCards.array.length;
+    const carriedArray = columns[draggingCard.title].get;
+    const carriedArrayLength = carriedArray.length;
+    const sliceEnd = carriedArrayLength - dragArrayLength;
+    const carriedTarget = draggingCard.target;
+
+    if (
+      currentCards.array.length === 0 ||
+      isDroppable(selectedCard, dropTarget)
+    ) {
+      columns[currentCards.title].set([
+        ...currentCards.array,
+        ...draggingCards.array,
+      ]);
+
+      const reducedColumn = carriedArray.slice(0, sliceEnd);
+      if (reducedColumn.length > 0)
+        reducedColumn[reducedColumn.length - 1].isVisible = true;
+      columns[draggingCard.title].set(reducedColumn);
+      const newHistoryStep = {
+        source: draggingCard.title,
+        target: currentCards.title,
+        draggedCards: draggingCard.array,
+        reversed: reducedColumn.length > 0 ? reducedColumn.length - 1 : null,
+      };
+      setHistory([...history, newHistoryStep]);
+    } else {
+      carriedTarget.style.opacity = 1;
+      let sibling = carriedTarget.nextElementSibling;
+      while (sibling !== null) {
+        sibling.style.opacity = 1;
+        sibling = sibling.nextElementSibling;
+      }
+    }
+    setDraggingCard({ title: "", array: [] });
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
         <div className={styles.cardTop}>
-          <div className={styles.deckContainer}>
-            <div className={styles.deck}>
-              <div></div>
-            </div>
-            <div className={styles.faceUpCards}>
-              <div></div>
-            </div>
-          </div>
-          <div className={styles.empty}></div>
-          <div className={styles.finalColumnContainer}>
-            {Object.entries(finalColumns).map(([key, column], index) => {
-              return (
-                <div className={styles.finalColumn}>
-                  {column.get.map((item, index) => {
-                    const isLastItem = column.get.length - 1 === index;
-                    const top = index * 20;
-                    return (
-                      <Item
-                        type="card"
-                        top={top}
-                        index={index}
-                        item={item}
-                        name={key}
-                        setDraggingCard={setDraggingCard}
-                        isLastItem={isLastItem}
-                        onDrop={handleDrop}
-                        currentArr={mainColumn2}
-                        draggingArr={draggingCard}
-                      />
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+          <Deck
+            startColumn1={startColumn1}
+            startColumn2={startColumn2}
+            startCardIndex={startCardIndex}
+            handleDrop={handleDrop}
+            setDraggingCard={setDraggingCard}
+            draggingCard={draggingCard}
+            setStartCardIndex={setStartCardIndex}
+            setStartColumn2={setStartColumn2}
+            setHistory={setHistory}
+            history={history}
+          />
+          <Buttons
+            history={history}
+            startCardIndex={startCardIndex}
+            startColumn1={startColumn1}
+            setStartCardIndex={setStartCardIndex}
+            setStartColumn2={setStartColumn2}
+            columns={columns}
+            setHistory={setHistory}
+          />
+          <FinalColumns
+            finalColumns={finalColumns}
+            columns={columns}
+            draggingCard={draggingCard}
+            setHistory={setHistory}
+            history={history}
+            setDraggingCard={setDraggingCard}
+          />
         </div>
-        <div className={styles.cardBottom}>
-          {Object.entries(mainColumns).map(([key, column]) => {
-            return (
-              <div className={styles.mainColumn}>
-                {column.get.map((item, index) => {
-                  const isLastItem = column.get.length - 1 === index;
-                  const top = index * 20;
-                  return (
-                    <Item
-                      type="card"
-                      top={top}
-                      index={index}
-                      item={item}
-                      name={key}
-                      setDraggingCard={setDraggingCard}
-                      isLastItem={isLastItem}
-                      onDrop={handleDrop}
-                      currentArr={mainColumn2}
-                      draggingArr={draggingCard}
-                    />
-                  );
-                })}
-                {
-                  <Drop
-                    onDrop={handleDrop}
-                    currentArr={column.get}
-                    draggingArr={draggingCard}
-                    accept="card"
-                    name={key}
-                    isDragActive={
-                      draggingCard.array.length > 0 &&
-                      draggingCard.title !== key
-                    }
-                    top={(mainColumn2.length - 1) * 20}
-                  />
-                }
-              </div>
-            );
-          })}
-        </div>
+        <MainColumns
+          mainColumns={mainColumns}
+          setDraggingCard={setDraggingCard}
+          handleDrop={handleDrop}
+          draggingCard={draggingCard}
+        />
         <div className={styles.statisticks}>
           <div>Punkty: 1234</div>
           <div>Czas: 12</div>
