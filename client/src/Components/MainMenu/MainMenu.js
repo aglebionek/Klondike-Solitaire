@@ -3,7 +3,7 @@ import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
 import MenuMusic from './MenuMusic';
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
-
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
 
 function MainMenu({effect, volume}) {
@@ -12,6 +12,11 @@ function MainMenu({effect, volume}) {
 
     const buttonSound = (event) => {
             let beep = new Audio(buttonMenuClick);
+            beep.volume=(effect/100);
+            beep.play();   
+    }
+    const buttonHover = (event) => {
+            let beep = new Audio(buttonHoverSound);
             beep.volume=(effect/100);
             beep.play();   
     }
@@ -24,15 +29,20 @@ function MainMenu({effect, volume}) {
                 <div className='top-bar__dropdown'>
                     <button><i className="fa fa-bars"></i></button>
                     <div className="dropdown__content">
-                        <button onMouseDown={buttonSound} onClick={() => history.push('settings')}>USTAWIENIA</button>
-                        <button onMouseDown={buttonSound} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
-                        <button onMouseDown={buttonSound}>AUTORZY</button>
-                        <button onMouseDown={buttonSound}>O GRZE</button> 
-                        <button onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
+                        <button onMouseOver={buttonHover} 
+                                onMouseDown={buttonSound} onClick={() => history.push('settings')}>USTAWIENIA</button>
+                        <button onMouseOver={buttonHover} 
+                                onMouseDown={buttonSound} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
+                        <button onMouseOver={buttonHover} 
+                                onMouseDown={buttonSound}>AUTORZY</button>
+                        <button onMouseOver={buttonHover} 
+                                onMouseDown={buttonSound}>O GRZE</button> 
+                        <button onMouseOver={buttonHover} 
+                                onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
                     </div>
                 </div>
                 <div>
-                    <button onMouseDown={buttonSound} onClick={() => history.push('login')}>LOGOWANIE / REJESTRACJA</button>
+                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('login')}>LOGOWANIE / REJESTRACJA</button>
                 </div>
             </div>
 
@@ -41,8 +51,8 @@ function MainMenu({effect, volume}) {
                     <h1>Pasjans Klondike</h1>
                 </div>
                 <div className='main-elements__buttons'>
-                    <button onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
-                    <button onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
+                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
+                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
                     <MenuMusic musicVolume = {volume}></MenuMusic>
                 </div>
             </div>

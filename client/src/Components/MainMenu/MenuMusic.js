@@ -15,7 +15,7 @@ const MenuMusic = ({musicVolume}) => {
             volume={musicVolume}
             playStatus={Sound.status.PLAYING}
             autoLoad={true}
-            playFromPosition={300}
+            playFromPosition={100}
             loop={true}
             //playFromPosition={pos}
           //  onPause

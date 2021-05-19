@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Checkbox.module.css";
-import buttonClickSound from '../../../soundtrack/SoundDesign/button_undo.mp3';
+import buttonClickSound from '../../../soundtrack/SoundDesign/menu_click.mp3';
 
 const Checkbox = ({ name, status, setStatus, soundEffect }) => {
   const buttonSound = (event) => {

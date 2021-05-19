@@ -4,7 +4,7 @@ import axios from "axios";
 import Select from 'react-select'
 import ReactCountryFlag from "react-country-flag"
 import dataCountry from './country-list.json';
-import buttonClickSound from '../../soundtrack/SoundDesign/button_undo.mp3';
+import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 
 
 
@@ -158,7 +158,7 @@ const Account =({effect}) => {
                 </div>
                 <div className="profile-header-edit"> 
                     <div className="edition-text">
-                        <button onMouseDown={buttonSound} onClick={() => setShow(true)}>Edycja</button>
+                        <button onClick={() => setShow(true)}>Edycja</button>
                     </div>
                 </div>
             </div>
@@ -264,18 +264,18 @@ const Account =({effect}) => {
                 </div>
                 <div className="modal-avatar">
                     <div className="modal-avatar-text row-one"></div>
-                    <div className="arrow modal-left-arrow" onMouseDown={buttonSound} onClick={() => previousAvatar()}>&lt;</div>
+                    <div className="arrow modal-left-arrow"  onClick={() => previousAvatar()}>&lt;</div>
                     <div>
                         <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                     </div>
-                    <div className="arrow modal-right-arrow"  onMouseDown={buttonSound} onClick={() => nextAvatar()}>&gt;</div>
+                    <div className="arrow modal-right-arrow"   onClick={() => nextAvatar()}>&gt;</div>
                 </div>
                 <div className="modal-avatar-current">
                   
                     </div>
                 <div className="modal-button">
-                    <button className="modal-button-save" type="submit" onMouseDown={buttonSound} onClick={() => setNewData()} >Ok</button>
-                    <button className="modal-button-cancel" type = "button" onMouseDown={buttonSound} onClick={() => clearSettings()}>Anuluj</button>
+                    <button className="modal-button-save" type="submit"  onClick={() => setNewData()} >Ok</button>
+                    <button className="modal-button-cancel" type = "button"  onClick={() => clearSettings()}>Anuluj</button>
                 </div>
                 </form>
 

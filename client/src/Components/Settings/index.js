@@ -4,7 +4,7 @@ import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import axios from "axios";
-import buttonClickSound from '../../soundtrack/SoundDesign/button_undo.mp3';
+import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
@@ -127,7 +127,6 @@ const Settings = () => {
                 <div
                   className={`${styles.arrow} ${styles.arrowLeft}`}
                   onClick={() => previousCard()}
-                  onMouseDown={buttonSound}
                 >
                   &lt;
                 </div>
@@ -141,7 +140,6 @@ const Settings = () => {
                 <div
                   className={`${styles.arrow} ${styles.arrowRight}`}
                   onClick={() => nextCard()}
-                  onMouseDown={buttonSound}
                 >
                   &gt;
                 </div>
@@ -159,11 +157,11 @@ const Settings = () => {
         </div>
         <div className={styles.saveButtonContainer}>
           <button
-            onMouseDown={buttonSound}
             className={`${styles.saveButton} ${
               isCardSelectionOpen ? styles.disabledButton : ""
             }`}
             type={isCardSelectionOpen ? "button" : "submit"}
+            onMouseDown={buttonSound}
           >
             Zapisz
           </button>

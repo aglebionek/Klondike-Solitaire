@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Button.module.css";
-import buttonClickSound from '../../../soundtrack/SoundDesign/button_undo.mp3';
+import buttonClickSound from '../../../soundtrack/SoundDesign/menu_click.mp3';
 
 const Button = ({ isCardSelectionOpen, setCardSelectionOpen, text, soundEffect }) => {
   const buttonSound = (event) => {
