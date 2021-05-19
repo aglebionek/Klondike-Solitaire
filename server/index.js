@@ -24,6 +24,19 @@ const server = app.listen(PORT);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(cookieParser());
+
+app.get("/", (req, res) => {
+  res.send("Some shit");
+});
+
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
@@ -40,19 +53,6 @@ app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Credentials", true);
 
   next();
-});
-
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-
-app.use(cookieParser());
-
-app.get("/", (req, res) => {
-  res.send("Some shit");
 });
 
 io.on("connection", (socket) => {

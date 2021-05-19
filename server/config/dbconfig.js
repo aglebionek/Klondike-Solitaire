@@ -6,11 +6,8 @@ const file = fs.readFileSync(
 );
 
 module.exports = {
-  host: "pasjans-klondike.mysql.database.azure.com",
-  user: "adminklondike@pasjans-klondike",
-  password: ".klondike123",
-  database: "pasjans-db",
-  ssl: {
-    ca: file,
-  },
+  host: "localhost",
+  user: "pasjans",
+  password: "zaq1@WSX",
+  database: "pasjans",
 };

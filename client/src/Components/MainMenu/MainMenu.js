@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
 
-function MainMenu() {
+function MainMenu(props) {
     const history = useHistory();
+    const [isLogged, setLog] = useState(props.match.params.logged);
+
+    const handleLogButton = () => {
+        if(isLogged){
+            history.push('/');
+            setLog(false);
+            return;
+        }
+
+        history.push('login');
+    }
 
     return (
         <div className='main-menu'>
@@ -21,7 +32,9 @@ function MainMenu() {
                     </div>
                 </div>
                 <div>
-                    <button onClick={() => history.push('login')}>LOGOWANIE / REJESTRACJA</button>
+                    <button onClick={handleLogButton}>
+                        {isLogged ?  'WYLOGUJ' : 'LOGOWANIE / REJESTRACJA'}
+                    </button>
                 </div>
             </div>
 
