@@ -74,6 +74,11 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("game-start", ({ room }) => {
+    console.log(io.sockets.adapter.rooms)
+    io.to(room).emit('start');
+  });
+
   socket.on("lobby-modify", ({ room, newName }) => {
     modifyRoom(room, newName);
   });
