@@ -15,7 +15,7 @@ export default class Card {
   // GETTERS
 
   get rank() {
-    const rankNumber = this.#id % RANKS_IN_SUITE;
+    const rankNumber = this.#id % Card.RANKS_IN_SUITE;
     let rankSymbol;
 
     switch (rankNumber) {
@@ -39,7 +39,7 @@ export default class Card {
   }
 
   get suite() {
-    const suiteNumber = Math.floor(this.#id / RANKS_IN_SUITE);
+    const suiteNumber = Math.floor(this.#id / Card.RANKS_IN_SUITE);
     const suites = ["diamonds", "hearts", "spades", "clubs"];
 
     return suites[suiteNumber];

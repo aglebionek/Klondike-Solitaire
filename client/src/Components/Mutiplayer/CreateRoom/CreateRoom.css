@@ -8,6 +8,17 @@
   align-items: center;
 }
 
+.multiplayer__back{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  text-decoration: none;
+  font-size: 2rem;
+  padding: 10px;
+  color: black;
+}
+
 .lobby__inner-container{
   width: 320px;
 }

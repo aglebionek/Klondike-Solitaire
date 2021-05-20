@@ -6,6 +6,7 @@ const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
 const authRoute = require("./api/auth/authRoute");
 const accountRoute = require("./api/account/accountRoute");
+const cors = require('cors');
 const {
   userJoin,
   getCurrentUser,
@@ -19,10 +20,27 @@ require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 const app = express();
 const server = app.listen(PORT);
-
 // socket variables
 const { Server } = require("socket.io");
 const io = new Server(server);
+
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+
+  res.setHeader("Access-Control-Allow-Credentials", true);
+
+  next();
+});
 
 app.use(express.json());
 app.use(

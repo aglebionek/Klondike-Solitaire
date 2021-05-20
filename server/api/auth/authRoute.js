@@ -75,7 +75,7 @@ router.post("/register", async (req, res) => {
   return res.status(200).json("user created successfully");
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", cors(), async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

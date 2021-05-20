@@ -55,7 +55,7 @@ function Register({ history }) {
     e.preventDefault();
     if (isValid()) {
       axios
-        .post("http://localhost:3000/auth/register", {
+        .post("http://localhost:3001/auth/register", {
           email: email,
           username: username,
           password: password,
