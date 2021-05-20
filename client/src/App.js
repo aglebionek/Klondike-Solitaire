@@ -40,7 +40,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/auth/verify")
+      .get("http://localhost:3000/auth/verify")
       .then(() => {
         setLoading(false);
         setAuth(true);
@@ -77,7 +77,7 @@ function AuthRoute({ component: Component, ...rest }) {
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/auth/verify")
+      .get("http://localhost:3000/auth/verify")
       .then(() => {
         setLoading(false);
         setAuth(true);

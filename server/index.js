@@ -6,7 +6,6 @@ const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
 const authRoute = require("./api/auth/authRoute");
 const accountRoute = require("./api/account/accountRoute");
-const cors = require('cors');
 const {
   userJoin,
   getCurrentUser,
@@ -19,10 +18,25 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+app.use(cookieParser());
+
 const server = app.listen(PORT);
+
 // socket variables
 const { Server } = require("socket.io");
 const io = new Server(server);
+
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.get("/", (req, res) => {
+  res.send("Some shit");
+});
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -42,19 +56,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-
-app.use(cookieParser());
-
-app.get("/", (req, res) => {
-  res.send("Some shit");
-});
-
 io.on("connection", (socket) => {
   console.log("a user connected");
 
@@ -71,6 +72,11 @@ io.on("connection", (socket) => {
         users: getRoomUsers(user.room),
       });
     }
+  });
+
+  socket.on("game-start", ({ room }) => {
+    console.log(io.sockets.adapter.rooms)
+    io.to(room).emit('start');
   });
 
   socket.on("lobby-modify", ({ room, newName }) => {

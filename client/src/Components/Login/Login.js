@@ -9,15 +9,15 @@ function Login({ history }) {
   const [passwordError, setPasswordError] = useState("");
   const [serverError, setServerError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
     if (isValid()) {
       axios
-        .post("http://localhost:3001/auth/login", {
+        .post("http://localhost:3000/auth/login", {
           email,
           password,
-        }, {withCredentials: true})
+        }, { withCredentials: true })
         .then(() => {
           history.push("/");
         })

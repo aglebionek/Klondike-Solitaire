@@ -21,6 +21,13 @@
 
 .lobby__inner-container{
   width: 320px;
+  overflow-x: hidden;
+}
+
+.lobby__inner-container input{
+  width: 100%;
+  height: 20px;
+  padding: 10px;
 }
 
 /* BEFORE CREATION PART */

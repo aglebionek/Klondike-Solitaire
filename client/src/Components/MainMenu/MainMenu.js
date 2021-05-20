@@ -1,9 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
 
-function MainMenu() {
+function MainMenu(props) {
     const history = useHistory();
+    const [isLogged, setLog] = useState(false);
+
+    const handleLogButton = (e) => {
+        e.preventDefault();
+
+        if(isLogged){
+            axios
+                .post("http://localhost:3000/auth/logout")
+                .then(() => {
+                    setLog(false);
+                })
+                
+            return;
+        }
+
+        history.push('login');
+    }
+
+    useEffect(() => {
+        axios
+          .get("http://localhost:3000/auth/verify")
+          .then(() => {
+            setLog(true);
+          })
+          .catch(() => {
+            setLog(false);
+          });
+    }, []);
 
     return (
         <div className='main-menu'>
@@ -21,7 +50,9 @@ function MainMenu() {
                     </div>
                 </div>
                 <div>
-                    <button onClick={() => history.push('login')}>LOGOWANIE / REJESTRACJA</button>
+                    <button onClick={handleLogButton}>
+                        {isLogged ?  'WYLOGUJ' : 'LOGOWANIE / REJESTRACJA'}
+                    </button>
                 </div>
             </div>
 
