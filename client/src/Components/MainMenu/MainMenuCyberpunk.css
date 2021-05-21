@@ -37,6 +37,7 @@
 
 .dropdown__button-hidden {
     opacity: 0%;
+    visibility: hidden;
 }
 
 .dropdown__content {

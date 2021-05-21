@@ -135,16 +135,15 @@ function Register({ history }) {
             </div>
           </div>
           <div className="register__container__buttons">
+            
+            <button
+            onClick = {() => history.push('login')}
+            className="register__container__buttons__btn">
+              Zaloguj się
+            </button>
             <button type="submit" className="register__container__buttons__btn">
               Stwórz użytkownika
             </button>
-            <a
-              href="/login"
-              type="button"
-              className="register__container__buttons__btn register__container__buttons__btn--link"
-            >
-              Zaloguj się
-            </a>
           </div>
         </form>
       </div>

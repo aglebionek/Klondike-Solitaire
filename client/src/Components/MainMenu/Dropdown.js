@@ -2,9 +2,6 @@ import React, {useState} from "react";
 import { useHistory } from "react-router-dom";
 
 function Dropdown(props) {
-    /*
-    TODO figure out a background
-    */
     const history = useHistory();
 
     const [display, setDisplay] = useState(false);
