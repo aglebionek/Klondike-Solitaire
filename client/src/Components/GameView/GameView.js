@@ -1,4 +1,6 @@
 import './GameView.css';
+import './WinLoseBoardMulti';
+import StatsBoard from './WinLoseBoardMulti';
 
 function GameView() {
   const score = 1234;
@@ -42,7 +44,7 @@ function GameView() {
         <p className="moves_left">Ilość ruchów do wykonania: 1234</p>
         <p className="is_possible">Czy możliwe jest skończenie partii: TAK/NIE</p>
         <p className="moves_done">Ruchy: 1234</p>
-
+      <StatsBoard/>
       </div>
       </div>
     </div>
