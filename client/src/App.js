@@ -17,7 +17,7 @@ function App() {
 
   const [eff, setEffect] = useState(100);
   const [vol, setVolume] = useState(100);
-  const userId = 2;
+  const userId = 10;
   
   useEffect(() => {
       axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
@@ -29,12 +29,12 @@ function App() {
   
   return (
     <Switch>
-      <Route exact path="/"  component={(props) => <MainMenu effect={eff} volume={vol}  /> } />
+      <Route exact path="/"  component={(props) => <MainMenu effect={eff}  /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
       <PrivateRoute path="/settings" component={Settings} />
-      <PrivateRoute path="/global-stats" component={GlobalStats} />
-      <Route path="/game-view" component={GameView} />
+      <PrivateRoute path="/global-stats" component={(props) => <GlobalStats effect={eff}/> } />
+      <Route path="/game-view" component={(props) => <GameView effect={eff} volume={vol}  /> } />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
       <PrivateRoute path="/account" component={(props) => <Account effect={eff}/> } />
       <PrivateRoute path="/multiplayer/game-lobby" component={JoinRoom} />

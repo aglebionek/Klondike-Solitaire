@@ -16,7 +16,7 @@ const Settings = () => {
   const [loading, setLoading] = useState(true);
 
   const cards = ["card1", "card2"];
-  const userId = 2;
+  const userId = 10;
 
   const nextCard = () => {
     let index = cards.indexOf(temporaryCard);

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./Login.css";
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
 function Login({ history }) {
   const [email, setEmail] = useState("");
@@ -40,11 +42,22 @@ function Login({ history }) {
     }
     return isValid;
   };
+  const buttonSound = (event) => {
+    let beep = new Audio(buttonMenuClick);
+    beep.volume=(1);
+    beep.play();   
+}
+const buttonHover = (event) => {
+    let beep = new Audio(buttonHoverSound);
+    beep.volume=(1);
+    beep.play();   
+}
 
   return (
     <div className="login__container">
       <div className="login__container__menu-button">
-        <a href="/" className="login__container__menu-button__link">
+        <a href="/" className="login__container__menu-button__link" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
           Menu
         </a>
       </div>
@@ -79,13 +92,15 @@ function Login({ history }) {
             </div>
           </div>
           <div className="login__container__buttons">
-            <button type="submit" className="login__container__buttons__btn">
+            <button type="submit" className="login__container__buttons__btn" onMouseOver={buttonHover}>
               Przejdz do gry
             </button>
             <a
               href="/register"
               type="button"
               className="login__container__buttons__btn login__container__buttons__btn--link"
+              onMouseDown={buttonSound}
+              onMouseOver={buttonHover}
             >
               Zarejestruj się
             </a>

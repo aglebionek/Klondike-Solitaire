@@ -16,7 +16,7 @@ const sqlConnection = async function sqlConnection(sql, values, next) {
   try {
     resp = await query(sql, values);
   } catch (error) {
-    console.log("Prawdopodobnie błędna kwerenda");
+    console.log("Prawdopodobnie błędna kwerenda"+error);
   }
 
   connection.end();

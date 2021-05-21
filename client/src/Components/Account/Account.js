@@ -27,7 +27,7 @@ const Account =({effect}) => {
     const [countryName, setCountryName] = useState('Poland');
     const [newCountryName, setNewCountryName] = useState('');
 
-    const userId = 2;
+    const userId = 10;
     const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {

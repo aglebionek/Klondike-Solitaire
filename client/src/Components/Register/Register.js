@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./register.css";
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
 function Register({ history }) {
   const [email, setEmail] = useState("");
@@ -69,11 +71,22 @@ function Register({ history }) {
         });
     }
   };
+  const buttonSound = (event) => {
+    let beep = new Audio(buttonMenuClick);
+    beep.volume=(1);
+    beep.play();   
+}
+const buttonHover = (event) => {
+    let beep = new Audio(buttonHoverSound);
+    beep.volume=(1);
+    beep.play();   
+}
 
   return (
     <div className="register__container">
       <div className="register__container__menu-button">
-        <a href="/" className="register__container__menu-button__link">
+        <a href="/" className="register__container__menu-button__link" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
           Menu
         </a>
       </div>
@@ -135,13 +148,15 @@ function Register({ history }) {
             </div>
           </div>
           <div className="register__container__buttons">
-            <button type="submit" className="register__container__buttons__btn">
+            <button type="submit" className="register__container__buttons__btn" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
               Stwórz użytkownika
             </button>
             <a
               href="/login"
               type="button"
-              className="register__container__buttons__btn register__container__buttons__btn--link"
+              className="register__container__buttons__btn register__container__buttons__btn--link" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}
             >
               Zaloguj się
             </a>

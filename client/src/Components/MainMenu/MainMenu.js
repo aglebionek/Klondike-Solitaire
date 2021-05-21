@@ -1,12 +1,12 @@
 import React from "react";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
-import MenuMusic from './MenuMusic';
+//import MenuMusic from './MenuMusic';
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
 
-function MainMenu({effect, volume}) {
+function MainMenu({effect}) {
     const history = useHistory();
    
 
@@ -53,7 +53,7 @@ function MainMenu({effect, volume}) {
                 <div className='main-elements__buttons'>
                     <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
                     <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
-                    <MenuMusic musicVolume = {volume}></MenuMusic>
+                    {/* <MenuMusic musicVolume = {volume}></MenuMusic> */}
                 </div>
             </div>
         </div>        
