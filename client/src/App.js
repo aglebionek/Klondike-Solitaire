@@ -21,7 +21,7 @@ function App() {
   
   useEffect(() => {
       axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
-        const { carset_id, volume, effect, card_animation } = data;
+        const { volume, effect } = data;
         setEffect(effect);
         setVolume(volume);
       });
@@ -29,14 +29,14 @@ function App() {
   
   return (
     <Switch>
-      <Route exact path="/"  component={(props) => <MainMenu effect={eff}  /> } />
+      <Route exact path="/"  component={() => <MainMenu effect={eff}  /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
       <PrivateRoute path="/settings" component={Settings} />
-      <PrivateRoute path="/global-stats" component={(props) => <GlobalStats effect={eff}/> } />
-      <Route path="/game-view" component={(props) => <GameView effect={eff} volume={vol}  /> } />
+      <PrivateRoute path="/global-stats" component={() => <GlobalStats effect={eff}/> } />
+      <Route path="/game-view" component={() => <GameView effect={eff} volume={vol}  /> } />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
-      <PrivateRoute path="/account" component={(props) => <Account effect={eff}/> } />
+      <PrivateRoute path="/account" component={() => <Account effect={eff}/> } />
       <PrivateRoute path="/multiplayer/game-lobby" component={JoinRoom} />
       <PrivateRoute path="/multiplayer/create-room" component={CreateRoom} />
     </Switch>

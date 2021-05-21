@@ -37,14 +37,14 @@ const Account =({effect}) => {
         setTemporaryAvatar(avatars[index]);
       };
     
-      const previousAvatar = () => {
+    const previousAvatar = () => {
         let index = avatars.indexOf(temporaryAvatar);
         if (index === 0) index = avatars.length - 1;
         else index--;
         setTemporaryAvatar(avatars[index]);
       };
 
-      const setNewData = () => {
+    const setNewData = () => {
         const num = temporaryAvatar.match(/\d+/)[0];
         setAvatar(Number(num));
         if(newUsername != '') {
@@ -62,7 +62,7 @@ const Account =({effect}) => {
         
       };
 
-      const clearSettings = () => {
+    const clearSettings = () => {
         setNewPassword('');
         setOldPassword('');
         setRepeatPassword('');
@@ -71,32 +71,24 @@ const Account =({effect}) => {
         setShow(false);
       }
 
-      //Select configuration section
-        const [value, setValue] = useState('')
-        const options = useMemo(() => dataCountry, [])
+    const [value, setValue] = useState('')
+    const options = useMemo(() => dataCountry, [])
 
-        const changeHandler = value => {
+    const changeHandler = value => {
             setValue(value)
             setNewCountry(value.value)
             setNewCountryName(value.label)
         }
-      
 
-        const selstyle ={
+    const selstyle ={
             control: styles=> ({...styles, width: '225px'})
         };
 
-      //End
-      //button sound
-      const buttonSound = (event) => {
+    const buttonSound = () => {
             let beep = new Audio(buttonClickSound);
             beep.volume=(effect/100);
             beep.play();   
-    }
-
-      //end
-      
-
+    }     
 
     useEffect(() => {
         axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
@@ -112,7 +104,8 @@ const Account =({effect}) => {
                 
         });
       }, []);
-      const handleSubmit = (e) => {
+
+    const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:3000/account/edit/${userId}`, {
         icon_id: avatar,

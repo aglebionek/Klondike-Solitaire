@@ -42,12 +42,12 @@ function Login({ history }) {
     }
     return isValid;
   };
-  const buttonSound = (event) => {
+  const buttonSound = () => {
     let beep = new Audio(buttonMenuClick);
     beep.volume=(1);
     beep.play();   
 }
-const buttonHover = (event) => {
+const buttonHover = () => {
     let beep = new Audio(buttonHoverSound);
     beep.volume=(1);
     beep.play();   

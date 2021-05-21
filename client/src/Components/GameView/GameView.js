@@ -7,12 +7,12 @@ function GameView({effect, volume}) {
   const score = 1234;
   const stopwatch = '12:34';  
 
-    const buttonSound = (event) => {
+    const buttonSound = () => {
       let beep = new Audio(buttonMenuClick);
       beep.volume=(effect/100);
       beep.play();   
   }
-  const buttonHover = (event) => {
+  const buttonHover = () => {
       let beep = new Audio(buttonHoverSound);
       beep.volume=(effect/100);
       beep.play();   

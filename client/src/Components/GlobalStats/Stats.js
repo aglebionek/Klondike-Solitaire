@@ -197,12 +197,12 @@ function GlobalStats({effect}) {
     setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
   };
 
-  const buttonSound = (event) => {
+  const buttonSound = () => {
     let beep = new Audio(buttonMenuClick);
     beep.volume=(effect/100);
     beep.play();   
 }
-const buttonHover = (event) => {
+const buttonHover = () => {
     let beep = new Audio(buttonHoverSound);
     beep.volume=(effect/100);
     beep.play();   
