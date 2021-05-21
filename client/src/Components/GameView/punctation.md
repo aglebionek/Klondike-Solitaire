@@ -2,7 +2,7 @@
 
 +10 punktów za poprawne ułożenie karty na stos
 -10 punktów za zdjęcie karty ze stosu
--10 punktów za cofnięcie ruchu 
+-20 punktów za cofnięcie ruchu 
 -50 punktów za dojście do końca talii
 
 # Premia czasowa:

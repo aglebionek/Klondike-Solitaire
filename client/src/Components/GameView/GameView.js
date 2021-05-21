@@ -46,8 +46,8 @@ class GameView extends React.Component {
   };
 
   getBack() {
-    if(this.points - 10 > 0){
-    this.points = this.points - 10;
+    if(this.points - 20 > 0){
+    this.points = this.points - 20;
     }
     else
     {
