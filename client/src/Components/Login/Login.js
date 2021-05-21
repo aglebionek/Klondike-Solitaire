@@ -79,15 +79,16 @@ function Login({ history }) {
             </div>
           </div>
           <div className="login__container__buttons">
-            <button type="submit" className="login__container__buttons__btn">
-              Przejdź do gry
-            </button>
-            <button
+          <button
               onClick={() => history.push('register')}
               className="login__container__buttons__btn"
             >
               Zarejestruj się
             </button>
+            <button type="submit" className="login__container__buttons__btn">
+              Zaloguj się
+            </button>
+            
           </div>
         </form>
         <div className="login__container__reminder"></div>
