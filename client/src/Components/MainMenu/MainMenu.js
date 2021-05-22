@@ -2,10 +2,23 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
-function MainMenu(props) {
+function MainMenu( {effect} ) {
     const history = useHistory();
     const [isLogged, setLog] = useState(false);
+
+    const buttonSound = () => {
+            let beep = new Audio(buttonMenuClick);
+            beep.volume=(effect/100);
+            beep.play();   
+    }
+    const buttonHover = () => {
+            let beep = new Audio(buttonHoverSound);
+            beep.volume=(effect/100);
+            beep.play();   
+    }
 
     const handleLogButton = (e) => {
         e.preventDefault();
@@ -34,7 +47,7 @@ function MainMenu(props) {
           });
     }, []);
 
-    return (
+    return (<>
         <div className='main-menu'>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
@@ -42,15 +55,15 @@ function MainMenu(props) {
                 <div className='top-bar__dropdown'>
                     <button><i className="fa fa-bars"></i></button>
                     <div className="dropdown__content">
-                        <button onClick={() => history.push('settings')}>USTAWIENIA</button>
-                        <button onClick={() => history.push('global-stats')}>STATYSTYKI</button>
-                        <button onClick={() => history.push('authors')}>AUTORZY</button>
-                        <button onClick={() => history.push('app-info')}>O GRZE</button> 
-                        <button onClick={() => history.push('account')}>KONTO</button> 
+                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('settings')}>USTAWIENIA</button>
+                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
+                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('authors')}>AUTORZY</button>
+                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('app-info')}>O GRZE</button> 
+                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
                     </div>
                 </div>
                 <div>
-                    <button onClick={handleLogButton}>
+                    <button onClick={handleLogButton} onMouseOver={buttonHover} onMouseDown={buttonSound}>
                         {isLogged ?  'WYLOGUJ' : 'LOGOWANIE / REJESTRACJA'}
                     </button>
                 </div>
@@ -61,12 +74,12 @@ function MainMenu(props) {
                     <h1>Pasjans Klondike</h1>
                 </div>
                 <div className='main-elements__buttons'>
-                    <button onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
-                    <button onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
+                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
+                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
                 </div>
-            </div>
-        </div>        
-    );
+            </div>   
+        </div>   
+   </>);
 }
 
 export default MainMenu;

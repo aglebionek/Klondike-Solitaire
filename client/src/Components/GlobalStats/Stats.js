@@ -3,16 +3,18 @@ import Posts from "./Posts";
 import "./Stats.css";
 import axios from 'axios';
 import _ from 'lodash';
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
 
-function GlobalStats() {
+function GlobalStats({effect}) {
     const [statsList, setStatsList] = useState([]);
     const [allStatsList, setAllStatsList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage] = useState(10);
 
-    const userID = 5;
+    const userID = 10;
 
     const [pageNumberLimit, setPageNumberLimit] = useState(5);
     const [maxPageNumberLimit, setPageMaxNumberLimit] = useState(5);
@@ -195,6 +197,17 @@ function GlobalStats() {
     setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
   };
 
+  const buttonSound = () => {
+    let beep = new Audio(buttonMenuClick);
+    beep.volume=(effect/100);
+    beep.play();   
+}
+const buttonHover = () => {
+    let beep = new Audio(buttonHoverSound);
+    beep.volume=(effect/100);
+    beep.play();   
+}
+
 
   return (
     <div className="App">
@@ -203,12 +216,12 @@ function GlobalStats() {
       </a>
       <h1>Statystyki</h1>
       {/* przyciski filtrowania */}
-      <div className="filter">
-        <a className="buttonfilter" onClick={filterByAll} >Pokaż wszystkie</a>
-        <a className="buttonfilter"  onClick={filterByTop10} >Top 10</a>
-        <a className="buttonfilter"  onClick={filterByTop20} >Top 20</a>
-        <a className="buttonfilter"  onClick={filterByTop30} >Top 30</a>
-        <a className="buttonfilter"  onClick={filterByTop50} >Top 50</a>
+      <div class="filter">
+        <a class="buttonfilter" onClick={filterByAll} onMouseDown={buttonSound} onMouseOver={buttonHover}>Pokaż wszystkie</a>
+        <a class="buttonfilter"  onClick={filterByTop10} onMouseDown={buttonSound} onMouseOver={buttonHover}>Top 10</a>
+        <a class="buttonfilter"  onClick={filterByTop20} onMouseDown={buttonSound} onMouseOver={buttonHover}>Top 20</a>
+        <a class="buttonfilter"  onClick={filterByTop30} onMouseDown={buttonSound} onMouseOver={buttonHover}>Top 30</a>
+        <a class="buttonfilter"  onClick={filterByTop50} onMouseDown={buttonSound} onMouseOver={buttonHover}>Top 50</a>
       </div>
       
 		  <table cellSpacing="0" cellPadding="0" border="0" style={{width: "100%"}}>
@@ -218,18 +231,18 @@ function GlobalStats() {
             <div className ="inline">
               Gracz
             </div> 
-            <div className ="inline">
-              <a onClick={sortByName} className="headerSortUp-by-name"></a>
-              <a onClick={sortByNameDesc} className="headerSortDown-by-name"></a>
+            <div class ="inline">
+              <a onClick={sortByName} class="headerSortUp-by-name" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+              <a onClick={sortByNameDesc} class="headerSortDown-by-name" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
             </div>
 		        </td>
 		        <td width="30%" align="center">
               <div className="inline">
                 Ranking
               </div>
-              <div className="inline"> 
-                <a onClick={sortByRank} className="headerSortUp-by-rank"></a>
-                <a onClick={sortByRankDesc} className="headerSortDown-by-rank"></a>
+              <div class="inline"> 
+                <a onClick={sortByRank} class="headerSortUp-by-rank" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+                <a onClick={sortByRankDesc} class="headerSortDown-by-rank" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
               </div>
 		        </td>
 		        <td width="30%" align="center" id="header">
@@ -237,22 +250,22 @@ function GlobalStats() {
               <div className="wdl">
                 W 
               </div>
-              <a onClick={sortByWins} className="headerSortUp-by-WDL"></a>
-              <a onClick={sortByWinsDesc} className="headerSortDown-by-WDL"></a>
+              <a onClick={sortByWins} class="headerSortUp-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+              <a onClick={sortByWinsDesc} class="headerSortDown-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
             </div>
             <div className="inline-with-margin"> 
               <div className="wdl">
               /D 
               </div>
-              <a onClick={sortByDraw} className="headerSortUp-by-WDL"></a>
-              <a onClick={sortByDrawDesc} className="headerSortDown-by-WDL"></a>
+              <a onClick={sortByDraw} class="headerSortUp-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+              <a onClick={sortByDrawDesc} class="headerSortDown-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
             </div>
             <div className="inline-with-margin"> 
               <div className="wdl">
                 /L 
               </div>
-              <a onClick={sortByLosers} className="headerSortUp-by-WDL"></a>
-              <a onClick={sortByLosersDesc} className="headerSortDown-by-WDL"></a>
+              <a onClick={sortByLosers} class="headerSortUp-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+              <a onClick={sortByLosersDesc} class="headerSortDown-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
             </div>
 		        </td>
           </tr>
@@ -264,6 +277,8 @@ function GlobalStats() {
           <button 
             onClick={handlePrevBtn}
             disabled={currentPage === pages[0] ? true : false}
+            onMouseDown={buttonSound}
+            onMouseOver={buttonHover}
           >
             Poprzednia
           </button>
@@ -275,6 +290,8 @@ function GlobalStats() {
           <button 
             onClick={handleNextBtn}
             disabled={currentPage === pages[pages.length-1] ? true : false}
+            onMouseDown={buttonSound}
+            onMouseOver={buttonHover}
           >
             Następna
           </button>

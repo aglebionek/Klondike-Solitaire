@@ -17,23 +17,40 @@ import AppInfo from "./Components/AppInfo/AppInfo";
 import Spinner from "./Components/Spinner/Spinner";
 
 function App() {
+
+    //turn off SoundManager's console logs
+    window.soundManager.setup({debugMode: false});
+
+  const [eff, setEffect] = useState(100);
+  const [vol, setVolume] = useState(100);
+  const userId = 10;
+  
+  useEffect(() => {
+      axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
+        const { volume, effect } = data;
+        setEffect(effect);
+        setVolume(volume);
+      });
+    }, []);
+  
   return (
     <Switch>
-      <Route path="/" component={MainMenu} exact />
+      <Route exact path="/" component={() => <MainMenu effect={eff}  /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
       <PrivateRoute path="/settings" component={Settings} />
-      <PrivateRoute path="/global-stats" component={GlobalStats} />
-      <Route path="/game-view" component={GameView} />
-      <Route path="/app-info" component={AppInfo} />
-      <Route path="/authors" component={Authors} />
+      <PrivateRoute path="/global-stats" component={() => <GlobalStats effect={eff}/> } />
+      <Route path="/game-view" component={() => <GameView effect={eff} volume={vol}  /> } />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
-      <PrivateRoute path="/account" component={Account} />
+      <PrivateRoute path="/account" component={() => <Account effect={eff}/> } />
       <PrivateRoute path="/game-lobby" component={JoinRoom} />
       <PrivateRoute path="/create-room" component={CreateRoom} />
+      <Route path="/app-info" component={AppInfo} />
+      <Route path="/authors" component={Authors} />
     </Switch>
   );
 }
+
 
 function PrivateRoute({ component: Component, ...rest }) {
   const [isAuth, setAuth] = useState(true);

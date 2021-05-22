@@ -184,3 +184,12 @@ body, ::after, ::before{
     font-size: 3.5rem;
     color: #00921c;
   }
+  .account_modal-nick-input,
+  .account_modal-password-old-input,
+  .account_modal-password-input-new,
+  .account_modal-password-input-new-repeat,
+  .account_modal-country{
+        margin: 0;
+        padding:10px;
+        max-width: 200px;
+  }
