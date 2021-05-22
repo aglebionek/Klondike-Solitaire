@@ -18,6 +18,9 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+app.use(cookieParser());
+
 const server = app.listen(PORT);
 
 // socket variables
@@ -31,10 +34,26 @@ app.use(
   })
 );
 
-app.use(cookieParser());
-
 app.get("/", (req, res) => {
   res.send("Some shit");
+});
+
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+
+  res.setHeader("Access-Control-Allow-Credentials", true);
+
+  next();
 });
 
 io.on("connection", (socket) => {
@@ -53,6 +72,11 @@ io.on("connection", (socket) => {
         users: getRoomUsers(user.room),
       });
     }
+  });
+
+  socket.on("game-start", ({ room }) => {
+    console.log(io.sockets.adapter.rooms)
+    io.to(room).emit('start');
   });
 
   socket.on("lobby-modify", ({ room, newName }) => {

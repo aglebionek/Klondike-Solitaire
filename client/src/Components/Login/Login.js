@@ -11,7 +11,7 @@ function Login({ history }) {
   const [passwordError, setPasswordError] = useState("");
   const [serverError, setServerError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
     if (isValid()) {
@@ -19,11 +19,11 @@ function Login({ history }) {
         .post("http://localhost:3000/auth/login", {
           email,
           password,
-        })
+        }, { withCredentials: true })
         .then(() => {
           history.push("/");
         })
-        .catch((err) => setServerError(err.response.data));
+        .catch((err) => setServerError(err.response));
     }
   };
 

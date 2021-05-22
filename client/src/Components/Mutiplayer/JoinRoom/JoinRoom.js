@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './JoinRoom.css';
 
 import socket from './../socketConfig.js';
 
 function JoinRoom () {
-
+  const history = useHistory();
   const initialData = {
     name: 'test',
     players: 0
@@ -24,7 +24,15 @@ function JoinRoom () {
 
     socket.emit('export-room');
 
+    socket.on('start', () => {
+      console.log('test')
+      history.push('/game-view');
+    });
+
     return () => {
+      socket.off('start', () => {
+        history.push('/game-view');
+      });
       socket.off('pass-room');
     }
 

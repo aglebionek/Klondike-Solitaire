@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
-
-function MainMenu({effect}) {
+function MainMenu( {effect} ) {
     const history = useHistory();
-   
+    const [isLogged, setLog] = useState(false);
 
     const buttonSound = () => {
             let beep = new Audio(buttonMenuClick);
@@ -20,7 +20,34 @@ function MainMenu({effect}) {
             beep.play();   
     }
 
-    return (
+    const handleLogButton = (e) => {
+        e.preventDefault();
+
+        if(isLogged){
+            axios
+                .post("http://localhost:3000/auth/logout")
+                .then(() => {
+                    setLog(false);
+                })
+                
+            return;
+        }
+
+        history.push('login');
+    }
+
+    useEffect(() => {
+        axios
+          .get("http://localhost:3000/auth/verify")
+          .then(() => {
+            setLog(true);
+          })
+          .catch(() => {
+            setLog(false);
+          });
+    }, []);
+
+    return (<>
         <div className='main-menu'>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
@@ -30,13 +57,15 @@ function MainMenu({effect}) {
                     <div className="dropdown__content">
                         <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('settings')}>USTAWIENIA</button>
                         <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
-                        <button onMouseOver={buttonHover} onMouseDown={buttonSound}>AUTORZY</button>
-                        <button onMouseOver={buttonHover} onMouseDown={buttonSound}>O GRZE</button> 
+                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('authors')}>AUTORZY</button>
+                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('app-info')}>O GRZE</button> 
                         <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
                     </div>
                 </div>
                 <div>
-                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('login')}>LOGOWANIE / REJESTRACJA</button>
+                    <button onClick={handleLogButton} onMouseOver={buttonHover} onMouseDown={buttonSound}>
+                        {isLogged ?  'WYLOGUJ' : 'LOGOWANIE / REJESTRACJA'}
+                    </button>
                 </div>
             </div>
 
@@ -48,9 +77,9 @@ function MainMenu({effect}) {
                     <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
                     <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
                 </div>
-            </div>
-        </div>        
-    );
+            </div>   
+        </div>   
+   </>);
 }
 
 export default MainMenu;

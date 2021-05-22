@@ -5,6 +5,7 @@ import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import axios from "axios";
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
+import Spinner from "../Spinner/Spinner";
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
@@ -44,7 +45,7 @@ const Settings = () => {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
+    axios.get(`http://localhost:3001/settings/${userId}`).then(({ data }) => {
       const { carset_id, volume, effect, card_animation } = data;
       console.log("aaaA");
       setTemporaryCard("card" + carset_id);
@@ -57,14 +58,16 @@ const Settings = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3000/settings/edit/${userId}`, {
+    axios.put(`http://localhost:3001/settings/edit/${userId}`, {
       cardset_id: card,
       music: musicVolume,
       effect: effectVolume,
       card_animation: isCardAnimation,
     });
   };
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <Spinner></Spinner>
+  );
   return (
     <div className={styles.container}>
       <div className={styles.header}>

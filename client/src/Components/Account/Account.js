@@ -120,6 +120,9 @@ const Account =({effect}) => {
 
     return (<>
         <div className = "profile-container">
+            <a className="stats__back" href="./..">
+                &#129044;
+            </a>
             <div className="profile-heading">KONTO</div>
             <div className="profile-header">
                 <div className="profile-avatar">
