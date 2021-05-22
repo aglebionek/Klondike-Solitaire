@@ -15,6 +15,9 @@ import Account from "./Components/Account/Account";
 
 function App() {
 
+    //turn off SoundManager's console logs
+    window.soundManager.setup({debugMode: false});
+
   const [eff, setEffect] = useState(100);
   const [vol, setVolume] = useState(100);
   const userId = 10;
