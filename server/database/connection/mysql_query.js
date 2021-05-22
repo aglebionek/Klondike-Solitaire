@@ -1,9 +1,9 @@
-const mysql = require("mysql2"),
-  config = require("../../config/dbconfig.json");
+const mysql = require("mysql2");
+const config = require("../../config/dbconfig");
 const util = require("util");
 
 const sqlConnection = async function sqlConnection(sql, values, next) {
-  var connection = mysql.createConnection(config.db);
+  var connection = mysql.createConnection(config);
   connection.connect(function (err) {
     if (err !== null) {
       console.log("Error connecting to mysql:" + err);

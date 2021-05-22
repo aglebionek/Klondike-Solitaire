@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const exampleRoute = require("./api/example/exampleRoute");
 const roomsRoute = require("./api/rooms/roomsRoute");
 const settingsRoute = require("./api/settings/settingsRoute");
@@ -14,15 +15,37 @@ const {
   modifyRoom,
   getAllUsers,
 } = require("./utils/users");
+const { all } = require("./api/example/exampleRoute");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+app.use(cookieParser());
+
 const server = app.listen(PORT);
 
 // socket variables
 const { Server } = require("socket.io");
 const io = new Server(server);
+
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+
+  res.setHeader("Access-Control-Allow-Credentials", true);
+
+  next();
+});
 
 app.use(express.json());
 app.use(

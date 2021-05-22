@@ -43,13 +43,15 @@
   color: red;
 }
 
-input {
+.register__container__creds__field__input {
   background-color: #eee;
   border: none;
   padding: 2em 1em;
   display: block;
   margin-right: auto;
   margin-left: auto;
+  margin-bottom: 10px;
+  width: 650px;
 }
 
 .register__container__buttons {

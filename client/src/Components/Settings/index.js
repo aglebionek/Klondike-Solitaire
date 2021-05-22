@@ -15,8 +15,6 @@ const Settings = () => {
   const [loading, setLoading] = useState(true);
 
   const cards = ["card1", "card2"];
-  const userId = 1;
-
   const nextCard = () => {
     let index = cards.indexOf(temporaryCard);
     if (index === cards.length - 1) index = 0;
@@ -38,24 +36,30 @@ const Settings = () => {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
-      const { carset_id, volume, effect, card_animation } = data;
-      setTemporaryCard("card" + carset_id);
-      setMusicVolume(Number(volume));
-      setEffectVolume(effect);
-      setCardAnimation(Boolean(card_animation));
-      setLoading(false);
-    });
+    axios
+      .get(`http://localhost:3001/settings`, { withCredentials: true })
+      .then(({ data }) => {
+        const { cardset_id, volume, effect, card_animation } = data;
+        setTemporaryCard("card" + cardset_id);
+        setMusicVolume(Number(volume));
+        setEffectVolume(effect);
+        setCardAnimation(Boolean(card_animation));
+        setLoading(false);
+      });
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3000/settings/edit/${userId}`, {
-      cardset_id: card,
-      music: musicVolume,
-      effect: effectVolume,
-      card_animation: isCardAnimation,
-    });
+    axios.put(
+      `http://localhost:3001/settings/edit`,
+      {
+        cardset_id: card,
+        music: musicVolume,
+        effect: effectVolume,
+        card_animation: isCardAnimation,
+      },
+      { withCredentials: true }
+    );
   };
   if (loading) return <div>Loading...</div>;
   return (

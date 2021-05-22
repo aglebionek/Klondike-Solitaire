@@ -24,7 +24,8 @@ router.post("/register", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (!email.match(emailRegex)) return res.status(400).json("email is invalid");
   if (!username) return res.status(400).json("username cannot be empty");
   if (username.length > 20) return res.status(400).json("username is too long");
@@ -51,13 +52,21 @@ router.post("/register", async (req, res) => {
     .toString();
 
   resp = await mysqlQuery(query, [username, email, hashedPassword]);
-
   if (!resp) return res.status(500).json("problem creating user");
+
+  const userId = resp.insertId;
+  const defaultSettingsQuery = fs
+    .readFileSync(
+      path.join(__dirname, "../../database/queries/default_settings.sql")
+    )
+    .toString();
+
+  resp = await mysqlQuery(defaultSettingsQuery, [userId]);
 
   const key = process.env.TOKEN_KEY;
   const token = jwt.sign(
     {
-      id: resp.insertId,
+      id: userId,
       username,
       email,
     },
@@ -78,7 +87,8 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (!email.match(emailRegex)) return res.status(400).json("email is invalid");
   if (!password) return res.status(400).json("Password is empty");
 

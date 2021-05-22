@@ -18,7 +18,8 @@ function Register({ history }) {
     setPasswordError("");
     setConfirmPasswordError("");
     let isValid = true;
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!email.match(emailRegex)) {
       setEmailError("Email jest niepoprawny");
       isValid = false;
@@ -55,11 +56,15 @@ function Register({ history }) {
     e.preventDefault();
     if (isValid()) {
       axios
-        .post("http://localhost:3000/auth/register", {
-          email: email,
-          username: username,
-          password: password,
-        })
+        .post(
+          "http://localhost:3001/auth/register",
+          {
+            email: email,
+            username: username,
+            password: password,
+          },
+          { withCredentials: true }
+        )
         .then(() => {
           history.push("/");
         })
@@ -89,6 +94,7 @@ function Register({ history }) {
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
+                className="register__container__creds__field__input"
               />
               <p className="register__container__creds__field__error">
                 {emailError}
@@ -102,6 +108,7 @@ function Register({ history }) {
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
+                className="register__container__creds__field__input"
               />
               <p className="register__container__creds__field__error">
                 {usernameError}
@@ -115,6 +122,7 @@ function Register({ history }) {
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
+                className="register__container__creds__field__input"
               />
               <p className="register__container__creds__field__error">
                 {passwordError}
@@ -128,6 +136,7 @@ function Register({ history }) {
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                 }}
+                className="register__container__creds__field__input"
               />
               <p className="register__container__creds__field__error">
                 {confirmPasswordError}

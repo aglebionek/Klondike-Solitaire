@@ -1,0 +1,1 @@
+insert into settings(user_id, cardset_id, volume, effect, card_animation) values(?, 1, 40, 40, true);

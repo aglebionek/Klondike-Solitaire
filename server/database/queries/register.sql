@@ -1,0 +1,1 @@
+INSERT INTO players (icon_id, country, username, email, password, registration_date, last_login, active) VALUES (1, "poland", ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true)
