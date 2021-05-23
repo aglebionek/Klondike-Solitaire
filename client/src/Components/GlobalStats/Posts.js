@@ -9,7 +9,7 @@ const Posts = ({statsList, loading, userID}) => {
         <Spinner></Spinner>
     );
 
-    return <table width="100%">
+    return <table width="100%" id={'stats-table'}>
         <tbody>
         {statsList.map(statsList => (
             <tr className={statsList.ID === userID ? "loggedPlayer" : ""} key={statsList.ID}>
