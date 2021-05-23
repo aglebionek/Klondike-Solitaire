@@ -190,11 +190,7 @@ const Account =({effect}) => {
                         <div id="number-of-abandoned-games-stats">11</div>
                     </div>
                 </div>
-                <div className="profile-return-button">
-                    <a href="/" className="account_menu-button" onMouseDown={buttonSound}>
-                    Menu
-                    </a>
-                </div> 
+                
             </div>
         </div> 
         <div style={show ? {display: 'flex'} : {display: 'none'}} className="background-modal">
