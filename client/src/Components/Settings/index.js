@@ -57,105 +57,107 @@ const Settings = () => {
       card_animation: isCardAnimation,
     });
   };
-  if (loading) return <div>Loading...</div>;
+  //if (loading) return <div>Loading...</div>;
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <a href="/" className={styles.menuButton}>
-          Menu
+          MENU
         </a>
-        <h1 className={styles.title}>Ustawienia Gry</h1>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.content}>
-          <div className={styles.contentWrapper}>
-            <div className={styles.itemsContainer}>
-              <div className={styles.item}>
-                <div className={styles.name}>Animacje kart</div>
-                <div className={styles.switch}>
-                  <Checkbox
-                    name="cardAnimations"
-                    status={isCardAnimation}
-                    setStatus={setCardAnimation}
-                  />
+      <div>
+        <header className={styles.title}>Ustawienia Gry</header>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.content}>
+            <div className={styles.contentWrapper}>
+              <div className={styles.itemsContainer}>
+                <div className={styles.item}>
+                  <div className={styles.name}>Animacje kart</div>
+                  <div className={styles.switch}>
+                    <Checkbox
+                      name="cardAnimations"
+                      status={isCardAnimation}
+                      setStatus={setCardAnimation}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.item}>
-                <div className={styles.name}>Talia</div>
-                <div className={styles.switch}>
-                  <Button
-                    text="Zmień"
-                    isCardSelectionOpen={isCardSelectionOpen}
-                    setCardSelectionOpen={setCardSelectionOpen}
-                  />
+                <div className={styles.item}>
+                  <div className={styles.name}>Talia</div>
+                  <div className={styles.switch}>
+                    <Button
+                      text="Zmień"
+                      isCardSelectionOpen={isCardSelectionOpen}
+                      setCardSelectionOpen={setCardSelectionOpen}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className={styles.item}>
-                <div className={styles.name}>Efekty dźwiekowe</div>
-                <div className={styles.switch}>
-                  <AudioSlider
-                    volume={effectVolume}
-                    setVolume={setEffectVolume}
-                  />
+                <div className={styles.item}>
+                  <div className={styles.name}>Efekty dźwiekowe</div>
+                  <div className={styles.switch}>
+                    <AudioSlider
+                      volume={effectVolume}
+                      setVolume={setEffectVolume}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className={styles.item}>
-                <div className={styles.name}>Głośność</div>
-                <div className={styles.switch}>
-                  <AudioSlider
-                    volume={musicVolume}
-                    setVolume={setMusicVolume}
-                  />
+                <div className={styles.item}>
+                  <div className={styles.name}>Głośność</div>
+                  <div className={styles.switch}>
+                    <AudioSlider
+                      volume={musicVolume}
+                      setVolume={setMusicVolume}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+            {isCardSelectionOpen && (
+              <div className={styles.selection}>
+                <div className={styles.selectionContainer}>
+                  <div
+                    className={`${styles.arrow} ${styles.arrowLeft}`}
+                    onClick={() => previousCard()}
+                  >
+                    &lt;
+                  </div>
+                  <div>
+                    <img
+                      src={`./images/${temporaryCard}.png`}
+                      alt="karta"
+                      className={styles.card}
+                    />
+                  </div>
+                  <div
+                    className={`${styles.arrow} ${styles.arrowRight}`}
+                    onClick={() => nextCard()}
+                  >
+                    &gt;
+                  </div>
+                </div>
+                <button
+                  className={styles.saveCardButton}
+                  onClick={() => setNewCard()}
+                  type="button"
+                >
+                  Wybierz
+                </button>
+              </div>
+            )}
           </div>
-          {isCardSelectionOpen && (
-            <div className={styles.selection}>
-              <div className={styles.selectionContainer}>
-                <div
-                  className={`${styles.arrow} ${styles.arrowLeft}`}
-                  onClick={() => previousCard()}
-                >
-                  &lt;
-                </div>
-                <div>
-                  <img
-                    src={`./images/${temporaryCard}.png`}
-                    alt="karta"
-                    className={styles.card}
-                  />
-                </div>
-                <div
-                  className={`${styles.arrow} ${styles.arrowRight}`}
-                  onClick={() => nextCard()}
-                >
-                  &gt;
-                </div>
-              </div>
-              <button
-                className={styles.saveCardButton}
-                onClick={() => setNewCard()}
-                type="button"
-              >
-                Wybierz
-              </button>
-            </div>
-          )}
-        </div>
-        <div className={styles.saveButtonContainer}>
-          <button
-            className={`${styles.saveButton} ${
-              isCardSelectionOpen ? styles.disabledButton : ""
-            }`}
-            type={isCardSelectionOpen ? "button" : "submit"}
-          >
-            Zapisz
-          </button>
-        </div>
-      </form>
+          <div className={styles.saveButtonContainer}>
+            <button
+              className={`${styles.saveButton} ${
+                isCardSelectionOpen ? styles.disabledButton : ""
+              }`}
+              type={isCardSelectionOpen ? "button" : "submit"}
+            >
+              Zapisz
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
