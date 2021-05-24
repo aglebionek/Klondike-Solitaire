@@ -24,11 +24,10 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install
-        npm install react
-        npm install react-peer
+        npm install react 16.0.0
+        npm install react-peer 16.3.0
         npm install react-dom
-        npm install -g typescript
-        npm install fsevents
+        npm install -g typescript 3.7.0-dev
         npm install --save prop-types
         npm install socket.io express --save
         npm install jquery --save
@@ -36,17 +35,16 @@ jobs:
         npm audit fix
         cd client
         npm install
-        npm install react
-        npm install react-peer
+        npm install react 16.0.0
+        npm install react-peer 16.3.0
         npm install react-dom
-        npm install -g typescript
-        npm install fsevents
+        npm install -g typescript 3.7.0-dev
         npm install --save prop-types
         npm install socket.io express --save
         npm install jquery --save
         npm install --save react-country-flag
         cd ..
-        npm run dev
+        npm run build
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
