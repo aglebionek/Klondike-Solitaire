@@ -26,11 +26,13 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install
+        npm install --save react
         npm install socket.io express --save
         npm install jquery --save
         npm install --save react-country-flag
         cd client
         npm install
+        npm install --save react
         npm install socket.io express --save
         npm install jquery --save
         npm install --save react-country-flag
