@@ -24,16 +24,20 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install
-        npm install --save react
-        npm install --save react-dom
+        npm install react
+        npm install react-dom
+        npm install fsevents
+        npm install --save prop-types
         npm install socket.io express --save
         npm install jquery --save
         npm install --save react-country-flag
         npm audit fix
         cd client
         npm install
-        npm install --save react
-        npm install --save react-dom
+        npm install react
+        npm install react-dom
+        npm install fsevents
+        npm install --save prop-types
         npm install socket.io express --save
         npm install jquery --save
         npm install --save react-country-flag
