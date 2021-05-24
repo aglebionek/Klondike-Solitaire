@@ -24,8 +24,21 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install
-        npm run build --if-present
-        npm run test --if-present
+        npm install --save react
+        npm install --save react-dom
+        npm install socket.io express --save
+        npm install jquery --save
+        npm install --save react-country-flag
+        npm audit fix
+        cd client
+        npm install
+        npm install --save react
+        npm install --save react-dom
+        npm install socket.io express --save
+        npm install jquery --save
+        npm install --save react-country-flag
+        cd ..
+        npm run build
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
