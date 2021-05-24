@@ -23,9 +23,9 @@ jobs:
 
     - name: npm install, build, and test
       run: |
-        npm-install-peers
+        npm install-peers
         cd client
-        npm-install-peers
+        npm install-peers
         cd ..
         npm run build
 
