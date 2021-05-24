@@ -30,8 +30,9 @@ jobs:
         npm install
         npm fund
         npm audit fix
+        npm run build
         cd ..
-        npm run dev
+        npm run server
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
