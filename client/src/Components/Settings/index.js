@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Settings.module.css";
+import styles from "./SettingsCyberpunk.module.css";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
