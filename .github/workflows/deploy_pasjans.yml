@@ -27,7 +27,9 @@ jobs:
         npm fund
         npm audit fix
         cd client
+        npm install
         npm fund
+        npm audit fix
         cd ..
         npm run build
 
