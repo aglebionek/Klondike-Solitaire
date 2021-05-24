@@ -26,8 +26,17 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install
-        npm run build --if-present
-        npm run test --if-present
+        npm install socket.io express --save
+        npm install jquery --save
+        npm install --save react-country-flag
+        cd client
+        npm install
+        npm install socket.io express --save
+        npm install jquery --save
+        npm install --save react-country-flag
+        cd ..
+        npm run client
+        npm run server
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
