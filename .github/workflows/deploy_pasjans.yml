@@ -24,25 +24,10 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install
-        npm install react 16.0.0
-        npm install react-peer 16.3.0
-        npm install react-dom
-        npm install -g typescript 3.7.0-dev
-        npm install --save prop-types
-        npm install socket.io express --save
-        npm install jquery --save
-        npm install --save react-country-flag
+        npm fund
         npm audit fix
         cd client
-        npm install
-        npm install react 16.0.0
-        npm install react-peer 16.3.0
-        npm install react-dom
-        npm install -g typescript 3.7.0-dev
-        npm install --save prop-types
-        npm install socket.io express --save
-        npm install jquery --save
-        npm install --save react-country-flag
+        npm fund
         cd ..
         npm run build
 
