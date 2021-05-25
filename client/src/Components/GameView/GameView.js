@@ -4,7 +4,7 @@ import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 import buttonUndoSound from '../../soundtrack/SoundDesign/button_undo.mp3';
 import GameMusic from './GameMusicKlondike';
 
-function GameView({effect, volume}) {
+function GameView({cardset_id,effect, volume}) {
   const score = 1234;
   const stopwatch = '12:34';  
 
@@ -26,7 +26,7 @@ function GameView({effect, volume}) {
 
   return (
     <div className="App">
-      {volume>0 && <GameMusic musicVolume={volume}/> }
+      {volume>0 && <GameMusic musicVolume={volume} cardset={cardset_id}/> }
     <div className="menu_top">
         <a className="game-view__back" href="./..">
           &#129044;

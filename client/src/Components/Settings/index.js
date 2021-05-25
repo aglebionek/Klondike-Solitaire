@@ -4,19 +4,20 @@ import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import axios from "axios";
-import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 import Spinner from "../Spinner/Spinner";
+import CardMotives from "../CardMotives/CardMotives";
+import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
   const [card, setCard] = useState(1);
-  const [temporaryCard, setTemporaryCard] = useState("card1");
+  const [temporaryCard, setTemporaryCard] = useState("vA hearts");
   const [musicVolume, setMusicVolume] = useState(10);
   const [effectVolume, setEffectVolume] = useState(40);
   const [isCardAnimation  , setCardAnimation] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  const cards = ["card1", "card2"];
+  const cards = ["vA hearts cyberpunk","vA hearts"];
   const userId = 10;
 
   const nextCard = () => {
@@ -34,21 +35,20 @@ const Settings = () => {
   };
 
   const setNewCard = () => {
-    const num = temporaryCard.match(/\d+/)[0];
-    setCard(Number(num));
+    const num =cards.indexOf(temporaryCard);
+    setCard(Number(num)+1);
     setCardSelectionOpen(false);
   };
+
   const buttonSound = (event) => {
     let beep = new Audio(buttonClickSound);
     beep.volume=(effectVolume/100);
     beep.play();   
   }
-
   useEffect(() => {
     axios.get(`http://localhost:3001/settings/${userId}`).then(({ data }) => {
-      const { carset_id, volume, effect, card_animation } = data;
-      console.log("aaaA");
-      setTemporaryCard("card" + carset_id);
+      const { cardset_id, volume, effect, card_animation } = data;
+      setTemporaryCard(cards[cardset_id-1]);
       setMusicVolume(Number(volume));
       setEffectVolume(effect);
       setCardAnimation(Boolean(card_animation));
@@ -134,11 +134,7 @@ const Settings = () => {
                   &lt;
                 </div>
                 <div>
-                  <img
-                    src={`./images/${temporaryCard}.png`}
-                    alt="karta"
-                    className={styles.card}
-                  />
+                  <CardMotives card_classes={temporaryCard}/>
                 </div>
                 <div
                   className={`${styles.arrow} ${styles.arrowRight}`}
@@ -149,9 +145,9 @@ const Settings = () => {
               </div>
               <button
                 className={styles.saveCardButton}
-                onClick={() => setNewCard()}
+                onClick={() => setNewCard()} 
                 onMouseDown={buttonSound}
-                type="button"
+                type="button"      
               >
                 Wybierz
               </button>
@@ -174,4 +170,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Settings; 
