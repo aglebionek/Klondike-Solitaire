@@ -30,7 +30,6 @@ jobs:
         npm install
         npm fund
         npm audit fix
-        npm run build
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
