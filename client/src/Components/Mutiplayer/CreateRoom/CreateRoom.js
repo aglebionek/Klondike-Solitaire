@@ -18,7 +18,8 @@ function CreateRoom() {
     isCreated: false,
     isBeingModified: false,
     name: "Nowy pokój",
-    minutes: 5
+    minutes: 5,
+    players: []
   };
 
   const [roomData, updateRoomData] = useState(initialRoomData);
@@ -73,16 +74,26 @@ function CreateRoom() {
   };
 
   useEffect(() => {
+    socket.on('pass-room', ({ room, users }) => {
+      updateRoomData((prevData) => ({
+        ...prevData,
+        name: room,
+        players: users.map(user => user.username)
+      }));
+    });
+
     socket.on('start', () => {
-      console.log('test')
       history.push('/game-view');
     });
 
+    socket.emit('export-room');
+
     return () => {
       socket.off('start', () => {
-        console.log('test')
         history.push('/game-view');
       });
+
+      socket.off('pass-room');
     }
   }, []);
 
@@ -98,6 +109,21 @@ function CreateRoom() {
           <div className="lobby__created-data">
             <p>Czas gry (w minutach):</p>
             <p>{roomData.minutes}</p>
+          </div>
+          <div className="lobby__created-data">
+            <p>Gracze:</p>
+            <ul>
+              {
+                Object.values(roomData.players).map((player, index) => (
+                  <li key={index} className="player-row">
+                    <div>
+                      <p>{player}</p>
+                      <button>X</button>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
           </div>
           <div className="lobby__created-data__btns">
             <Link to="/multiplayer">
@@ -148,7 +174,16 @@ function CreateRoom() {
                 <option value="20">20</option>
               </select>
             </div>
-            <button>{roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}</button>
+            <button 
+              onClick={() => setTimeout(() => {
+                  socket.emit('export-room');
+                  socket.emit('export-users');
+                } 
+                , 10
+              )} // async loading hack
+            >
+              {roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}
+            </button>
           </form>
         </div>
       </section>

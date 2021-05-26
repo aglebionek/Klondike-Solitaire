@@ -16,6 +16,7 @@ function LobbyMultiplayer() {
     const room = evt.target.getAttribute('data-room');
 
     socket.emit('lobby-join', { player, room });
+    socket.emit('export-users');
   }
 
   const getRooms = () => {

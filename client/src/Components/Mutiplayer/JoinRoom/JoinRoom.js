@@ -14,18 +14,16 @@ function JoinRoom () {
 
   useEffect(() => {
     socket.on('pass-room', ({ room, users }) => {
-      const players = users.length;
-  
       updateRoomData({
         name: room,
-        players
+        players: users.length
       });
     });
 
     socket.emit('export-room');
+    socket.emit('export-users');
 
     socket.on('start', () => {
-      console.log('test')
       history.push('/game-view');
     });
 

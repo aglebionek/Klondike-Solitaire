@@ -23,7 +23,6 @@ app.use(cookieParser());
 
 const server = app.listen(PORT);
 
-// socket variables
 const { Server } = require("socket.io");
 const io = new Server(server);
 
@@ -75,7 +74,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("game-start", ({ room }) => {
-    console.log(io.sockets.adapter.rooms)
     io.to(room).emit('start');
   });
 
@@ -88,19 +86,37 @@ io.on("connection", (socket) => {
 
     console.log("a user joined the room");
     socket.join(user.room);
-    socket.emit("export users");
+
+    io.to(room).emit("pass-room", {
+      room,
+      users: getRoomUsers(room),
+    });
   });
 
   socket.on("lobby-leave", () => {
-    console.log("a user left the room");
+    const user = getCurrentUser(socket.id);
+
     userLeave(socket.id);
-    socket.emit("export users");
+
+    io.to(user.room).emit("pass-room", {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
+  });
+
+  socket.on("kick", ({ player }) => {
+    userLeave(player.id);
+
+    io.to(player.room).emit("pass-room", {
+      room,
+      users: getRoomUsers(player.room),
+    });
   });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
     userLeave(socket.id);
-    socket.emit("export users");
+    socket.emit("export-room");
   });
 });
 
