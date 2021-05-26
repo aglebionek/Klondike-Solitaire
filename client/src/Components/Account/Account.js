@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Account.css";
+import "./Components/Account/AccountCyberpunk.css";
 import axios from "axios";
 
 const Account =() => {
@@ -62,7 +62,7 @@ const Account =() => {
       }
 
       
-
+      /*
     useEffect(() => {
         axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
           const { username, registration_date, country, icon_id, password} = data.resp[0];     
@@ -74,7 +74,14 @@ const Account =() => {
           setCurrentPassword(password);
         });
       }, []);
-
+      */
+      /*
+      <div className="profile-header-edit"> 
+                    <div className="edition-text">
+                        <button onClick={() => setShow(true)}>Edycja</button>
+                    </div>
+                </div>
+      */
       const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:3000/account/edit/${userId}`, {
@@ -84,13 +91,17 @@ const Account =() => {
         country: country,
         });
       };
-
     return (<>
         <div className = "profile-container">
-            <div className="profile-heading">KONTO</div>
+          <div className='profile-menu-button-div'>
+            <a href="/" className='profile-menu-button'>
+              MENU
+            </a>
+          </div>
+            <header className="profile-heading">KONTO</header>
             <div className="profile-header">
                 <div className="profile-avatar">
-                    <img className="account-avatar" src={`./images/avatar${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
+                    <img draggable="false" className="account-avatar" src={`./images/avatar${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                 </div> 
                 <div className="profile-header-info"> 
                     <div className="profile-username">{userName}</div>
@@ -104,13 +115,13 @@ const Account =() => {
                         <div className="country-name">
                             {country}
                         </div>
+                        <div className="edition-text">
+                            <button className='profile-edit-button' onClick={() => setShow(true)}>Edycja</button>
+                        </div>
                     </div>
                 </div>
-                <div className="profile-header-edit"> 
-                    <div className="edition-text">
-                        <button onClick={() => setShow(true)}>Edycja</button>
-                    </div>
-                </div>
+                
+                
             </div>
             <div className="profile-main">
                 <div className="profile-statistics"> 
@@ -144,9 +155,6 @@ const Account =() => {
                         <div id="number-of-abandoned-games-stats">11</div>
                     </div>
                 </div>
-                <div className="profile-return-button">
-                    <input type="button" value="Powrót" />
-                </div> 
             </div>
         </div> 
         <div style={show ? {display: 'flex'} : {display: 'none'}} className="background-modal">
