@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./Animation.css";
 import Rain from './rain'
 import Firework from './firework';
+import Fog from './fog';
+
 
 
 function Animation({action}){
@@ -30,7 +32,9 @@ function Animation({action}){
     else if(action==='draw')
     {
        return (
+           
             <div className="animation-background-black">
+            <Fog/>
                     <div class="animation-container">
                             <div className="animation-win-box">
                                 <ul>
@@ -42,6 +46,7 @@ function Animation({action}){
                                 </ul>
                             </div>
                     </div>
+                    
             </div>
         )  
     }
