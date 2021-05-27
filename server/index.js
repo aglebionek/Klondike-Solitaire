@@ -13,6 +13,7 @@ const {
   getRoomUsers,
   modifyRoom,
   getAllUsers,
+  setUsersInGame
 } = require("./utils/users");
 require("dotenv").config();
 
@@ -59,7 +60,7 @@ io.on("connection", (socket) => {
   console.log("a user connected");
 
   socket.on("export-users", () => {
-    socket.emit("pass-users", getAllUsers());
+    socket.emit("pass-users", getAllUsers().filter(user => !user.inGame));
   });
 
   socket.on("export-room", () => {
@@ -74,6 +75,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("game-start", ({ room }) => {
+    setUsersInGame(room);
     io.to(room).emit('start');
   });
 
@@ -87,10 +89,12 @@ io.on("connection", (socket) => {
     console.log("a user joined the room");
     socket.join(user.room);
 
-    io.to(room).emit("pass-room", {
-      room,
-      users: getRoomUsers(room),
-    });
+    if(user){
+      io.to(room).emit("pass-room", {
+        room,
+        users: getRoomUsers(room),
+      });
+    }
   });
 
   socket.on("lobby-leave", () => {
@@ -106,9 +110,10 @@ io.on("connection", (socket) => {
 
   socket.on("kick", ({ player }) => {
     userLeave(player.id);
+    io.to(player.id).emit("kicked", { room: player.room });
 
     io.to(player.room).emit("pass-room", {
-      room,
+      room: player.room,
       users: getRoomUsers(player.room),
     });
   });

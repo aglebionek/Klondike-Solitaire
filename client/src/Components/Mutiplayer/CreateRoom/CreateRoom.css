@@ -86,3 +86,7 @@
   all: unset;
   cursor: pointer;
 }
+
+.player-row:first-child button{
+  display: none;
+}
