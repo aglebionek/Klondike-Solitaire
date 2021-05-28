@@ -2,7 +2,15 @@ import React from "react";
 import { useDrag } from "react-dnd";
 import styles from "./Item.module.css";
 
-const DraggableCard = ({ name, type, top, index, setDraggingCard, item }) => {
+const DraggableCard = ({
+  name,
+  type,
+  top,
+  index,
+  setDraggingCard,
+  item,
+  startCardIndex,
+}) => {
   const [{}, drag] = useDrag(
     () => ({
       type,
@@ -22,6 +30,7 @@ const DraggableCard = ({ name, type, top, index, setDraggingCard, item }) => {
     let shape = el.attributes.getNamedItem("data-shape").value;
     let color = el.attributes.getNamedItem("data-color").value;
     let isVisible = el.attributes.getNamedItem("data-visible").value;
+    let cardIndex = el.attributes.getNamedItem("data-index")?.value;
 
     let arr = [];
     arr.push({ rank, color, shape, isVisible });
@@ -47,6 +56,7 @@ const DraggableCard = ({ name, type, top, index, setDraggingCard, item }) => {
       title: name,
       array: arr,
       target: el,
+      cardIndex: cardIndex,
     });
   };
   const convertRankToClass = "v" + item.rank;
@@ -71,6 +81,7 @@ const DraggableCard = ({ name, type, top, index, setDraggingCard, item }) => {
       data-color={item.color}
       data-shape={item.shape}
       data-visible={item.isVisible}
+      data-index={startCardIndex}
       ref={drag}
       onDragStart={handleDrag}
       onDragEnd={handleDragEnd}

@@ -116,8 +116,7 @@ const cards = [
 ];
 
 export const shuffleCards = () => {
-  const deck = cards;
-
+  const deck = cards.slice();
   const startColumn1 = [];
   const mainColumn1 = [];
   const mainColumn2 = [];
@@ -156,5 +155,81 @@ export const shuffleCards = () => {
       deck.splice(random, 1);
     }
   });
+  const test = [];
+  Object.entries(mainColumns).map(([key, item], index) => {
+    for (let i = 0; i < item.length; i++) {
+      for (let j = 0; j < test.length; j++) {
+        if (test[j] == item[i]) {
+          console.log("ten sam");
+          return console.log("ten sam itemek");
+        }
+      }
+      test.push(item[i]);
+    }
+  });
+
+  for (let i = 0; i < startColumn1.length; i++) {
+    for (let j = 0; j < test.length; j++) {
+      if (test[j] == startColumn1[i]) {
+        console.log("ten sam");
+        return console.log("ten sam itemek");
+      }
+    }
+    console.log("push");
+    test.push(startColumn1[i]);
+  }
+  const aa = test.sort(compare);
+  console.log(aa);
+
+  function compare(a, b) {
+    if (a.rank < b.rank) {
+      return -1;
+    }
+    if (a.rank > b.rank) {
+      return 1;
+    }
+    return 0;
+  }
+
   return { startColumn1, ...mainColumns };
+};
+
+export const numMoves = function (
+  columnList,
+  foundationList,
+  revealedCardStack
+) {
+  console.log(columnList);
+  console.log(foundationList);
+  console.log(revealedCardStack);
+  var nummov = 0;
+  for (const column of columnList) {
+    const revealedCard = revealedCardStack.pop();
+    if (isDroppable(revealedCard, column[0])) {
+      nummov += 1;
+      revealedCardStack.push(revealedCard);
+    } else {
+      revealedCardStack.push(revealedCard);
+    }
+    for (const column1 of columnList) {
+      if (isDroppable(column[0], column1[0])) {
+        nummov += 1;
+      }
+    }
+  }
+  for (const column of columnList) {
+    for (const foundation of foundationList) {
+      const revealedCard = revealedCardStack.pop();
+      if (check4Stack(foundation, revealedCard)) {
+        nummov += 1;
+        revealedCardStack.push(revealedCard);
+      } else {
+        revealedCardStack.push(revealedCard);
+      }
+      if (check4Stack(foundation, column[0])) {
+        nummov += 1;
+      }
+    }
+  }
+  return nummov;
 };

@@ -3,7 +3,7 @@ import styles from "./GameView.module.css";
 import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { isDroppable, shuffleCards } from "../../utils/card";
+import { isDroppable, shuffleCards, numMoves } from "../../utils/card";
 import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
@@ -13,6 +13,14 @@ import "../CardMotives/CardMotives.css";
 function GameView() {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
   const [startCardIndex, setStartCardIndex] = useState(0);
+  const [isLoading, setLoading] = useState(true);
+  const [moveNumbers, setMoveNumbers] = useState(0);
+  const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
+  const [gameNumber, setGameNumber] = useState(0);
+  const [isGameEnded, setGameEnd] = useState(false);
+  const [bonus, setBonus] = useState(1200);
+  const [gameTime, setGameTime] = useState(0);
+  const [points, setPoints] = useState(0);
 
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
@@ -100,7 +108,62 @@ function GameView() {
     Object.entries(initialShuffle).map(([key, item]) => {
       columns[key].set(item);
     });
+    setLoading(false);
+    startTimer();
   }, []);
+
+  let timer;
+
+  const startTimer = () => {
+    timer = setInterval(() => {
+      const reducedBonus = bonus - 1;
+      setGameTime((prev) => prev + 1);
+      if (reducedBonus < 0) {
+        setBonus(0);
+      } else setBonus(reducedBonus);
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    clearInterval(timer);
+    setPoints((prev) => prev + bonus);
+  };
+
+  useEffect(() => {
+    if (gameNumber > 0) {
+      const initialShuffle = shuffleCards();
+      Object.entries(initialShuffle).map(([key, item]) => {
+        columns[key].set(item);
+      });
+      setMoveNumbers(0);
+
+      Object.entries(finalColumns).map(([key, column]) => {
+        column.set([]);
+      });
+      setStartCardIndex(0);
+      setStartColumn2([]);
+    }
+  }, [gameNumber]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      console.log("Wchodzimy");
+      const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
+        return mainColumns[key].get;
+      });
+      const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
+        return finalColumns[key].get;
+      });
+      const possibleMoves = numMoves(
+        mainColumnsArr,
+        finalColumnsArr,
+        startColumn1
+      );
+      if (possibleMoves === 0) {
+        setGameEnd(true);
+      } else setPossibleMoveNumbers(possibleMoves);
+    }
+  }, [moveNumbers, isLoading, gameNumber]);
 
   const handleDrop = (currentCards, draggingCards) => {
     const selectedCard = currentCards.array[currentCards.array.length - 1];
@@ -110,25 +173,37 @@ function GameView() {
     const carriedArrayLength = carriedArray.length;
     const sliceEnd = carriedArrayLength - dragArrayLength;
     const carriedTarget = draggingCard.target;
-
+    setMoveNumbers((prev) => prev + 1);
     if (
       currentCards.array.length === 0 ||
       isDroppable(selectedCard, dropTarget)
     ) {
+      if (draggingCards.title.contains("finalColumns")) {
+        console.log("contains");
+      }
+      console.log(draggingCards);
       columns[currentCards.title].set([
         ...currentCards.array,
         ...draggingCards.array,
       ]);
 
       const reducedColumn = carriedArray.slice(0, sliceEnd);
+      let reversed = null;
+      if (
+        reducedColumn.length > 0 &&
+        !reducedColumn[reducedColumn.length - 1].isVisible
+      ) {
+        reversed = reducedColumn.length - 1;
+      }
       if (reducedColumn.length > 0)
         reducedColumn[reducedColumn.length - 1].isVisible = true;
       columns[draggingCard.title].set(reducedColumn);
+
       const newHistoryStep = {
         source: draggingCard.title,
         target: currentCards.title,
         draggedCards: draggingCard.array,
-        reversed: reducedColumn.length > 0 ? reducedColumn.length - 1 : null,
+        reversed,
       };
       setHistory([...history, newHistoryStep]);
     } else {
@@ -141,7 +216,8 @@ function GameView() {
     }
     setDraggingCard({ title: "", array: [] });
   };
-
+  if (isLoading) return <div>loading...</div>;
+  if (isGameEnded) return <div>Gra zakończona</div>;
   return (
     <DndProvider backend={HTML5Backend}>
       <CustomDragLayer draggingCard={draggingCard} />
@@ -158,6 +234,8 @@ function GameView() {
             setStartColumn2={setStartColumn2}
             setHistory={setHistory}
             history={history}
+            points={points}
+            setPoints={setPoints}
           />
           <Buttons
             history={history}
@@ -167,6 +245,10 @@ function GameView() {
             setStartColumn2={setStartColumn2}
             columns={columns}
             setHistory={setHistory}
+            setMoveNumbers={setMoveNumbers}
+            setGameNumber={setGameNumber}
+            points={points}
+            setPoints={setPoints}
           />
           <FinalColumns
             finalColumns={finalColumns}
@@ -175,6 +257,8 @@ function GameView() {
             setHistory={setHistory}
             history={history}
             setDraggingCard={setDraggingCard}
+            setMoveNumbers={setMoveNumbers}
+            setPoints={setPoints}
           />
         </div>
         <MainColumns
@@ -184,8 +268,10 @@ function GameView() {
           draggingCard={draggingCard}
         />
         <div className={styles.statisticks}>
-          <div>Punkty: 1234</div>
-          <div>Czas: 12</div>
+          <div>Punkty: {points}</div>
+          <div>Czas: {gameTime}</div>
+          <p>Ilość możliwych ruchów: {possiblemoveNumbers}</p>
+          <p>Wykonane ruchy: {moveNumbers}</p>
         </div>
       </div>
     </DndProvider>

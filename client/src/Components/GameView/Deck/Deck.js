@@ -14,9 +14,15 @@ const Deck = ({
   setStartColumn2,
   setHistory,
   history,
+  points,
+  setPoints,
 }) => {
   const revealTheCard = () => {
     if (startCardIndex + 1 > startColumn1.length) {
+      const newPoints = points - 50;
+      if (newPoints < 0) {
+        setPoints(0);
+      } else setPoints(newPoints);
       setStartCardIndex(0);
     } else setStartCardIndex((prev) => prev + 1);
     const card = startColumn1[startCardIndex];
@@ -45,6 +51,7 @@ const Deck = ({
               type="card"
               top={0}
               index={0}
+              startCardIndex={startCardIndex}
               item={startColumn2[0]}
               name={"startColumn2"}
               setDraggingCard={setDraggingCard}

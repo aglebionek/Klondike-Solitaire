@@ -11,6 +11,8 @@ const FinalColumns = ({
   setHistory,
   history,
   setDraggingCard,
+  setMoveNumbers,
+  setPoints,
 }) => {
   const handleReverseDrop = (currentCards, draggingCards) => {
     const selectedCard = currentCards.array[currentCards.array.length - 1];
@@ -21,26 +23,48 @@ const FinalColumns = ({
     const sliceEnd = carriedArrayLength - dragArrayLength;
     const carriedTarget = draggingCard.target;
 
+    setMoveNumbers((prev) => prev + 1);
     if (
       (currentCards.array.length === 0 &&
         draggingCards.array[0].rank === "A") ||
       (currentCards.array.length > 0 && isDroppable(dropTarget, selectedCard))
     ) {
-      columns[currentCards.title].set([
-        ...currentCards.array,
-        ...draggingCards.array,
-      ]);
-      const reducedColumn = carriedArray.slice(0, sliceEnd);
-      if (reducedColumn.length > 0)
-        reducedColumn[reducedColumn.length - 1].isVisible = true;
-      columns[draggingCard.title].set(reducedColumn);
-      const newHistoryStep = {
-        source: draggingCard.title,
-        target: currentCards.title,
-        draggedCards: draggingCard.array,
-        reversed: reducedColumn.length > 0 ? reducedColumn.length - 1 : null,
-      };
+      let newHistoryStep;
+      if (draggingCards.title === "startColumn2") {
+        const source = columns["startColumn1"].get;
+
+        const index = draggingCard.cardIndex;
+        source.splice(index - 1, 1);
+        columns[draggingCard.title].set([]);
+        columns["startColumn1"].set(source);
+        columns[currentCards.title].set([
+          ...currentCards.array,
+          ...draggingCards.array,
+        ]);
+        newHistoryStep = {
+          source: draggingCard.title,
+          target: currentCards.title,
+          draggedCards: draggingCard.array,
+          cardIndex: index,
+        };
+      } else {
+        columns[currentCards.title].set([
+          ...currentCards.array,
+          ...draggingCards.array,
+        ]);
+        const reducedColumn = carriedArray.slice(0, sliceEnd);
+        if (reducedColumn.length > 0)
+          reducedColumn[reducedColumn.length - 1].isVisible = true;
+        columns[draggingCard.title].set(reducedColumn);
+        newHistoryStep = {
+          source: draggingCard.title,
+          target: currentCards.title,
+          draggedCards: draggingCard.array,
+          reversed: reducedColumn.length > 0 ? reducedColumn.length - 1 : null,
+        };
+      }
       setHistory([...history, newHistoryStep]);
+      setPoints((prev) => prev + 10);
     } else {
       carriedTarget.style.opacity = 1;
       let sibling = carriedTarget.nextElementSibling;
