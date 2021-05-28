@@ -178,7 +178,8 @@ function GameView() {
       currentCards.array.length === 0 ||
       isDroppable(selectedCard, dropTarget)
     ) {
-      if (draggingCards.title.contains("finalColumns")) {
+      console.log(draggingCards.title);
+      if (draggingCards.title.includes("finalColumns")) {
         console.log("contains");
       }
       console.log(draggingCards);

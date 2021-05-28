@@ -28,7 +28,6 @@ function getItemStyles(initialOffset, currentOffset, isSnapToGrid) {
   const transform = `translate(${x}px, ${y}px)`;
   return {
     transform,
-    transition: "transform 0.15s",
     WebkitTransform: transform,
   };
 }
