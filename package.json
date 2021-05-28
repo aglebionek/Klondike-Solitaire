@@ -1,10 +1,11 @@
 {
   "name": "pasjans",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "start": "cd server && node index.js",
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
     "server": "npm start",

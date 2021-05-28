@@ -6,6 +6,11 @@ const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
 const authRoute = require("./api/auth/authRoute");
 const accountRoute = require("./api/account/accountRoute");
+const path = require("path");
+
+const PORT = process.env.PORT || 3001;
+const app = express();
+
 const {
   userJoin,
   getCurrentUser,
@@ -15,10 +20,6 @@ const {
   getAllUsers,
 } = require("./utils/users");
 require("dotenv").config();
-
-const PORT = process.env.PORT || 3001;
-const app = express();
-
 app.use(cookieParser());
 
 const server = app.listen(PORT);
@@ -33,7 +34,10 @@ app.use(
     extended: true,
   })
 );
-
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
 app.get("/", (req, res) => {
   res.send("Some shit");
 });
