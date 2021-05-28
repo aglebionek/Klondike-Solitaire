@@ -8,6 +8,7 @@ const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
@@ -15,7 +16,6 @@ app.get("/", (req, res) => {
   res.send("Some shit");
 });
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use("/example", exampleRoute);
 app.use("/rooms", roomsRoute);
 app.use("/settingsRoute", settingsRoute);
