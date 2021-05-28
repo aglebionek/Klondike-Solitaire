@@ -14,6 +14,7 @@ const player = 'player';
 
 function CreateRoom() {
   const history = useHistory();
+
   const initialRoomData = {
     isCreated: false,
     isBeingModified: false,
@@ -22,7 +23,13 @@ function CreateRoom() {
     players: []
   };
 
-  const [roomData, updateRoomData] = useState(initialRoomData);
+  const [roomData, updateRoomData] = useState(() => {
+    const storageValue = localStorage.getItem('roomData');
+
+    return storageValue !== null
+      ? JSON.parse(storageValue)
+      : initialRoomData;
+  });
   const [roomNameBuffer, updateRoomBuffer] = useState(roomData.name);
 
   const handleNameChange = (evt) => {
@@ -35,7 +42,7 @@ function CreateRoom() {
   const handleTimeChange = (evt) => {
     updateRoomData((prevData) => ({
       ...prevData,
-      minutes: evt.target.value,
+      minutes: parseInt(evt.target.value),
     }));
   };
 
@@ -62,6 +69,7 @@ function CreateRoom() {
     }));
 
     updateRoomBuffer(roomData.name);
+    localStorage.setItem('roomData', JSON.stringify(roomData))
   };
 
   const handleRoomModifyButton = (evt) => {
@@ -80,6 +88,8 @@ function CreateRoom() {
         name: room,
         players: users
       }));
+
+      localStorage.setItem('roomData', JSON.stringify(roomData));
     });
 
     socket.on('start', () => {
@@ -95,7 +105,7 @@ function CreateRoom() {
 
       socket.off('pass-room');
     }
-  }, []);
+  });
 
   if (roomData.isCreated && !roomData.isBeingModified) {
     return (
@@ -126,8 +136,11 @@ function CreateRoom() {
             </ul>
           </div>
           <div className="lobby__created-data__btns">
-            <Link to="/multiplayer">
-              <button onClick={() => socket.emit('lobby-leave')}>Rozwiąż</button>
+            <Link to="/multiplayer" onClick={() => {
+                socket.emit('lobby-leave');
+                localStorage.removeItem('roomData');
+              }}>
+                Rozwiąż
             </Link>
             <button onClick={handleRoomModifyButton}>Modyfikuj</button>
             <button onClick={() => socket.emit('game-start', {room: roomData.name})}>Rozpocznij grę</button>

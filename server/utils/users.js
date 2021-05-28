@@ -43,11 +43,11 @@ const setUsersInGame = room => {
   users.forEach(user => user.inGame = true)
 }
 
-const setUsersOutOfGame = room => {
+/*const setUsersOutOfGame = room => {
   const users = getRoomUsers(room);
 
   users.forEach(user => user.inGame = false);
-}
+}*/
 
 const modifyRoom = (room, newName) => {
   users.forEach(user => {

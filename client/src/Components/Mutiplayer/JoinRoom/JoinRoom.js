@@ -35,6 +35,7 @@ function JoinRoom () {
       socket.off('start', () => {
         history.push('/game-view');
       });
+      
       socket.off('pass-room');
     }
 

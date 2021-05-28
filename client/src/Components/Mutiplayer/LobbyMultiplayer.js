@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./LobbyMultiplayer.css";
+import axios from 'axios';
 
 // socket client
 import socket from './socketConfig';
 
-// this one will be taken from DB in the future
-const player = 'player';
+// cóż, to jedyny dostępny user przy logowaniu także no... xD
+let player = 'player';
+const userId = 10;
+
+axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
+  player = data.username;
+});
 
 function LobbyMultiplayer() {
 
