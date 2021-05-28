@@ -1,19 +1,21 @@
 CREATE TABLE `Players` (
-  `id` unsigned PRIMARY KEY AUTO_INCREMENT,
-  `icon_id` unsigned,
-  `cardset_id` unsigned,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `icon_id` int,
+  `cardset_id` int,
   `username` varchar(32),
   `email` varchar(32),
   `password` varchar(64) COMMENT 'SHA256 hash',
-  `registration_date` datetime DEFAULT (NOW()),
+  `registration_date` datetime DEFAULT NOW(),
   `last_login` datetime,
-  `active` boolean COMMENT 'Check if account is active after registration'
+  `active` boolean COMMENT 'Check if account is active after registration',
+  `music` boolean,
+  `sounds` boolean
 );
 
 CREATE TABLE `GameOccurrences` (
-  `id` unsigned PRIMARY KEY AUTO_INCREMENT,
-  `player_id` unsigned,
-  `game_id` unsigned,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `player_id` int,
+  `game_id` int,
   `points` integer,
   `completion_time` integer COMMENT 'In seconds',
   `moves` text COMMENT 'Format currently not specified',
@@ -22,18 +24,18 @@ CREATE TABLE `GameOccurrences` (
 );
 
 CREATE TABLE `Games` (
-  `id` unsigned PRIMARY KEY AUTO_INCREMENT,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `date_started` datetime,
   `date_ended` datetime
 );
 
 CREATE TABLE `CardSets` (
-  `id` unsigned PRIMARY KEY AUTO_INCREMENT,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(32) COMMENT 'It might be src prefix but idk'
 );
 
 CREATE TABLE `Icons` (
-  `id` unsigned PRIMARY KEY AUTO_INCREMENT,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `src` varchar(255) COMMENT 'I assume that icons will be custom'
 );
 

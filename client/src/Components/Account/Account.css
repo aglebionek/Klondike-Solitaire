@@ -13,6 +13,17 @@ body, ::after, ::before{
 
 }
 
+.profile__back{
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    text-decoration: none;
+    font-size: 2rem;
+    padding: 10px;
+    color: black;
+  }
+
 /* PROFILE HEADING*/
 .profile-heading{
     padding: 10px;
@@ -60,9 +71,7 @@ body, ::after, ::before{
     padding: 10px 0;
 
 }
-.country-img{
 
-}
 .country-name{
     font-weight: bold;
     padding-left: 10px;
@@ -97,9 +106,6 @@ body, ::after, ::before{
     font-size: 30px;
     padding: 10px 0;
 }
-.profile-statistics-number-of-games{
-
-}
 
 .stats{
     display: flex;
@@ -129,7 +135,7 @@ body, ::after, ::before{
 }
 .modal-content{
     width: 600px;
-    height: 400px;
+    height: 550px;
     background-color: white;
     border-radius: 4px;
 }
@@ -139,7 +145,7 @@ body, ::after, ::before{
     justify-content: center;
     padding: 20px;
 }
-.modal-nick,.modal-email,.modal-country{
+.modal-nick,.modal-email,.modal-country,.modal-avatar{
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -165,3 +171,25 @@ body, ::after, ::before{
 .modal-button-save, .modal-button-cancel{
     margin: 10px;
 }
+
+.red-star{
+    color:red;
+    padding-left: 5px;
+    font-size:medium;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    font-size: 3.5rem;
+    color: #00921c;
+  }
+  .account_modal-nick-input,
+  .account_modal-password-old-input,
+  .account_modal-password-input-new,
+  .account_modal-password-input-new-repeat,
+  .account_modal-country{
+        margin: 0;
+        padding:10px;
+        max-width: 200px;
+  }

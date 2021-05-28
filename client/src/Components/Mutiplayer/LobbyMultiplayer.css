@@ -16,10 +16,21 @@
     cursor: pointer;
     margin-top: 35px;
   }
+
+  .multiplayer__back{
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    text-decoration: none;
+    font-size: 2rem;
+    padding: 10px;
+    color: black;
+  }
   .row{
     display: flex;
     justify-content: flex-start;
-    
+    margin-top: 40px;
   }
   .container{
     margin-top: 50px;

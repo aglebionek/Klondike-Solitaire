@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Button.module.css";
+import buttonClickSound from '../../../soundtrack/SoundDesign/menu_click.mp3';
 
-const Button = () => {
-  const [isActive, setStatusOfActive] = useState(false);
+const Button = ({ isCardSelectionOpen, setCardSelectionOpen, text, soundEffect }) => {
+  const buttonSound = (event) => {
+    let beep = new Audio(buttonClickSound);
+    beep.volume=(soundEffect/100);
+    beep.play();   
+  }
   return (
     <div className={styles.container}>
       <button
-        className={`${styles.button} ${isActive ? styles.activeButton : ""}`}
-        onClick={() => setStatusOfActive((prev) => !prev)}
+       onMouseDown={buttonSound}
+        type="button"
+        className={`${styles.button} ${
+          isCardSelectionOpen ? styles.activeButton : ""
+        }`}
+        onClick={() => setCardSelectionOpen((prev) => !prev)}
       >
-        {isActive ? "Anuluj" : "Wybierz"}
+        {isCardSelectionOpen ? "Anuluj" : text}
       </button>
     </div>
   );
