@@ -13,8 +13,9 @@ const Settings = () => {
   const [temporaryCard, setTemporaryCard] = useState("card1");
   const [musicVolume, setMusicVolume] = useState(10);
   const [effectVolume, setEffectVolume] = useState(40);
-  const [isCardAnimation  , setCardAnimation] = useState(true);
+  // const [isCardAnimation  , setCardAnimation] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [isLogged, setLog] = useState(false);
 
   const cards = ["card1", "card2"];
   const userId = 10;
@@ -51,9 +52,17 @@ const Settings = () => {
       setTemporaryCard("card" + carset_id);
       setMusicVolume(Number(volume));
       setEffectVolume(effect);
-      setCardAnimation(Boolean(card_animation));
+      // setCardAnimation(Boolean(card_animation));
       setLoading(false);
     }).catch(error =>console.log(error.response));
+    axios
+    .get("http://localhost:3000/auth/verify")
+    .then(() => {
+      setLog(true);
+    })
+    .catch(() => {
+      setLog(false);
+    });
   }, []);
 
   const handleSubmit = (e) => {
@@ -62,7 +71,7 @@ const Settings = () => {
       cardset_id: card,
       music: musicVolume,
       effect: effectVolume,
-      card_animation: isCardAnimation,
+      // card_animation: isCardAnimation,
     });
   };
   if (loading) return (
@@ -78,9 +87,13 @@ const Settings = () => {
       </div>
       <form onSubmit={handleSubmit}>
         <div className={styles.content}>
+
+          
           <div className={styles.contentWrapper}>
+          
             <div className={styles.itemsContainer}>
-              <div className={styles.item}>
+            
+              {/* <div className={styles.item}>
                 <div className={styles.name}>Animacje kart</div>
                 <div className={styles.switch}>
                   <Checkbox
@@ -90,7 +103,8 @@ const Settings = () => {
                     soundEffect={effectVolume}
                   />
                 </div>
-              </div>
+              </div> */}
+              {isLogged && (<>
               <div className={styles.item}>
                 <div className={styles.name}>Talia</div>
                 <div className={styles.switch}>
@@ -102,6 +116,7 @@ const Settings = () => {
                   />
                 </div>
               </div>
+            </>)}
 
               <div className={styles.item}>
                 <div className={styles.name}>Efekty dźwiekowe</div>
