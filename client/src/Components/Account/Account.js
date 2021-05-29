@@ -73,13 +73,7 @@ const Account =() => {
           setCurrentPassword(password);
         });
       }, []);
-    
-      <div className="profile-header-edit"> 
-                    <div className="edition-text">
-                        <button onClick={() => setShow(true)}>Edycja</button>
-                    </div>
-                </div>
-                
+      
       const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:3000/account/edit/${userId}`, {
