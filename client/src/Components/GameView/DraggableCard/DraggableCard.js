@@ -37,7 +37,6 @@ const DraggableCard = ({
 
     let sibling = el.nextElementSibling;
     el.style.opacity = 0;
-
     while (
       sibling !== null &&
       sibling.attributes.getNamedItem("data-rank") !== null

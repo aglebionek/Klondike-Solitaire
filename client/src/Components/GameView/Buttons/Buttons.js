@@ -25,8 +25,8 @@ const Buttons = ({
       else setPoints(newPoints);
 
       const lastStep = history[history.length - 1];
+      console.log(lastStep);
       if (lastStep.source === "startColumn1") {
-        console.log("start");
         let previousIndex = startCardIndex - 1;
         if (startCardIndex === 0) {
           previousIndex = startColumn1.length;
@@ -47,19 +47,19 @@ const Buttons = ({
 
         columnn.splice(lastStep.cardIndex - 1, 0, lastStep.draggedCards[0]);
       } else {
-        const targetColumn = columns[lastStep.target].get;
         const sourceColumn = columns[lastStep.source].get;
         const draggedCardsLength = lastStep.draggedCards.length;
-        const targetColumnLength = targetColumn.length;
-        const targetColumnStartSlice = targetColumnLength - draggedCardsLength;
         const selectedColumn = [...sourceColumn, ...lastStep.draggedCards];
         if (lastStep.reversed !== null && lastStep.reversed !== undefined) {
           selectedColumn[lastStep.reversed].isVisible = false;
         }
+        columns[lastStep.source].set(selectedColumn);
+        const targetColumn = columns[lastStep.target].get;
+        const targetColumnLength = targetColumn.length;
+        const targetColumnStartSlice = targetColumnLength - draggedCardsLength;
         columns[lastStep.target].set(
           targetColumn.slice(0, targetColumnStartSlice)
         );
-        columns[lastStep.source].set(selectedColumn);
       }
       const newHistory = history.splice(0, history.length - 1);
       setHistory(newHistory);

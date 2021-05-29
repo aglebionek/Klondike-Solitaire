@@ -21,7 +21,6 @@ function GameView() {
   const [bonus, setBonus] = useState(1200);
   const [gameTime, setGameTime] = useState(0);
   const [points, setPoints] = useState(0);
-
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
   const [mainColumn3, setMainColumn3] = useState([]);
@@ -109,7 +108,7 @@ function GameView() {
       columns[key].set(item);
     });
     setLoading(false);
-    startTimer();
+    // startTimer();
   }, []);
 
   let timer;
@@ -147,26 +146,26 @@ function GameView() {
 
   useEffect(() => {
     if (!isLoading) {
-      console.log("Wchodzimy");
       const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
         return mainColumns[key].get;
       });
       const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
         return finalColumns[key].get;
       });
-      const possibleMoves = numMoves(
-        mainColumnsArr,
-        finalColumnsArr,
-        startColumn1
-      );
-      if (possibleMoves === 0) {
-        setGameEnd(true);
-      } else setPossibleMoveNumbers(possibleMoves);
+      // const possibleMoves = numMoves(
+      //   mainColumnsArr,
+      //   finalColumnsArr,
+      //   startColumn1
+      // );
+      // if (possibleMoves === 0) {
+      //   setGameEnd(true);
+      // } else setPossibleMoveNumbers(possibleMoves);
     }
   }, [moveNumbers, isLoading, gameNumber]);
-
+  console.log(startColumn1);
   const handleDrop = (currentCards, draggingCards) => {
-    const selectedCard = currentCards.array[currentCards.array.length - 1];
+    const selectedCard =
+      currentCards.array[currentCards.array.length - 1] || null;
     const dropTarget = draggingCards.array[0];
     const dragArrayLength = draggingCards.array.length;
     const carriedArray = columns[draggingCard.title].get;
@@ -174,38 +173,55 @@ function GameView() {
     const sliceEnd = carriedArrayLength - dragArrayLength;
     const carriedTarget = draggingCard.target;
     setMoveNumbers((prev) => prev + 1);
-    if (
-      currentCards.array.length === 0 ||
-      isDroppable(selectedCard, dropTarget)
-    ) {
-      console.log(draggingCards.title);
-      if (draggingCards.title.includes("finalColumns")) {
-        console.log("contains");
+    if (isDroppable(selectedCard, dropTarget)) {
+      if (draggingCards.title.includes("finalColumn")) {
+        const newPoints = points - 10;
+        if (newPoints < 0) setPoints(0);
+        else setPoints(newPoints);
       }
-      console.log(draggingCards);
-      columns[currentCards.title].set([
-        ...currentCards.array,
-        ...draggingCards.array,
-      ]);
+      let newHistoryStep;
+      if (draggingCards.title === "startColumn2") {
+        const source = columns["startColumn1"].get;
+        const index = draggingCard.cardIndex;
+        source.splice(index - 1, 1);
+        columns[draggingCard.title].set([]);
+        columns["startColumn1"].set(source);
+        columns[currentCards.title].set([
+          ...currentCards.array,
+          ...draggingCards.array,
+        ]);
+        newHistoryStep = {
+          source: draggingCard.title,
+          target: currentCards.title,
+          draggedCards: draggingCard.array,
+          cardIndex: index,
+        };
+      } else {
+        columns[currentCards.title].set([
+          ...currentCards.array,
+          ...draggingCards.array,
+        ]);
 
-      const reducedColumn = carriedArray.slice(0, sliceEnd);
-      let reversed = null;
-      if (
-        reducedColumn.length > 0 &&
-        !reducedColumn[reducedColumn.length - 1].isVisible
-      ) {
-        reversed = reducedColumn.length - 1;
+        const reducedColumn = carriedArray.slice(0, sliceEnd);
+        let reversed = null;
+        if (
+          reducedColumn.length > 0 &&
+          !reducedColumn[reducedColumn.length - 1].isVisible
+        ) {
+          reversed = reducedColumn.length - 1;
+        }
+        if (reducedColumn.length > 0)
+          reducedColumn[reducedColumn.length - 1].isVisible = true;
+        columns[draggingCard.title].set(reducedColumn);
+
+        newHistoryStep = {
+          source: draggingCard.title,
+          target: currentCards.title,
+          draggedCards: draggingCard.array,
+          reversed,
+        };
       }
-      if (reducedColumn.length > 0)
-        reducedColumn[reducedColumn.length - 1].isVisible = true;
-      columns[draggingCard.title].set(reducedColumn);
 
-      const newHistoryStep = {
-        source: draggingCard.title,
-        target: currentCards.title,
-        draggedCards: draggingCard.array,
-        reversed,
-      };
       setHistory([...history, newHistoryStep]);
     } else {
       carriedTarget.style.opacity = 1;
@@ -260,6 +276,7 @@ function GameView() {
             setDraggingCard={setDraggingCard}
             setMoveNumbers={setMoveNumbers}
             setPoints={setPoints}
+            handleDrop={handleDrop}
           />
         </div>
         <MainColumns
@@ -268,7 +285,7 @@ function GameView() {
           handleDrop={handleDrop}
           draggingCard={draggingCard}
         />
-        <div className={styles.statisticks}>
+        <div className={styles.statistics}>
           <div>Punkty: {points}</div>
           <div>Czas: {gameTime}</div>
           <p>Ilość możliwych ruchów: {possiblemoveNumbers}</p>

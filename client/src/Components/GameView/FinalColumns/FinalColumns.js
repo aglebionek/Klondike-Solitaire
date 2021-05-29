@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./FinalColumns.module.css";
 import { isDroppable } from "../../../utils/card";
 import FinalColumnItem from "../FinalColumnItem/FinalColumnItem";
+import DraggableCard from "../DraggableCard/DraggableCard";
 import Drop from "../Drop/drop";
 
 const FinalColumns = ({
@@ -13,6 +14,7 @@ const FinalColumns = ({
   setDraggingCard,
   setMoveNumbers,
   setPoints,
+  handleDrop,
 }) => {
   const handleReverseDrop = (currentCards, draggingCards) => {
     const selectedCard = currentCards.array[currentCards.array.length - 1];
@@ -56,11 +58,18 @@ const FinalColumns = ({
         if (reducedColumn.length > 0)
           reducedColumn[reducedColumn.length - 1].isVisible = true;
         columns[draggingCard.title].set(reducedColumn);
+        let reversed = null;
+        if (
+          reducedColumn.length > 0 &&
+          !reducedColumn[reducedColumn.length - 1].isVisible
+        ) {
+          reversed = reducedColumn.length - 1;
+        }
         newHistoryStep = {
           source: draggingCard.title,
           target: currentCards.title,
           draggedCards: draggingCard.array,
-          reversed: reducedColumn.length > 0 ? reducedColumn.length - 1 : null,
+          reversed,
         };
       }
       setHistory([...history, newHistoryStep]);
@@ -82,7 +91,21 @@ const FinalColumns = ({
         return (
           <div className={styles.finalColumn} key={key}>
             <div className={styles.cardShadow}>
-              {card ? <FinalColumnItem item={card} /> : null}
+              {card ? (
+                <DraggableCard
+                  type="card"
+                  key={0}
+                  top={0}
+                  index={1}
+                  item={card}
+                  name={key}
+                  setDraggingCard={setDraggingCard}
+                  isLastItem={true}
+                  onDrop={handleDrop}
+                  currentArr={column.get}
+                  draggingArr={draggingCard}
+                />
+              ) : null}
               <Drop
                 onDrop={handleReverseDrop}
                 currentArr={column.get}

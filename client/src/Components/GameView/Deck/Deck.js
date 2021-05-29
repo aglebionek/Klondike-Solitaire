@@ -26,6 +26,7 @@ const Deck = ({
       setStartCardIndex(0);
     } else setStartCardIndex((prev) => prev + 1);
     const card = startColumn1[startCardIndex];
+    console.log(startColumn1);
     if (card) card.isVisible = true;
     setStartColumn2([card]);
     const newHistoryStep = {

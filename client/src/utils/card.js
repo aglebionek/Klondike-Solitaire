@@ -16,7 +16,12 @@ export const processRank = function (rank) {
 };
 
 export const isDroppable = function (dropTarget, selectedCard) {
-  if (processRank(dropTarget.rank) - processRank(selectedCard.rank) === 1) {
+  if (dropTarget == null && selectedCard.rank === "K") return true;
+  else if (dropTarget == null) return false;
+  else if (
+    processRank(dropTarget.rank) - processRank(selectedCard.rank) ===
+    1
+  ) {
     if (dropTarget.color !== selectedCard.color) {
       return true;
     } else {
@@ -155,41 +160,6 @@ export const shuffleCards = () => {
       deck.splice(random, 1);
     }
   });
-  const test = [];
-  Object.entries(mainColumns).map(([key, item], index) => {
-    for (let i = 0; i < item.length; i++) {
-      for (let j = 0; j < test.length; j++) {
-        if (test[j] == item[i]) {
-          console.log("ten sam");
-          return console.log("ten sam itemek");
-        }
-      }
-      test.push(item[i]);
-    }
-  });
-
-  for (let i = 0; i < startColumn1.length; i++) {
-    for (let j = 0; j < test.length; j++) {
-      if (test[j] == startColumn1[i]) {
-        console.log("ten sam");
-        return console.log("ten sam itemek");
-      }
-    }
-    console.log("push");
-    test.push(startColumn1[i]);
-  }
-  const aa = test.sort(compare);
-  console.log(aa);
-
-  function compare(a, b) {
-    if (a.rank < b.rank) {
-      return -1;
-    }
-    if (a.rank > b.rank) {
-      return 1;
-    }
-    return 0;
-  }
 
   return { startColumn1, ...mainColumns };
 };
@@ -199,9 +169,6 @@ export const numMoves = function (
   foundationList,
   revealedCardStack
 ) {
-  console.log(columnList);
-  console.log(foundationList);
-  console.log(revealedCardStack);
   var nummov = 0;
   for (const column of columnList) {
     const revealedCard = revealedCardStack.pop();
