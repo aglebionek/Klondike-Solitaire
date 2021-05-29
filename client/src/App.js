@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./App.css";
 import MainMenu from "./Components/MainMenu/MainMenu";
 import Login from "./Components/Login/Login";
@@ -15,6 +14,7 @@ import Account from "./Components/Account/Account";
 import Authors from "./Components/Authors/Authors";
 import AppInfo from "./Components/AppInfo/AppInfo";
 import Spinner from "./Components/Spinner/Spinner";
+import agent from './agent/agent.js';
 
 function App() {
 
@@ -26,7 +26,7 @@ function App() {
   const userId = 10;
   
   useEffect(() => {
-      axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
+      agent.get(`settings/${userId}`).then(({ data }) => {
         const { volume, effect } = data;
         setEffect(effect);
         setVolume(volume);
@@ -56,8 +56,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   const [isAuth, setAuth] = useState(true);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/verify")
+      agent.get("auth/verify")
       .then(() => {
         setLoading(false);
         setAuth(true);
@@ -93,8 +92,7 @@ function AuthRoute({ component: Component, ...rest }) {
   const [isAuth, setAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/verify")
+      agent.get("auth/verify")
       .then(() => {
         setLoading(false);
         setAuth(true);

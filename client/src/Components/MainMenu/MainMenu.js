@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./MainMenu.css";
 import { useHistory } from "react-router-dom";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
+import agent from '../../agent/agent.js';
 
 function MainMenu( {effect} ) {
     const history = useHistory();
@@ -24,8 +24,7 @@ function MainMenu( {effect} ) {
         e.preventDefault();
 
         if(isLogged){
-            axios
-                .post("http://localhost:3000/auth/logout")
+                agent.post("auth/logout")
                 .then(() => {
                     setLog(false);
                 })
@@ -37,8 +36,7 @@ function MainMenu( {effect} ) {
     }
 
     useEffect(() => {
-        axios
-          .get("http://localhost:3000/auth/verify")
+          agent.get("auth/verify")
           .then(() => {
             setLog(true);
           })
