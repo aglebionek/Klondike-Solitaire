@@ -4,13 +4,14 @@ import "./CreateRoom.css";
 import { Link } from 'react-router-dom';
 import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
+import axios from 'axios';
 
-const player = 'player';
+let player = 'player';
+const userId = 10;
 
-/*
-  TODO:
-    - obsługa refresha podczas tworzenia pokoju
-*/
+axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
+  player = data.username;
+});
 
 function CreateRoom() {
   const history = useHistory();
@@ -49,6 +50,12 @@ function CreateRoom() {
   const handleRoomCreateButton = (evt) => {
     evt.preventDefault();
 
+    updateRoomData((prevData) => ({
+      ...prevData,
+      isCreated: true,
+      isBeingModified: false,
+    }));
+
     if(roomData.isBeingModified){
       socket.emit('lobby-modify', {
         room: roomNameBuffer,
@@ -62,14 +69,7 @@ function CreateRoom() {
       });
     }
 
-    updateRoomData((prevData) => ({
-      ...prevData,
-      isCreated: true,
-      isBeingModified: false,
-    }));
-
     updateRoomBuffer(roomData.name);
-    localStorage.setItem('roomData', JSON.stringify(roomData))
   };
 
   const handleRoomModifyButton = (evt) => {
@@ -140,7 +140,9 @@ function CreateRoom() {
                 socket.emit('lobby-leave');
                 localStorage.removeItem('roomData');
               }}>
-                Rozwiąż
+                <button>
+                  Rozwiąż
+                </button>
             </Link>
             <button onClick={handleRoomModifyButton}>Modyfikuj</button>
             <button onClick={() => socket.emit('game-start', {room: roomData.name})}>Rozpocznij grę</button>

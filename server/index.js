@@ -82,7 +82,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("lobby-modify", ({ room, newName }) => {
+    const user = getCurrentUser(socket.id);
+    
     modifyRoom(room, newName);
+
+    if(user){
+      io.to(newName).emit("pass-room", {
+        room,
+        users: getRoomUsers(newName),
+      });
+    }
   });
 
   socket.on("lobby-join", ({ player, room }) => {
