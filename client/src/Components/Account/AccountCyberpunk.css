@@ -100,18 +100,23 @@
     padding-left: 10px;
 }
 
-.profile-edit-button{
+.profile-edit-button, .modal-button-save, .modal-button-cancel{
     display: flex;
     text-decoration: none;
     background: none;
     border: solid 1px rgba(0, 214, 252, 0.6);
     color: rgba(0, 214, 252, 0.8);
-    letter-spacing: 1.8px;
-    border-radius: 3px;
     padding-left: 5px;
     padding-right: 5px;
     cursor: default;
+    font-size: 16px;
 }
+
+.profile-edit-button:hover, .modal-button-save:hover, .modal-button-cancel:hover {
+    box-shadow: 0px 0px 10px rgba(0, 214, 252, 0.8);
+    text-shadow: 0 0 3px rgba(0, 214, 252, 0.7);
+  }
+
 
 .edition-text {
     margin-left: auto;
@@ -144,7 +149,7 @@
 
 .profile-statistics-inscription{
     font-size: 30px;
-    padding: 10px 0;
+    padding: 5px;
 }
 
 .stats{
@@ -161,45 +166,48 @@
 
 /* MODAL SECTION  */
 .background-modal{
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+    background-color: rgba(0,0,0,0.9);
+    border: solid 1px rgba(0, 214, 252, 0.6);
     display: none;
+    position: absolute;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
 }
 .modal-content{
     width: 600px;
-    height: 550px;
-    background-color: white;
-    border-radius: 4px;
+    height: 500px;
+    background: none;
 }
+
 .modal-settings{
     font-size: 30px;
     display: flex;
     justify-content: center;
-    padding: 20px;
-}
-.modal-nick,.modal-email,.modal-country,.modal-avatar{
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
+    color: rgba(0, 214, 252, 0.9);
+    margin-bottom: 20px;
 }
 
-.modal-password-old,.modal-password-new,.modal-password-new-repeat{
+.modal-nick,.modal-email,.modal-country,.modal-password-old,.modal-password-new,.modal-password-new-repeat{
     display: flex;
     flex-direction: row;
+    color: rgba(0, 214, 252, 0.9);
+    text-align: right;
+}
 
-    padding: 5px 5px 5px 10px;
+.modal-avatar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.modal-avatar {
+    margin-top: 50px;
 }
 
 .row-one{
-    font-weight: bold;
-    width: 30%;
+    width: 34.5%;
+    padding-right: 10px;
 }
 
 .modal-button{
@@ -213,13 +221,33 @@
 
 .red-star{
     color:red;
-    padding-left: 5px;
-    font-size:medium;
+    font-size: medium;
 }
 
 .arrow {
     display: flex;
     align-items: center;
     font-size: 3.5rem;
-    color: #00921c;
-  }
+    color: rgba(0, 214, 252, 0.9);
+    cursor: pointer;
+}
+  
+.arrow:hover {
+    text-shadow: 0 0 10px rgba(0, 214, 252, 0.9);
+}
+
+.modal-password-old-input, .modal-nick-input, .modal-password-input-new, .modal-password-input-new-repeat, .modal-country-input {
+    margin-bottom: 8px;
+    background: none;
+    color: rgba(0, 214, 252, 0.9);
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    border-radius: 3px;
+    padding: 3px;
+    margin-right: 10px;
+}
+
+.modal-password-old-input:focus, .modal-nick-input:focus, .modal-password-input-new:focus, .modal-password-input-new-repeat:focus, .modal-country-input:focus {
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+    outline: none;
+}

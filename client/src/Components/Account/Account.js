@@ -62,7 +62,6 @@ const Account =() => {
       }
 
       
-      /*
     useEffect(() => {
         axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
           const { username, registration_date, country, icon_id, password} = data.resp[0];     
@@ -74,14 +73,13 @@ const Account =() => {
           setCurrentPassword(password);
         });
       }, []);
-      */
-      /*
+    
       <div className="profile-header-edit"> 
                     <div className="edition-text">
                         <button onClick={() => setShow(true)}>Edycja</button>
                     </div>
                 </div>
-      */
+                
       const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:3000/account/edit/${userId}`, {
@@ -163,10 +161,7 @@ const Account =() => {
             <form onSubmit={handleSubmit} name="editForm">
                 <div className="modal-settings">Ustawienia</div>
                 <div className="modal-nick">
-                    <div className="modak-nick-text row-one">
-                        Nazwa użytkownika
-                    </div>
-                    <div className="modal-nick-current">
+                    <div className="row-one">Nazwa użytkownika</div>
                         <input 
                             className="modal-nick-input" 
                             type="text" 
@@ -174,11 +169,9 @@ const Account =() => {
                                 setNewUsername(event.target.value);
                         }}
                         />
-                    </div> 
                 </div>         
                 <div className="modal-password-old">
                     <div className="row-one">Stare hasło</div>
-                    <div className="modal-password-old-current">
                         <input 
                             className="modal-password-old-input"
                             type="password"
@@ -186,8 +179,6 @@ const Account =() => {
                                 setOldPassword(event.target.value);
                             }}
                         />
-
-                    </div>
                     {!(currentPassword===oldPassword || oldPassword==='')&&(<span class="red-star">niepoprawne hasło</span>)}
                 </div>
                 <div className="modal-password-new">
@@ -212,18 +203,17 @@ const Account =() => {
                         {!(repeatPassword===newPassword||repeatPassword==='')&&(<span class="red-star">powtórz hasło</span>)}
                 </div>
                 <div className="modal-country">
-                    <div className="modal-country-text row-one">Kraj</div>
-                    <div className="modal-country-input">
+                    <div className="row-one">Kraj</div>
                         <input 
                         type="text"
+                        className="modal-country-input"
                         onChange={(event) => {
                             setNewCountry(event.target.value);
                         }}
                         />
-                    </div>
                 </div>
                 <div className="modal-avatar">
-                    <div className="modal-avatar-text row-one"></div>
+                    <div className="modal-avatar-text"></div>
                     <div className="arrow modal-left-arrow" onClick={() => previousAvatar()}>&lt;</div>
                     <div>
                         <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
