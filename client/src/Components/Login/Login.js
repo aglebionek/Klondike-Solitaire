@@ -102,7 +102,7 @@ const buttonHover = () => {
               onMouseOver={buttonHover}
             >
               Zarejestruj się
-            </button>
+            </a>
             <button type="submit" className="login__container__buttons__btn">
               Zaloguj się
             </button>
