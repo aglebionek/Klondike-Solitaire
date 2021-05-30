@@ -1,12 +1,6 @@
 import axios from "axios";
 
-const port = process.env.PORT || '3000'
+axios.defaults.baseURL = "https://pasjansklondike.herokuapp.com/";
+axios.defaults.withCredentials = true;
 
-const apiClient = axios.default.create({
-    // baseURL: 'http://localhost:3000',
-    baseURL: 'https://pasjansklondike.herokuapp.com:' + port,
-    withCredentials: false,
-    crossDomain: true,
-    timeout: 10000
-})
 export default axios;
