@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./MainMenu.css";
+import "./MainMenuCyberpunk.css";
+import Dropdown from "./Dropdown";
 import { useHistory } from "react-router-dom";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
@@ -50,16 +51,7 @@ function MainMenu( {effect} ) {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
             <div className='main-menu__top-bar'>
-                <div className='top-bar__dropdown'>
-                    <button><i className="fa fa-bars"></i></button>
-                    <div className="dropdown__content">
-                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('settings')}>USTAWIENIA</button>
-                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
-                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('authors')}>AUTORZY</button>
-                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('app-info')}>O GRZE</button> 
-                        <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
-                    </div>
-                </div>
+                <Dropdown />
                 <div>
                     <button onClick={handleLogButton} onMouseOver={buttonHover} onMouseDown={buttonSound}>
                         {isLogged ?  'WYLOGUJ' : 'LOGOWANIE / REJESTRACJA'}

@@ -9,7 +9,7 @@
   height: 20px;
   background: linear-gradient(
     90deg,
-    rgb(117, 252, 117) 60%,
+    rgb(0, 214, 252) 60%,
     rgb(214, 214, 214) 60%
   );
   outline: none;
@@ -18,6 +18,8 @@
   transition: opacity 0.2s;
   border-radius: 12px;
   box-shadow: 0px 0px 5px 0.1px rgba(0, 0, 0, 0.8);
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  background: none;
 }
 
 .slider:hover {

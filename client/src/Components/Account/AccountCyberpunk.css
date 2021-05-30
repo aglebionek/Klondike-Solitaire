@@ -1,0 +1,253 @@
+::after, ::before{
+    margin:0;
+    padding: 0;
+}
+
+.profile-container{
+    width: 100vw;
+    height: 100vh;
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+    user-select: none;
+    align-items: center;
+    
+}
+
+.profile-menu-button-div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .profile-menu-button {
+    display: flex;
+    text-decoration: none;
+    background: none;
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    color: rgba(0, 214, 252, 0.8);
+    letter-spacing: 1.8px;
+    border-radius: 3px;
+    font-size: 24px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: default;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  
+  .profile-menu-button:hover {
+    box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+    text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
+  }
+
+/* PROFILE HEADING*/
+.profile-heading{
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    color: rgba(0, 214, 252, 0.9);
+    text-shadow: 0 0 30px rgba(0, 214, 252, 1),
+    0 0 60px rgba(0, 214, 252, 1);
+    letter-spacing: 1.8px;
+}
+/* PROFILE HEADER */
+.profile-header{
+    padding: 20px;
+    height: 150px;
+    margin-top: 20px;
+    display: flex;
+    color: rgba(0, 214, 252, 0.9);
+    align-items: center;
+}
+
+.profile-avatar{
+    width: 150px;
+}
+
+.profile-header-info{
+    display: flex;
+    flex-direction: column;
+    margin:0;
+    padding-left: 10px;
+    flex-grow: 15;
+}
+
+.profile-username{
+    font-size: 30px;
+    padding-bottom: 10px ;
+    font-weight: bold;
+}
+
+.profile-creation-date{
+    padding: 10px 0;
+
+}
+
+.profile-header-date{
+    font-weight: bold;
+}
+
+.profile-country-info{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+
+.country-name{
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.profile-edit-button, .modal-button-save, .modal-button-cancel{
+    display: flex;
+    text-decoration: none;
+    background: none;
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    color: rgba(0, 214, 252, 0.8);
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: default;
+    font-size: 16px;
+}
+
+.profile-edit-button:hover, .modal-button-save:hover, .modal-button-cancel:hover {
+    box-shadow: 0px 0px 10px rgba(0, 214, 252, 0.8);
+    text-shadow: 0 0 3px rgba(0, 214, 252, 0.7);
+  }
+
+
+.edition-text {
+    margin-left: auto;
+
+}
+
+.edit-profile-header{
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* PROFILE MAIN*/
+
+/* stats */
+.profile-main{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    width: 40%;
+    min-width: 500px;
+}
+
+.profile-statistics{
+    width: 100%;
+    background: none;
+    border-radius: 4px;
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    color: rgba(0, 214, 252, 0.9);
+}
+
+.profile-statistics-inscription{
+    font-size: 30px;
+    padding: 5px;
+}
+
+.stats{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.profile-return-button{
+    display: flex;
+    align-items: flex-end;
+}
+
+/* MODAL SECTION  */
+.background-modal{
+    background-color: rgba(0,0,0,0.9);
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    display: none;
+    position: absolute;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+.modal-content{
+    width: 600px;
+    height: 500px;
+    background: none;
+}
+
+.modal-settings{
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    color: rgba(0, 214, 252, 0.9);
+    margin-bottom: 20px;
+}
+
+.modal-nick,.modal-email,.modal-country,.modal-password-old,.modal-password-new,.modal-password-new-repeat{
+    display: flex;
+    flex-direction: row;
+    color: rgba(0, 214, 252, 0.9);
+    text-align: right;
+}
+
+.modal-avatar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.modal-avatar {
+    margin-top: 50px;
+}
+
+.row-one{
+    width: 34.5%;
+    padding-right: 10px;
+}
+
+.modal-button{
+    display: flex;
+    justify-content: center;
+}
+
+.modal-button-save, .modal-button-cancel{
+    margin: 10px;
+}
+
+.red-star{
+    color:red;
+    font-size: medium;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    font-size: 3.5rem;
+    color: rgba(0, 214, 252, 0.9);
+    cursor: pointer;
+}
+  
+.arrow:hover {
+    text-shadow: 0 0 10px rgba(0, 214, 252, 0.9);
+}
+
+.modal-password-old-input, .modal-nick-input, .modal-password-input-new, .modal-password-input-new-repeat, .modal-country-input {
+    margin-bottom: 8px;
+    background: none;
+    color: rgba(0, 214, 252, 0.9);
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    border-radius: 3px;
+    padding: 3px;
+    margin-right: 10px;
+}
+
+.modal-password-old-input:focus, .modal-nick-input:focus, .modal-password-input-new:focus, .modal-password-input-new-repeat:focus, .modal-country-input:focus {
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+    outline: none;
+}
