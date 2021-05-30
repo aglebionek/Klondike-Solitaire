@@ -4,12 +4,12 @@ import "./CreateRoom.css";
 import { Link } from 'react-router-dom';
 import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
-import axios from 'axios';
+import agent from '../../../agent/agent';
 
 let player = 'player';
 const userId = 10;
 
-axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
+agent.get(`/account/${userId}`).then(({ data }) => {
   player = data.username;
 });
 

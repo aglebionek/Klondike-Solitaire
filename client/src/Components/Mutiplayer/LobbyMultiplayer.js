@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./LobbyMultiplayer.css";
-import axios from 'axios';
+import agent from '../../agent/agent';
 
 // socket client
 import socket from './socketConfig';
@@ -10,7 +10,7 @@ import socket from './socketConfig';
 let player = 'player';
 const userId = 10;
 
-axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
+agent.get(`/account/${userId}`).then(({ data }) => {
   player = data.username;
 });
 
