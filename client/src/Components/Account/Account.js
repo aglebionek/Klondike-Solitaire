@@ -242,7 +242,7 @@ const Account =({effect}) => {
                     </div>
                 </div>
                 <div className="modal-avatar">
-                    <div className="modal-avatar-text></div>
+                    <div className="modal-avatar-text"></div>
                     <div className="arrow modal-left-arrow"  onClick={() => previousAvatar()}>&lt;</div>
                     <div>
                         <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
@@ -257,9 +257,8 @@ const Account =({effect}) => {
                     <button className="modal-button-cancel" type = "button"  onClick={() => clearSettings()}>Anuluj</button>
                 </div>
                 </form>
-
-            </div>
-        </div>
+                </div>
+                </div>
     </>)
 }
 

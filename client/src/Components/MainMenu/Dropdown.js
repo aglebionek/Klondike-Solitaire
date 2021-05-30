@@ -1,10 +1,24 @@
 import React, {useState} from "react";
 import { useHistory } from "react-router-dom";
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 
 function Dropdown(props) {
     const history = useHistory();
 
     const [display, setDisplay] = useState(false);
+
+    const effect = props.eff;
+    const buttonSound = () => {
+        let beep = new Audio(buttonMenuClick);
+        beep.volume=(effect/100);
+        beep.play();   
+    }
+    const buttonHover = () => {
+            let beep = new Audio(buttonHoverSound);
+            beep.volume=(effect/100);
+            beep.play();   
+    }
 
     let dropdown__class = display ? "dropdown__button" : "dropdown__button-hidden";
 

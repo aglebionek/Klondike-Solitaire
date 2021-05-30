@@ -155,27 +155,19 @@ const Settings = () => {
                   Wybierz
                 </button>
               </div>
-              <button
-                className={styles.saveCardButton}
-                onClick={() => setNewCard()}
-                onMouseDown={buttonSound}
-                type="button"
-              >
-                Wybierz
-              </button>
-            </div>
-          )}
+            )}
+          <div className={styles.saveButtonContainer}>
+            <button
+              className={`${styles.saveButton} ${
+                isCardSelectionOpen ? styles.disabledButton : ""
+              }`}
+              type={isCardSelectionOpen ? "button" : "submit"}
+              onMouseDown={buttonSound}
+            >
+              Zapisz
+            </button>
+          </div>
         </div>
-        <div className={styles.saveButtonContainer}>
-          <button
-            className={`${styles.saveButton} ${
-              isCardSelectionOpen ? styles.disabledButton : ""
-            }`}
-            type={isCardSelectionOpen ? "button" : "submit"}
-            onMouseDown={buttonSound}
-          >
-            Zapisz
-          </button>
         </div>
       </form>
       </div>
