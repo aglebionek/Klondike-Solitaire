@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./RegisterCyberpunk.css";
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
+import agent from '../../agent/agent.js';
 
 function Register({ history }) {
   const [email, setEmail] = useState("");
@@ -40,7 +42,7 @@ function Register({ history }) {
     }
 
     if (password.length > 15) {
-      setPasswordError("Hasło musi nie może mieć więcej niż 15 znaków");
+      setPasswordError("Hasło nie może mieć więcej niż 15 znaków");
       isValid = false;
     }
 
@@ -54,8 +56,7 @@ function Register({ history }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValid()) {
-      axios
-        .post("http://localhost:3000/auth/register", {
+        agent.post("auth/register", {
           email: email,
           username: username,
           password: password,
@@ -69,11 +70,22 @@ function Register({ history }) {
         });
     }
   };
+  const buttonSound = () => {
+    let beep = new Audio(buttonMenuClick);
+    beep.volume=(1);
+    beep.play();   
+}
+const buttonHover = () => {
+    let beep = new Audio(buttonHoverSound);
+    beep.volume=(1);
+    beep.play();   
+}
 
   return (
     <div className="register__container">
       <div className="register__container__menu-button">
-        <a href="/" className="register__container__menu-button__link">
+        <a href="/" className="register__container__menu-button__link" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
           MENU
         </a>
       </div>
@@ -135,13 +147,16 @@ function Register({ history }) {
             </div>
           </div>
           <div className="register__container__buttons">
-            
-            <button
-            onClick = {() => history.push('login')}
-            className="register__container__buttons__btn">
+            <a
+              href="/login"
+              type="button"
+              className="register__container__buttons__btn" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}
+            >
               Zaloguj się
-            </button>
-            <button type="submit" className="register__container__buttons__btn">
+            </a>
+            <button type="submit" className="register__container__buttons__btn" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
               Stwórz użytkownika
             </button>
           </div>

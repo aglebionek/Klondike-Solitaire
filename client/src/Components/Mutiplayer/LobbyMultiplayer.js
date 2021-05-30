@@ -54,10 +54,13 @@ function LobbyMultiplayer() {
 
   return (
     <>
+      <a className="multiplayer__back" href="./..">
+         &#129044;
+      </a>
       <div className="row">
         <div className="Multi">Tryb Wieloosobowy</div>
         <div className="ButtRoom">
-          <Link to="/multiplayer/create-room">
+          <Link to={`/create-room`}>
             <button className="button">Stwórz nowy pokój</button>
           </Link>
         </div>
@@ -75,7 +78,7 @@ function LobbyMultiplayer() {
             <div className="Name">{room.name}</div>
             <div className="Ppl1">{room.players}</div>
             <div className="butt">
-              <Link to="/multiplayer/game-lobby">
+              <Link to={`/game-lobby`}>
                 <button className="buttonjoin" data-room={room.name} onClick={joinRoom}>Dołącz</button>
               </Link>
             </div>

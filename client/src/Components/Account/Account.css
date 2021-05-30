@@ -13,6 +13,17 @@ body, ::after, ::before{
 
 }
 
+.profile__back{
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    text-decoration: none;
+    font-size: 2rem;
+    padding: 10px;
+    color: black;
+  }
+
 /* PROFILE HEADING*/
 .profile-heading{
     padding: 10px;
@@ -60,9 +71,7 @@ body, ::after, ::before{
     padding: 10px 0;
 
 }
-.country-img{
 
-}
 .country-name{
     font-weight: bold;
     padding-left: 10px;
@@ -96,9 +105,6 @@ body, ::after, ::before{
 .profile-statistics-inscription{
     font-size: 30px;
     padding: 10px 0;
-}
-.profile-statistics-number-of-games{
-
 }
 
 .stats{
@@ -177,4 +183,13 @@ body, ::after, ::before{
     align-items: center;
     font-size: 3.5rem;
     color: #00921c;
+  }
+  .account_modal-nick-input,
+  .account_modal-password-old-input,
+  .account_modal-password-input-new,
+  .account_modal-password-input-new-repeat,
+  .account_modal-country{
+        margin: 0;
+        padding:10px;
+        max-width: 200px;
   }

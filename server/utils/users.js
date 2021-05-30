@@ -1,5 +1,7 @@
 const users = [];
 
+// USERS
+
 const userJoin = (id, username, room) => {
   const user = {
     id,
@@ -24,13 +26,15 @@ const userLeave = id => {
   }
 };
 
+const getAllUsers = () => {
+  return users;
+};
+
+// ROOMS
+
 const getRoomUsers = room => {
   return users.filter(user => user.room === room);
 };
-
-const getAllUsers = () => {
-  return users;
-}
 
 const modifyRoom = (room, newName) => {
   users.forEach(user => {

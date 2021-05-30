@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./AccountCyberpunk.css";
-import axios from "axios";
+import Select from 'react-select'
+import ReactCountryFlag from "react-country-flag"
+import dataCountry from './country-list.json';
+import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
+import agent from '../../agent/agent.js';
 
-const Account =() => {
+const Account =({effect}) => {
     const [show, setShow] = useState(false);
     const [userName, setUserName] = useState('Nazwa użytkownika');
     const [accountCreation, setAccountCreation] = useState('2020-01-01');
-    const [country, setCountry] = useState('Polska');
+    const [country, setCountry] = useState('PL');
     const [avatar, setAvatar] = useState('1');
     const [temporaryAvatar, setTemporaryAvatar] = useState('avatar1');
     const [newUsername, setNewUsername] = useState('');
@@ -18,8 +22,10 @@ const Account =() => {
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState(''); 
     
+    const [countryName, setCountryName] = useState('Poland');
+    const [newCountryName, setNewCountryName] = useState('');
 
-    const userId = 2;
+    const userId = 10;
     const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {
@@ -29,14 +35,14 @@ const Account =() => {
         setTemporaryAvatar(avatars[index]);
       };
     
-      const previousAvatar = () => {
+    const previousAvatar = () => {
         let index = avatars.indexOf(temporaryAvatar);
         if (index === 0) index = avatars.length - 1;
         else index--;
         setTemporaryAvatar(avatars[index]);
       };
 
-      const setNewData = () => {
+    const setNewData = () => {
         const num = temporaryAvatar.match(/\d+/)[0];
         setAvatar(Number(num));
         if(newUsername != '') {
@@ -45,52 +51,74 @@ const Account =() => {
         if(oldPassword===currentPassword && newPassword===repeatPassword){
             setCurrentPassword(newPassword);
         }else {
-        };
-        if(newCountry!=''){
+        }
+        if(newCountry != ''){
             setCountry(newCountry);
+            setCountryName(newCountryName);
         }
         clearSettings();
         
       };
 
-      const clearSettings = () => {
+    const clearSettings = () => {
         setNewPassword('');
         setOldPassword('');
         setRepeatPassword('');
         document.getElementsByName('editForm')[0].reset();
+        setValue('');
         setShow(false);
       }
 
-      
+    const [value, setValue] = useState('')
+    const options = useMemo(() => dataCountry, [])
+
+    const changeHandler = value => {
+            setValue(value)
+            setNewCountry(value.value)
+            setNewCountryName(value.label)
+        }
+
+    const selstyle ={
+            control: styles=> ({...styles, width: '225px'})
+        };
+
+    const buttonSound = () => {
+            let beep = new Audio(buttonClickSound);
+            beep.volume=(effect/100);
+            beep.play();   
+    }     
+
     useEffect(() => {
-        axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
-          const { username, registration_date, country, icon_id, password} = data.resp[0];     
+        agent.get(`account/${userId}`).then(({ data }) => {
+          const { username, registration_date, country, icon_id, password} = data;     
           setUserName(username);
           setAccountCreation(registration_date);
           setCountry(country);
           setTemporaryAvatar("avatar"+icon_id);
           setAvatar(icon_id) ;
           setCurrentPassword(password);
+          setCountryName(options.find( ({value}) => value === country).label);
+            
+                
         });
       }, []);
-      
-      const handleSubmit = (e) => {
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:3000/account/edit/${userId}`, {
+        agent.put(`account/edit/${userId}`, {
         icon_id: avatar,
         username: userName,
         password: currentPassword,
         country: country,
         });
-      };
+      };   
+
     return (<>
         <div className = "profile-container">
-          <div className='profile-menu-button-div'>
-            <a href="/" className='profile-menu-button'>
-              MENU
+            <a className="stats__back" href="./..">
+                &#129044;
             </a>
-          </div>
-            <header className="profile-heading">KONTO</header>
+            <div className="profile-heading">KONTO</div>
             <div className="profile-header">
                 <div className="profile-avatar">
                     <img draggable="false" className="account-avatar" src={`./images/avatar${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
@@ -102,10 +130,20 @@ const Account =() => {
                     </div>
                     <div className="profile-country-info">
                         <div className="country-img">
-                            <span><img id="flag-picture"src="./images/polska.png" alt="Flag " width="25" height="20" /></span>
+                            <span>
+                                <ReactCountryFlag
+                                countryCode={country} svg
+                                style={{
+                                    fontSize: '1.5em',
+                                    lineHeight: '1.5em',
+                                }}
+                                className="emojiFlag"
+                                 />
+                             
+                            </span>
                         </div>
                         <div className="country-name">
-                            {country}
+                            {countryName}
                         </div>
                         <div className="edition-text">
                             <button className='profile-edit-button' onClick={() => setShow(true)}>Edycja</button>
@@ -157,7 +195,7 @@ const Account =() => {
                 <div className="modal-nick">
                     <div className="row-one">Nazwa użytkownika</div>
                         <input 
-                            className="modal-nick-input" 
+                            className="account_modal-nick-input" 
                             type="text" 
                             onChange={(event) => {
                                 setNewUsername(event.target.value);
@@ -167,7 +205,7 @@ const Account =() => {
                 <div className="modal-password-old">
                     <div className="row-one">Stare hasło</div>
                         <input 
-                            className="modal-password-old-input"
+                            className="account_modal-password-old-input"
                             type="password"
                             onChange={(event) => {
                                 setOldPassword(event.target.value);
@@ -178,7 +216,7 @@ const Account =() => {
                 <div className="modal-password-new">
                     <div className="row-one">Nowe hasło</div>
                         <input 
-                            className="modal-password-input-new"
+                            className="account_modal-password-input-new"
                             type="password"
                             onChange={(event) => {
                                 setNewPassword(event.target.value);
@@ -188,7 +226,7 @@ const Account =() => {
                 <div className="modal-password-new-repeat">
                     <div className="row-one">Powtórz hasło</div>
                         <input 
-                            className="modal-password-input-new-repeat"
+                            className="account_modal-password-input-new-repeat"
                             type="password"
                             onChange={(event) => {
                                 setRepeatPassword(event.target.value);
@@ -197,29 +235,26 @@ const Account =() => {
                         {!(repeatPassword===newPassword||repeatPassword==='')&&(<span class="red-star">powtórz hasło</span>)}
                 </div>
                 <div className="modal-country">
-                    <div className="row-one">Kraj</div>
-                        <input 
-                        type="text"
-                        className="modal-country-input"
-                        onChange={(event) => {
-                            setNewCountry(event.target.value);
-                        }}
-                        />
+                    <div className="modal-country-text row-one">Kraj</div>
+                    <div className="modal-country-input">
+                        <Select options={options} value={value} styles={selstyle} onChange={changeHandler} />
+                        
+                    </div>
                 </div>
                 <div className="modal-avatar">
-                    <div className="modal-avatar-text"></div>
-                    <div className="arrow modal-left-arrow" onClick={() => previousAvatar()}>&lt;</div>
+                    <div className="modal-avatar-text></div>
+                    <div className="arrow modal-left-arrow"  onClick={() => previousAvatar()}>&lt;</div>
                     <div>
                         <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                     </div>
-                    <div className="arrow modal-right-arrow"  onClick={() => nextAvatar()}>&gt;</div>
+                    <div className="arrow modal-right-arrow"   onClick={() => nextAvatar()}>&gt;</div>
                 </div>
                 <div className="modal-avatar-current">
                   
                     </div>
                 <div className="modal-button">
-                    <button className="modal-button-save" type="submit" onClick={() => setNewData()} >Ok</button>
-                    <button className="modal-button-cancel" type = "button" onClick={() => clearSettings()}>Anuluj</button>
+                    <button className="modal-button-save" type="submit"  onClick={() => setNewData()} >Ok</button>
+                    <button className="modal-button-cancel" type = "button"  onClick={() => clearSettings()}>Anuluj</button>
                 </div>
                 </form>
 

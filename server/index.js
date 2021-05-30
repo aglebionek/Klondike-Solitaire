@@ -6,6 +6,11 @@ const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
 const authRoute = require("./api/auth/authRoute");
 const accountRoute = require("./api/account/accountRoute");
+const path = require("path");
+
+const PORT = process.env.PORT || 3001;
+const app = express();
+
 const {
   userJoin,
   getCurrentUser,
@@ -15,9 +20,8 @@ const {
   getAllUsers,
 } = require("./utils/users");
 require("dotenv").config();
+app.use(cookieParser());
 
-const PORT = process.env.PORT || 3001;
-const app = express();
 const server = app.listen(PORT);
 
 // socket variables
@@ -30,11 +34,30 @@ app.use(
     extended: true,
   })
 );
-
-app.use(cookieParser());
-
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
 app.get("/", (req, res) => {
   res.send("Some shit");
+});
+
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+
+  res.setHeader("Access-Control-Allow-Credentials", true);
+
+  next();
 });
 
 io.on("connection", (socket) => {
@@ -53,6 +76,11 @@ io.on("connection", (socket) => {
         users: getRoomUsers(user.room),
       });
     }
+  });
+
+  socket.on("game-start", ({ room }) => {
+    console.log(io.sockets.adapter.rooms)
+    io.to(room).emit('start');
   });
 
   socket.on("lobby-modify", ({ room, newName }) => {

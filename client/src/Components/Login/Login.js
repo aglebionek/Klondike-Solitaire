@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./LoginCyberpunk.css";
+import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
+import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
+import agent from '../../agent/agent.js';
 
 function Login({ history }) {
   const [email, setEmail] = useState("");
@@ -9,19 +11,18 @@ function Login({ history }) {
   const [passwordError, setPasswordError] = useState("");
   const [serverError, setServerError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
     if (isValid()) {
-      axios
-        .post("http://localhost:3000/auth/login", {
+        agent.post("auth/login", {
           email,
           password,
-        })
+        }, { withCredentials: true })
         .then(() => {
           history.push("/");
         })
-        .catch((err) => setServerError(err.response.data));
+        .catch((err) => setServerError(err.response));
     }
   };
 
@@ -40,11 +41,22 @@ function Login({ history }) {
     }
     return isValid;
   };
+  const buttonSound = () => {
+    let beep = new Audio(buttonMenuClick);
+    beep.volume=(1);
+    beep.play();   
+}
+const buttonHover = () => {
+    let beep = new Audio(buttonHoverSound);
+    beep.volume=(1);
+    beep.play();   
+}
 
   return (
     <div className="login__container">
       <div className="login__container__menu-button">
-        <a href="/" className="login__container__menu-button__link">
+        <a href="/" className="login__container__menu-button__link" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
           MENU
         </a>
       </div>
@@ -79,9 +91,15 @@ function Login({ history }) {
             </div>
           </div>
           <div className="login__container__buttons">
-          <button
-              onClick={() => history.push('register')}
-              className="login__container__buttons__btn"
+            <button type="submit" className="login__container__buttons__btn" onMouseOver={buttonHover}>
+              Przejdz do gry
+            </button>
+            <a
+              href="/register"
+              type="button"
+              className="login__container__buttons__btn login__container__buttons__btn--link"
+              onMouseDown={buttonSound}
+              onMouseOver={buttonHover}
             >
               Zarejestruj się
             </button>

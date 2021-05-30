@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CreateRoom.css";
 
 import { Link } from 'react-router-dom';
 import socket from './../socketConfig.js';
+import { useHistory } from "react-router-dom";
 
 const player = 'player';
 
@@ -12,10 +13,12 @@ const player = 'player';
 */
 
 function CreateRoom() {
+  const history = useHistory();
   const initialRoomData = {
     isCreated: false,
     isBeingModified: false,
     name: "Nowy pokój",
+    minutes: 5
   };
 
   const [roomData, updateRoomData] = useState(initialRoomData);
@@ -25,6 +28,13 @@ function CreateRoom() {
     updateRoomData((prevData) => ({
       ...prevData,
       name: evt.target.value,
+    }));
+  };
+
+  const handleTimeChange = (evt) => {
+    updateRoomData((prevData) => ({
+      ...prevData,
+      minutes: evt.target.value,
     }));
   };
 
@@ -62,6 +72,20 @@ function CreateRoom() {
     }));
   };
 
+  useEffect(() => {
+    socket.on('start', () => {
+      console.log('test')
+      history.push('/game-view');
+    });
+
+    return () => {
+      socket.off('start', () => {
+        console.log('test')
+        history.push('/game-view');
+      });
+    }
+  }, []);
+
   if (roomData.isCreated && !roomData.isBeingModified) {
     return (
       <section className="lobby__container">
@@ -71,11 +95,16 @@ function CreateRoom() {
             <p>Nazwa:</p>
             <p>{roomData.name}</p>
           </div>
+          <div className="lobby__created-data">
+            <p>Czas gry (w minutach):</p>
+            <p>{roomData.minutes}</p>
+          </div>
           <div className="lobby__created-data__btns">
             <Link to="/multiplayer">
               <button onClick={() => socket.emit('lobby-leave')}>Rozwiąż</button>
             </Link>
             <button onClick={handleRoomModifyButton}>Modyfikuj</button>
+            <button onClick={() => socket.emit('game-start', {room: roomData.name})}>Rozpocznij grę</button>
           </div>
         </div>
       </section>
@@ -83,6 +112,9 @@ function CreateRoom() {
   } else {
     return (
       <section className="lobby__container">
+        <a className="multiplayer__back" href="/multiplayer">
+          &#129044;
+        </a>
         <div className="lobby__inner-container">
           <h1 className="lobby__headline">Tworzenie pokoju</h1>
           <form
@@ -100,6 +132,21 @@ function CreateRoom() {
                 type="text"
                 required
               />
+            </div>
+            <div>
+              <label htmlFor="room-name">Czas gry</label>
+              <select
+                onChange={handleTimeChange}
+                value={roomData.minutes}
+                id="game-time"
+                name="game-time"
+                required
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+              </select>
             </div>
             <button>{roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}</button>
           </form>

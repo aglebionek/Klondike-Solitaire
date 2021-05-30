@@ -11,12 +11,19 @@ const saltRounds = 10;
 router.get("/verify", (req, res) => {
   const token = req.cookies.token;
   const key = process.env.TOKEN_KEY;
+
   try {
     jwt.verify(token, key);
     return res.sendStatus(200);
-  } catch {
+  } catch (e) {
+    console.log(e);
     return res.status(401).json("invalid token");
   }
+});
+
+router.post("/logout", async (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json("ok");
 });
 
 router.post("/register", async (req, res) => {

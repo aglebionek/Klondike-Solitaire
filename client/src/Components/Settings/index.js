@@ -3,7 +3,9 @@ import styles from "./SettingCyberpunk.module.css";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
-import axios from "axios";
+import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
+import Spinner from "../Spinner/Spinner";
+import agent from '../../agent/agent.js';
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
@@ -11,11 +13,11 @@ const Settings = () => {
   const [temporaryCard, setTemporaryCard] = useState("card1");
   const [musicVolume, setMusicVolume] = useState(10);
   const [effectVolume, setEffectVolume] = useState(40);
-  const [isCardAnimation, setCardAnimation] = useState(true);
+  const [isCardAnimation  , setCardAnimation] = useState(true);
   const [loading, setLoading] = useState(true);
 
   const cards = ["card1", "card2"];
-  const userId = 1;
+  const userId = 10;
 
   const nextCard = () => {
     let index = cards.indexOf(temporaryCard);
@@ -36,60 +38,69 @@ const Settings = () => {
     setCard(Number(num));
     setCardSelectionOpen(false);
   };
+  const buttonSound = (event) => {
+    let beep = new Audio(buttonClickSound);
+    beep.volume=(effectVolume/100);
+    beep.play();   
+  }
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/settings/${userId}`).then(({ data }) => {
+    agent.get(`settings/${userId}`).then(({ data }) => {
       const { carset_id, volume, effect, card_animation } = data;
+      console.log("aaaA");
       setTemporaryCard("card" + carset_id);
       setMusicVolume(Number(volume));
       setEffectVolume(effect);
       setCardAnimation(Boolean(card_animation));
       setLoading(false);
-    });
+    }).catch(error =>console.log(error.response));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3000/settings/edit/${userId}`, {
+    agent.put(`settings/edit/${userId}`, {
       cardset_id: card,
       music: musicVolume,
       effect: effectVolume,
       card_animation: isCardAnimation,
     });
   };
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <Spinner></Spinner>
+  );
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <a href="/" className={styles.menuButton}>
+        <a href="/" className={styles.menuButton} onMouseDown={buttonSound}>
           MENU
         </a>
       </div>
       <div>
-        <header className={styles.title}>Ustawienia Gry</header>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.content}>
-            <div className={styles.contentWrapper}>
-              <div className={styles.itemsContainer}>
-                <div className={styles.item}>
-                  <div className={styles.name}>Animacje kart</div>
-                  <div className={styles.switch}>
-                    <Checkbox
-                      name="cardAnimations"
-                      status={isCardAnimation}
-                      setStatus={setCardAnimation}
-                    />
-                  </div>
+      <header className={styles.title}>Ustawienia Gry</header>
+      <form onSubmit={handleSubmit}>
+        <div className={styles.content}>
+          <div className={styles.contentWrapper}>
+            <div className={styles.itemsContainer}>
+              <div className={styles.item}>
+                <div className={styles.name}>Animacje kart</div>
+                <div className={styles.switch}>
+                  <Checkbox
+                    name="cardAnimations"
+                    status={isCardAnimation}
+                    setStatus={setCardAnimation}
+                    soundEffect={effectVolume}
+                  />
                 </div>
-                <div className={styles.item}>
-                  <div className={styles.name}>Talia</div>
-                  <div className={styles.switch}>
-                    <Button
-                      text="Zmień"
-                      isCardSelectionOpen={isCardSelectionOpen}
-                      setCardSelectionOpen={setCardSelectionOpen}
-                    />
-                  </div>
+              </div>
+              <div className={styles.item}>
+                <div className={styles.name}>Talia</div>
+                <div className={styles.switch}>
+                  <Button
+                    text="Zmień"
+                    isCardSelectionOpen={isCardSelectionOpen}
+                    setCardSelectionOpen={setCardSelectionOpen}
+                    soundEffect={effectVolume}
+                  />
                 </div>
 
                 <div className={styles.item}>
@@ -144,19 +155,29 @@ const Settings = () => {
                   Wybierz
                 </button>
               </div>
-            )}
-          </div>
-          <div className={styles.saveButtonContainer}>
-            <button
-              className={`${styles.saveButton} ${
-                isCardSelectionOpen ? styles.disabledButton : ""
-              }`}
-              type={isCardSelectionOpen ? "button" : "submit"}
-            >
-              Zapisz
-            </button>
-          </div>
-        </form>
+              <button
+                className={styles.saveCardButton}
+                onClick={() => setNewCard()}
+                onMouseDown={buttonSound}
+                type="button"
+              >
+                Wybierz
+              </button>
+            </div>
+          )}
+        </div>
+        <div className={styles.saveButtonContainer}>
+          <button
+            className={`${styles.saveButton} ${
+              isCardSelectionOpen ? styles.disabledButton : ""
+            }`}
+            type={isCardSelectionOpen ? "button" : "submit"}
+            onMouseDown={buttonSound}
+          >
+            Zapisz
+          </button>
+        </div>
+      </form>
       </div>
     </div>
   );
