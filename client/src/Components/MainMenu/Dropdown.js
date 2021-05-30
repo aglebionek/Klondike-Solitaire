@@ -12,11 +12,11 @@ function Dropdown(props) {
         <div className='top-bar__dropdown'>
             <div className="dropdown__content">
                 <button className="dropdown__button-top" onClick={() => setDisplay(!display)}><i className="fa fa-bars"></i></button>
-                <button className={dropdown__class} onClick={() => history.push('settings')}>USTAWIENIA</button>
-                <button className={dropdown__class} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
-                <button className={dropdown__class}>AUTORZY</button>
-                <button className={dropdown__class}>O GRZE</button> 
-                <button className={dropdown__class} onClick={() => history.push('account')}>KONTO</button> 
+                <button className={dropdown__class} onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('settings')}>USTAWIENIA</button>
+                <button className={dropdown__class} onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('global-stats')}>STATYSTYKI</button>
+                <button className={dropdown__class} onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('authors')}>AUTORZY</button>
+                <button className={dropdown__class} onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('app-info')}>O GRZE</button> 
+                <button className={dropdown__class} onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('account')}>KONTO</button> 
             </div>
         </div>
     );
