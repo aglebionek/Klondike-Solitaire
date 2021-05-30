@@ -8,24 +8,26 @@ function JoinRoom () {
   const history = useHistory();
   const initialData = {
     name: 'test',
-    players: 0
+    players: []
   }
   const [roomData, updateRoomData] = useState(initialData);
 
   useEffect(() => {
     socket.on('pass-room', ({ room, users }) => {
-      const players = users.length;
-  
       updateRoomData({
         name: room,
-        players
+        players: users
       });
     });
 
+    socket.on('kicked', () => {
+      document.querySelector('.lobby__modal-container').classList.add('active');
+    });
+
     socket.emit('export-room');
+    socket.emit('export-users');
 
     socket.on('start', () => {
-      console.log('test')
       history.push('/game-view');
     });
 
@@ -33,6 +35,7 @@ function JoinRoom () {
       socket.off('start', () => {
         history.push('/game-view');
       });
+      
       socket.off('pass-room');
     }
 
@@ -40,15 +43,38 @@ function JoinRoom () {
 
   return (
     <section className="joined-room">
-      <h1>
-        Dołączyłeś do pokoju: {roomData.name}
-      </h1>
-      <p>
-        Liczba osób: {roomData.players}
-      </p>
-      <Link to="/multiplayer">
-        <button onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
-      </Link>
+      <div className="lobby__modal-container">
+        <div className="lobby__modal">
+          <p>Wyrzucono cię z pokoju</p>
+          <button onClick={() => { history.push('/multiplayer') }}>Potwierdź</button>
+        </div>
+      </div>
+      <div className="lobby__inner-container">
+          <h1 className="lobby__headline">Widok lobby</h1>
+          <div className="lobby__created-data">
+            <p>Nazwa:</p>
+            <p>{roomData.name}</p>
+          </div>
+          <div className="lobby__created-data">
+            <p>Gracze:</p>
+            <ul>
+              {
+                Object.values(roomData.players).map((player, index) => (
+                  <li key={index} className="player-row">
+                    <div>
+                      <p>{player.username}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div className="lobby__created-data__btns">
+            <Link to="/multiplayer">
+              <button onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
+            </Link>
+          </div>
+        </div>
     </section>
   );
 }

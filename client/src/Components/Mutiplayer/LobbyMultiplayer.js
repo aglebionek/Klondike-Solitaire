@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./LobbyMultiplayer.css";
+import agent from '../../agent/agent';
 
 // socket client
 import socket from './socketConfig';
 
-// this one will be taken from DB in the future
-const player = 'player';
+// cóż, to jedyny dostępny user przy logowaniu także no... xD
+let player = 'player';
+const userId = 10;
+
+agent.get(`/account/${userId}`).then(({ data }) => {
+  player = data.username;
+});
 
 function LobbyMultiplayer() {
 
@@ -16,6 +22,7 @@ function LobbyMultiplayer() {
     const room = evt.target.getAttribute('data-room');
 
     socket.emit('lobby-join', { player, room });
+    socket.emit('export-users');
   }
 
   const getRooms = () => {

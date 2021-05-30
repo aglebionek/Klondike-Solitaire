@@ -18,13 +18,13 @@ const {
   getRoomUsers,
   modifyRoom,
   getAllUsers,
+  setUsersInGame
 } = require("./utils/users");
 require("dotenv").config();
 app.use(cookieParser());
 
 const server = app.listen(PORT);
 
-// socket variables
 const { Server } = require("socket.io");
 const io = new Server(server);
 
@@ -34,10 +34,16 @@ app.use(
     extended: true,
   })
 );
+
+// comment these ones to work on local
+
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
+
+////////////////////
+
 app.get("/", (req, res) => {
   res.send("Some shit");
 });
@@ -64,7 +70,7 @@ io.on("connection", (socket) => {
   console.log("a user connected");
 
   socket.on("export-users", () => {
-    socket.emit("pass-users", getAllUsers());
+    socket.emit("pass-users", getAllUsers().filter(user => !user.inGame));
   });
 
   socket.on("export-room", () => {
@@ -79,12 +85,23 @@ io.on("connection", (socket) => {
   });
 
   socket.on("game-start", ({ room }) => {
-    console.log(io.sockets.adapter.rooms)
+    setUsersInGame(room);
     io.to(room).emit('start');
+
+    // po wyjściu z gry, userzy dalej są w grze - na aktualnym stadium nierozwiązywalne, ale po dodaniu integracji z planszą - TODO
   });
 
   socket.on("lobby-modify", ({ room, newName }) => {
+    const user = getCurrentUser(socket.id);
+    
     modifyRoom(room, newName);
+
+    if(user){
+      io.to(newName).emit("pass-room", {
+        room,
+        users: getRoomUsers(newName),
+      });
+    }
   });
 
   socket.on("lobby-join", ({ player, room }) => {
@@ -92,19 +109,40 @@ io.on("connection", (socket) => {
 
     console.log("a user joined the room");
     socket.join(user.room);
-    socket.emit("export users");
+
+    if(user){
+      io.to(room).emit("pass-room", {
+        room,
+        users: getRoomUsers(room),
+      });
+    }
   });
 
   socket.on("lobby-leave", () => {
-    console.log("a user left the room");
+    const user = getCurrentUser(socket.id);
+
     userLeave(socket.id);
-    socket.emit("export users");
+
+    io.to(user.room).emit("pass-room", {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
+  });
+
+  socket.on("kick", ({ player }) => {
+    userLeave(player.id);
+    io.to(player.id).emit("kicked", { room: player.room });
+
+    io.to(player.room).emit("pass-room", {
+      room: player.room,
+      users: getRoomUsers(player.room),
+    });
   });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
     userLeave(socket.id);
-    socket.emit("export users");
+    socket.emit("export-room");
   });
 });
 

@@ -79,14 +79,14 @@ export default class Card {
   // PUBLIC METHODS
 
   isAscendingCardInSuiteTo = (card) => {
-    return this.#isSameSuiteTo(card) && this.rank === card.rank + 1;
+    return this.#isSameSuiteTo(card) && (this.#id === card.#id + 1);
   };
 
   isDescendingAndOppositeTo = (card) => {
     return this.#isOppositeColorTo(card) && card.isAscendingCardInSuiteTo(this);
   };
 
-  toggleVisiblity() {
+  toggleVisibility = () => {
     this.#isVisible = !this.#isVisible;
   }
 }

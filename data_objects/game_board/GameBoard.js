@@ -2,10 +2,10 @@ import Card from "./../card/Card.js";
 
 export default class Board {
   deck = [];
-  revealedCardStack;
+  revealedCardStack = [];
 
-  resultStacks = new Array(4);
-  gameStacks = new Array(7);
+  resultStacks = new Array(4).fill(null).map(() => []);
+  gameStacks = new Array(7).fill(null).map(() => []);
 
   startDistribution;
 
@@ -40,10 +40,10 @@ export default class Board {
   }
 
   #takeRandomCardFromDeck() {
-    const cardsInDeck = deck.length;
-    const index = Math.round(Math.random() * cardsInDeck);
+    const cardsInDeck = this.deck.length;
+    const index = Math.floor(Math.random() * cardsInDeck);
 
-    return this.deck.splice(index, 1);
+    return this.deck.splice(index, 1)[0];
   }
 
   #fillGameStacks() {
