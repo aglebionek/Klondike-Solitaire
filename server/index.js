@@ -34,10 +34,6 @@ app.use(
     extended: true,
   })
 );
-app.use(express.static(path.resolve(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
 app.get("/", (req, res) => {
   res.send("Some shit");
 });
@@ -114,3 +110,8 @@ app.use("/auth", authRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
 app.use("/account", accountRoute);
+
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
