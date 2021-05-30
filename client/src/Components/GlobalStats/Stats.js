@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Posts from "./Posts";
 import "./Stats.css";
-import axios from 'axios';
 import _ from 'lodash';
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
-
+import agent from '../../agent/agent.js';
 
 function GlobalStats({effect}) {
     const [statsList, setStatsList] = useState([]);
@@ -23,7 +22,7 @@ function GlobalStats({effect}) {
    
         useEffect(() => {
             setLoading(true);
-            axios.get("http://localhost:3001/stats/getStats").then((resp) => {
+            agent.get("stats/getStats").then((resp) => {
               const { data } = resp;
               resp.className = "red"
               setStatsList(data);

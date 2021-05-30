@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./register.css";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
+import agent from '../../agent/agent.js';
 
 function Register({ history }) {
   const [email, setEmail] = useState("");
@@ -56,8 +56,7 @@ function Register({ history }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValid()) {
-      axios
-        .post("http://localhost:3001/auth/register", {
+        agent.post("auth/register", {
           email: email,
           username: username,
           password: password,

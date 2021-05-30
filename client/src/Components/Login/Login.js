@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./Login.css";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
+import agent from '../../agent/agent.js';
 
 function Login({ history }) {
   const [email, setEmail] = useState("");
@@ -15,8 +15,7 @@ function Login({ history }) {
     e.preventDefault();
     setServerError("");
     if (isValid()) {
-      axios
-        .post("http://localhost:3000/auth/login", {
+        agent.post("auth/login", {
           email,
           password,
         }, { withCredentials: true })

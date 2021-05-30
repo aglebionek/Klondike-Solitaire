@@ -3,9 +3,9 @@ import styles from "./Settings.module.css";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
-import axios from "axios";
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 import Spinner from "../Spinner/Spinner";
+import agent from '../../agent/agent.js';
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
@@ -45,7 +45,7 @@ const Settings = () => {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/settings/${userId}`).then(({ data }) => {
+    agent.get(`settings/${userId}`).then(({ data }) => {
       const { carset_id, volume, effect, card_animation } = data;
       console.log("aaaA");
       setTemporaryCard("card" + carset_id);
@@ -58,7 +58,7 @@ const Settings = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3001/settings/edit/${userId}`, {
+    agent.put(`settings/edit/${userId}`, {
       cardset_id: card,
       music: musicVolume,
       effect: effectVolume,

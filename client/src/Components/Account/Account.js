@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./Account.css";
-import axios from "axios";
 import Select from 'react-select'
 import ReactCountryFlag from "react-country-flag"
 import dataCountry from './country-list.json';
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
-
+import agent from '../../agent/agent.js';
 
 
 const Account =({effect}) => {
@@ -91,7 +90,7 @@ const Account =({effect}) => {
     }     
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/account/${userId}`).then(({ data }) => {
+        agent.get(`account/${userId}`).then(({ data }) => {
           const { username, registration_date, country, icon_id, password} = data;     
           setUserName(username);
           setAccountCreation(registration_date);
@@ -107,7 +106,7 @@ const Account =({effect}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:3000/account/edit/${userId}`, {
+        agent.put(`account/edit/${userId}`, {
         icon_id: avatar,
         username: userName,
         password: currentPassword,
