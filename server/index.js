@@ -34,9 +34,6 @@ app.use(
     extended: true,
   })
 );
-app.get("/", (req, res) => {
-  res.send("Some shit");
-});
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "https://pasjansklondike.herokuapp.com/");
