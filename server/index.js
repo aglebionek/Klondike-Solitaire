@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "https://pasjansklondike.herokuapp.com/");
+  res.setHeader("Access-Control-Allow-Origin", "http://pasjansklondike.herokuapp.com/");
 
   res.setHeader(
     "Access-Control-Allow-Methods",
