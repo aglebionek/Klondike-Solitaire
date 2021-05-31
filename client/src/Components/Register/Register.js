@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import "./RegisterCyberpunk.css";
-import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
-import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
-import agent from '../../agent/agent.js';
+import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
+import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
+import agent from "../../agent/agent.js";
 
-function Register({ history }) {
+function Register() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [username, setUsername] = useState("");
@@ -13,14 +14,18 @@ function Register({ history }) {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
   const isValid = () => {
     setEmailError("");
     setUsernameError("");
     setPasswordError("");
     setConfirmPasswordError("");
+    setServerError("");
     let isValid = true;
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!email.match(emailRegex)) {
       setEmailError("Email jest niepoprawny");
       isValid = false;
@@ -56,37 +61,53 @@ function Register({ history }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValid()) {
-        agent.post("auth/register", {
+      agent
+        .post("auth/register", {
           email: email,
           username: username,
           password: password,
         })
-        .then(() => {
-          history.push("/");
+        .then((resp) => {
+          if (resp.status === 200) setLoggedIn(true);
         })
         .catch((err) => {
-          if (Object.keys(err.response.data)[0] === "email")
-            setEmailError("Email jest zajęty");
+          const { data } = err.response;
+          if (data) {
+            data.email && setEmailError(data.email);
+            data.server && setServerError(data.server);
+          }
         });
     }
   };
   const buttonSound = () => {
     let beep = new Audio(buttonMenuClick);
-    beep.volume=(1);
-    beep.play();   
-}
-const buttonHover = () => {
+    beep.volume = 1;
+    beep.play();
+  };
+  const buttonHover = () => {
     let beep = new Audio(buttonHoverSound);
-    beep.volume=(1);
-    beep.play();   
-}
+    beep.volume = 1;
+    beep.play();
+  };
 
+  if (isLoggedIn) return <Redirect to="/" />;
   return (
     <div className="register__container">
+<<<<<<< HEAD
       <div className="register__back">
         <a href="/" className="register__back" onMouseDown={buttonSound}
               onMouseOver={buttonHover}>
           &#129044;
+=======
+      <div className="register__container__menu-button">
+        <a
+          href="/"
+          className="register__container__menu-button__link"
+          onMouseDown={buttonSound}
+          onMouseOver={buttonHover}
+        >
+          MENU
+>>>>>>> main
         </a>
       </div>
       <div>
@@ -97,6 +118,7 @@ const buttonHover = () => {
               <input
                 type="text"
                 placeholder="Email"
+                className="register__container__creds__field"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -110,6 +132,7 @@ const buttonHover = () => {
               <input
                 type="text"
                 placeholder="Nazwa użytkownika"
+                className="register__container__creds__field"
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
@@ -123,6 +146,7 @@ const buttonHover = () => {
               <input
                 type="password"
                 placeholder="Hasło"
+                className="register__container__creds__field"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -136,6 +160,7 @@ const buttonHover = () => {
               <input
                 type="password"
                 placeholder="Powtórz hasło"
+                className="register__container__creds__field"
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
@@ -143,6 +168,7 @@ const buttonHover = () => {
               />
               <p className="register__container__creds__field__error">
                 {confirmPasswordError}
+                {serverError}
               </p>
             </div>
           </div>
@@ -150,13 +176,18 @@ const buttonHover = () => {
             <a
               href="/login"
               type="button"
-              className="register__container__buttons__btn" onMouseDown={buttonSound}
+              className="register__container__buttons__btn"
+              onMouseDown={buttonSound}
               onMouseOver={buttonHover}
             >
               Zaloguj się
             </a>
-            <button type="submit" className="register__container__buttons__btn" onMouseDown={buttonSound}
-              onMouseOver={buttonHover}>
+            <button
+              type="submit"
+              className="register__container__buttons__btn"
+              onMouseDown={buttonSound}
+              onMouseOver={buttonHover}
+            >
               Stwórz użytkownika
             </button>
           </div>

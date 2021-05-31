@@ -43,7 +43,7 @@
   color: red;
 }
 
-input {
+.register__container__creds__field {
   background-color: #eee;
   border: none;
   padding: 2em 1em;
