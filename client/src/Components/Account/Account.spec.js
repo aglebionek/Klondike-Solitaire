@@ -222,7 +222,7 @@ test('New data is NOT set when data is WRONG', () => {
     expect(profileUserName.innerHTML).toBe(newUserName);
     //Czy hasło zostało zmienione?
     fireEvent.change(oldPassInput, {target: {value: correctNewPassword}})
-    expect(oldPassInput.nextElementSibling).toBeNull();
+    expect(oldPassInput.nextElementSibling).not.toBeNull();
 })
 
 //Test sprawdzający czy clearSettings działa
