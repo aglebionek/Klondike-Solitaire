@@ -99,7 +99,8 @@ const buttonHover = () => {
             >
               Zarejestruj się
             </a>
-            <button type="submit" className="login__container__buttons__btn">
+            <button type="submit" className="login__container__buttons__btn" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
               Zaloguj się
             </button>
             
