@@ -17,11 +17,7 @@
     width: 100%;
   }
   
-  .settings__back{
-    position: absolute;
-    top: 0;
-    left: 0;
-  
+  .settings__back{ 
     text-decoration: none;
     font-size: 2rem;
     padding: 10px;
