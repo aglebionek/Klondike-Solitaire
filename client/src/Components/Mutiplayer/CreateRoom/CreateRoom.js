@@ -4,24 +4,33 @@ import "./CreateRoom.css";
 import { Link } from 'react-router-dom';
 import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
+import agent from '../../../agent/agent';
 
-const player = 'player';
+let player = 'player';
+const userId = 10;
 
-/*
-  TODO:
-    - obsługa refresha podczas tworzenia pokoju
-*/
+agent.get(`/account/${userId}`).then(({ data }) => {
+  player = data.username;
+});
 
 function CreateRoom() {
   const history = useHistory();
+
   const initialRoomData = {
     isCreated: false,
     isBeingModified: false,
     name: "Nowy pokój",
-    minutes: 5
+    minutes: 5,
+    players: []
   };
 
-  const [roomData, updateRoomData] = useState(initialRoomData);
+  const [roomData, updateRoomData] = useState(() => {
+    const storageValue = localStorage.getItem('roomData');
+
+    return storageValue !== null
+      ? JSON.parse(storageValue)
+      : initialRoomData;
+  });
   const [roomNameBuffer, updateRoomBuffer] = useState(roomData.name);
 
   const handleNameChange = (evt) => {
@@ -34,12 +43,18 @@ function CreateRoom() {
   const handleTimeChange = (evt) => {
     updateRoomData((prevData) => ({
       ...prevData,
-      minutes: evt.target.value,
+      minutes: parseInt(evt.target.value),
     }));
   };
 
   const handleRoomCreateButton = (evt) => {
     evt.preventDefault();
+
+    updateRoomData((prevData) => ({
+      ...prevData,
+      isCreated: true,
+      isBeingModified: false,
+    }));
 
     if(roomData.isBeingModified){
       socket.emit('lobby-modify', {
@@ -54,12 +69,6 @@ function CreateRoom() {
       });
     }
 
-    updateRoomData((prevData) => ({
-      ...prevData,
-      isCreated: true,
-      isBeingModified: false,
-    }));
-
     updateRoomBuffer(roomData.name);
   };
 
@@ -73,18 +82,30 @@ function CreateRoom() {
   };
 
   useEffect(() => {
+    socket.on('pass-room', ({ room, users }) => {
+      updateRoomData((prevData) => ({
+        ...prevData,
+        name: room,
+        players: users
+      }));
+
+      localStorage.setItem('roomData', JSON.stringify(roomData));
+    });
+
     socket.on('start', () => {
-      console.log('test')
       history.push('/game-view');
     });
 
+    socket.emit('export-room');
+
     return () => {
       socket.off('start', () => {
-        console.log('test')
         history.push('/game-view');
       });
+
+      socket.off('pass-room');
     }
-  }, []);
+  });
 
   if (roomData.isCreated && !roomData.isBeingModified) {
     return (
@@ -99,9 +120,29 @@ function CreateRoom() {
             <p>Czas gry (w minutach):</p>
             <p>{roomData.minutes}</p>
           </div>
+          <div className="lobby__created-data">
+            <p>Gracze:</p>
+            <ul>
+              {
+                Object.values(roomData.players).map((player, index) => (
+                  <li key={index} className="player-row">
+                    <div>
+                      <p>{player.username}</p>
+                      <button onClick={() => socket.emit("kick", { player })}>X</button>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
           <div className="lobby__created-data__btns">
-            <Link to="/multiplayer">
-              <button onClick={() => socket.emit('lobby-leave')}>Rozwiąż</button>
+            <Link to="/multiplayer" onClick={() => {
+                socket.emit('lobby-leave');
+                localStorage.removeItem('roomData');
+              }}>
+                <button>
+                  Rozwiąż
+                </button>
             </Link>
             <button onClick={handleRoomModifyButton}>Modyfikuj</button>
             <button onClick={() => socket.emit('game-start', {room: roomData.name})}>Rozpocznij grę</button>
@@ -148,7 +189,16 @@ function CreateRoom() {
                 <option value="20">20</option>
               </select>
             </div>
-            <button>{roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}</button>
+            <button 
+              onClick={() => setTimeout(() => {
+                  socket.emit('export-room');
+                  socket.emit('export-users');
+                } 
+                , 10
+              )} // async loading hack
+            >
+              {roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}
+            </button>
           </form>
         </div>
       </section>

@@ -80,6 +80,7 @@ describe("Checking suite() getter while id=51, expected: clubs", () => {
 test("Checking isAscendingCardInSuiteTo function", () => {
     let card = new Card(7);
     let card1 = new Card(6);
+
     expect((card.isAscendingCardInSuiteTo(card1))).toBeTruthy();
 });
 //Sprawdzam D6 i C5(Czy nałożenie na stosie zwycięstwa jest możliwe)-Robert
@@ -105,7 +106,7 @@ test("Checking isDescendingAndOppositeTo function", () => {
 test("Checking isDescendingAndOppositeTo function", () => {
     let card = new Card(12);
     let card1 = new Card(12);
-    expect((card.isDescendingAndOppositeTo(card1))).toBeTruthy();
+    expect((card.isDescendingAndOppositeTo(card1))).toBeFalsy(); //tutaj test był źle ułożony - poprawiłem - Dawid W
 });
 //Sprawdzam D6 i D5(Czy nałożenie na stosie kart jest możliwe)-Robert
 test("Checking isDescendingAndOppositeTo function", () => {

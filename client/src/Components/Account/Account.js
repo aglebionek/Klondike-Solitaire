@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
-import "./Account.css";
+import "./AccountCyberpunk.css";
 import Select from 'react-select'
 import ReactCountryFlag from "react-country-flag"
 import dataCountry from './country-list.json';
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 import agent from '../../agent/agent.js';
-
 
 const Account =({effect}) => {
     const [show, setShow] = useState(false);
@@ -112,10 +111,7 @@ const Account =({effect}) => {
         password: currentPassword,
         country: country,
         });
-      };
-
-      
-
+      };   
 
     return (<>
         <div className = "profile-container">
@@ -125,7 +121,7 @@ const Account =({effect}) => {
             <div className="profile-heading">KONTO</div>
             <div className="profile-header">
                 <div className="profile-avatar">
-                    <img className="account-avatar" src={`./images/avatar${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
+                    <img draggable="false" className="account-avatar" src={`./images/avatar${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
                 </div> 
                 <div className="profile-header-info"> 
                     <div className="profile-username">{userName}</div>
@@ -149,13 +145,13 @@ const Account =({effect}) => {
                         <div className="country-name">
                             {countryName}
                         </div>
+                        <div className="edition-text">
+                            <button className='profile-edit-button' onClick={() => setShow(true)}>Edycja</button>
+                        </div>
                     </div>
                 </div>
-                <div className="profile-header-edit"> 
-                    <div className="edition-text">
-                        <button onClick={() => setShow(true)}>Edycja</button>
-                    </div>
-                </div>
+                
+                
             </div>
             <div className="profile-main">
                 <div className="profile-statistics"> 
@@ -189,7 +185,6 @@ const Account =({effect}) => {
                         <div id="number-of-abandoned-games-stats">11</div>
                     </div>
                 </div>
-                
             </div>
         </div> 
         <div style={show ? {display: 'flex'} : {display: 'none'}} className="background-modal">
@@ -198,10 +193,7 @@ const Account =({effect}) => {
             <form onSubmit={handleSubmit} name="editForm">
                 <div className="modal-settings">Ustawienia</div>
                 <div className="modal-nick">
-                    <div className="modak-nick-text row-one">
-                        Nazwa użytkownika
-                    </div>
-                    <div className="modal-nick-current">
+                    <div className="row-one">Nazwa użytkownika</div>
                         <input 
                             className="account_modal-nick-input" 
                             type="text" 
@@ -209,11 +201,9 @@ const Account =({effect}) => {
                                 setNewUsername(event.target.value);
                         }}
                         />
-                    </div> 
                 </div>         
                 <div className="modal-password-old">
                     <div className="row-one">Stare hasło</div>
-                    <div className="modal-password-old-current">
                         <input 
                             className="account_modal-password-old-input"
                             type="password"
@@ -221,8 +211,6 @@ const Account =({effect}) => {
                                 setOldPassword(event.target.value);
                             }}
                         />
-
-                    </div>
                     {!(currentPassword===oldPassword || oldPassword==='')&&(<span class="red-star">niepoprawne hasło</span>)}
                 </div>
                 <div className="modal-password-new">
@@ -254,7 +242,7 @@ const Account =({effect}) => {
                     </div>
                 </div>
                 <div className="modal-avatar">
-                    <div className="modal-avatar-text row-one"></div>
+                    <div className="modal-avatar-text"></div>
                     <div className="arrow modal-left-arrow"  onClick={() => previousAvatar()}>&lt;</div>
                     <div>
                         <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
@@ -269,9 +257,8 @@ const Account =({effect}) => {
                     <button className="modal-button-cancel" type = "button"  onClick={() => clearSettings()}>Anuluj</button>
                 </div>
                 </form>
-
-            </div>
-        </div>
+                </div>
+                </div>
     </>)
 }
 

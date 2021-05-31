@@ -12,7 +12,7 @@ const Index = ({ volume, setVolume }) => {
         value={volume}
         onChange={(e) => setVolume(e.target.value)}
         style={{
-          background: `linear-gradient(90deg,#00921c ${volume}%,rgb(214, 214, 214) ${volume}%)`,
+          boxShadow: `0px 0px 10px rgba(0, 214, 252, ${volume/100}), 0px 0px 10px rgba(0, 214, 252, ${volume/100})`,
         }}
       />
       <p className={styles.label}>{volume}%</p>

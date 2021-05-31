@@ -35,7 +35,7 @@ test("Checking if result stacks exists", () => {
 //Sprawdzam ilość pól do odkładnia kart - Kuba
 test("Checking number of result stacks", () => {
     let board = new Board();
-    expect(length(board.resultStacks)).toEqual(4);
+    expect(board.resultStacks.length).toEqual(4);
 });
 
 //Sprawdzam istnienie pól do gry - Kuba
@@ -47,7 +47,7 @@ test("Checking if game stacks exists", () => {
 //Sprawdzam ilość pól do gry - Kuba
 test("Checking number of game stacks", () => {
     let board = new Board();
-    expect(length(board.gameStacks)).toEqual(7);
+    expect(board.gameStacks.length).toEqual(7);
 });
 
 //Sprawdzam czy rozdanie kart zostało zainicjalizowane - Kuba
@@ -67,73 +67,73 @@ test("Chceking if the deck has been filled", () => {
 //Spawdzam czy ilość kart w polu do gry numer 0 jest poprawna - Kuba
 test("Checking if number of cards in game stack 0 is correct", () =>{
     let board = new Board();
-    expect(board.gameStacks[0].length).toBeEqual(1)
+    expect(board.gameStacks[0].length).toEqual(1)
 });
 
 //Spawdzam czy ilość kart w polu do gry numer 1 jest poprawna - Kuba
 test("Checking if number of cards in game stack 1 is correct", () =>{
     let board = new Board();
-    expect(board.gameStacks[1].length).toBeEqual(2)
+    expect(board.gameStacks[1].length).toEqual(2)
 });
 
 //Spawdzam czy ilość kart w polu do gry numer 2 jest poprawna - Kuba
 test("Checking if number of cards in game stack 2 is correct", () =>{
     let board = new Board();
-    expect(board.gameStacks[2].length).toBeEqual(3)
+    expect(board.gameStacks[2].length).toEqual(3)
 });
 
 //Spawdzam czy ilość kart w polu do gry numer 3 jest poprawna - Kuba
 test("Checking if number of cards in game stack 3 is correct", () =>{
     let board = new Board();
-    expect(board.gameStacks[3].length).toBeEqual(4)
+    expect(board.gameStacks[3].length).toEqual(4)
 });
 
 //Spawdzam czy ilość kart w polu do gry numer 4 jest poprawna - Kuba
 test("Checking if number of cards in game stack 4 is correct", () =>{
     let board = new Board();
-    expect(board.gameStacks[4].length).toBeEqual(5)
+    expect(board.gameStacks[4].length).toEqual(5)
 });
 
 //Spawdzam czy ilość kart w polu do gry numer 5 jest poprawna - Kuba
 test("Checking if number of cards in game stack 5 is correct", () =>{
     let board = new Board();
-    expect(board.gameStacks[5].length).toBeEqual(6)
+    expect(board.gameStacks[5].length).toEqual(6)
 });
 
 //Spawdzam czy ilość kart w polu do gry numer 6 jest poprawna - Kuba
 test("Checking if number of cards in game stack 6 is correct", () =>{
     let board = new Board();
-    expect(board.gameStacks[6].length).toBeEqual(7)
+    expect(board.gameStacks[6].length).toEqual(7)
 });
 
 //Sprawdzam czy pole do odkładnia kart 0 jest puste - Kuba
 test("Checking if result stack 0 is empty", () => {
     let board = new Board();
-    expect(board.resultStacks[0]).toBeEqual(0);
+    expect(board.resultStacks[0].length).toEqual(0);
 });
 
 //Sprawdzam czy pole do odkładnia kart 1 jest puste - Kuba
 test("Checking if result stack 1 is empty", () => {
     let board = new Board();
-    expect(board.resultStacks[1]).toBeEqual(0);
+    expect(board.resultStacks[1].length).toEqual(0);
 });
 
 //Sprawdzam czy pole do odkładnia kart 2 jest puste - Kuba
 test("Checking if result stack 2 is empty", () => {
     let board = new Board();
-    expect(board.resultStacks[2]).toBeEqual(0);
+    expect(board.resultStacks[2].length).toEqual(0);
 });
 
 //Sprawdzam czy pole do odkładnia kart 3 jest puste - Kuba
 test("Checking if result stack 3 is empty", () => {
     let board = new Board();
-    expect(board.resultStacks[3]).toBeEqual(0);
+    expect(board.resultStacks[3].length).toEqual(0);
 });
 
 //Sprawdzam czy ilość kart do dobrania jest poprawna - Kuba
 test("Checking if number of cards to draw is correct", () => {
     let board = new Board();
-    expect(board.deck.length).toBeEqual(24);
+    expect(board.deck.length).toEqual(24);
 });
 
 //Sprawdzam czy przekazywanie karty ze stosu kart do stosu kart do dobierania - Kuba
@@ -141,7 +141,7 @@ test("Checking if function to passing card to reveal stack passes the card", () 
     let board = new Board();
 
     board.passCardToRevealedStack();
-    expect(board.revealedCardStack.length).toBeEqual(1);
+    expect(board.revealedCardStack.length).toEqual(1);
 });
 
 //Zapełnienie całego stosu kart do dobierania - Kuba
@@ -153,7 +153,7 @@ test("Making revealed stack full", () => {
         board.passCardToRevealedStack();
         i++;
     }
-    expect(board.revealedCardStack.length).toBeEqual(24);
+    expect(board.revealedCardStack.length).toEqual(24);
 });
 
 //Przekazanie jednej więcej karty, gdy stos do dobierania jest pełny - Kuba
@@ -165,7 +165,7 @@ test("Passing one more card when the revealed stack full", () => {
         board.passCardToRevealedStack();
         i++;
     }
-    expect(board.revealedCardStack.length).toBeEqual(0);
+    expect(board.revealedCardStack.length).toEqual(0);
 });
 
 //Sprawdzenie czy stos po resecie jest taki sam jak przedtem - Kuba
@@ -183,6 +183,7 @@ test("Checking if stack after reset is the same as before", () => {
     i = 0;
     while (i<24){
         expect(board.deck[i]).toBe(original_stack[i])
+        i++;
     }
 });
 
@@ -190,11 +191,11 @@ test("Checking if stack after reset is the same as before", () => {
 test('Passing a card from one game stack to the other', () => {
     let board = new Board();
 
-    const card_from_gamestack =board.gameStacks[0][0];
+    const card_from_gamestack = board.gameStacks[0][0];
     let passed = false;
 
     while (!passed){
-        if(card_from_gamestack.isDescensingAndOppositeTo(board.gameStacks[1][board.gameStacks[1].length - 1])){
+        if(card_from_gamestack.isDescendingAndOppositeTo(board.gameStacks[1][board.gameStacks[1].length - 1])){
             board.moveBetweenGameStacks(0, 1, 1);
             passed = true;
         }
@@ -203,9 +204,11 @@ test('Passing a card from one game stack to the other', () => {
         }
     }
 
-    expect(length(board.gameStacks[0])).toBeEqual(0);
-    expect(length(board.gameStacks[1])).toBeEqual(3);
+    expect(board.gameStacks[0].length).toBeEqual(0);
+    expect(board.gameStacks[1].length).toBeEqual(3);
 });
+
+
 
 //Przeniesienie Króla ze stosu kart do dobierania na puste pole do gry - Kuba
 test('Passing a King card from reveal deck to an empty game stack', () => {
@@ -243,7 +246,7 @@ test('Passing a King card from reveal deck to an empty game stack', () => {
             }
         }
     }
-    expect(length(board.gameStacks[0])).toBeEqual(1);
+    expect(length(board.gameStacks[0])).toEqual(1);
     expect(board.gameStacks[0][0].rank).toBe('K');
 });   
 
@@ -257,7 +260,7 @@ test('Passing a card other than a King card from reveal deck to an empty game st
 
     while(!passed1 && !passed2){
         while (!passed1){
-            if(card_from_gamestack.isDescensingAndOppositeTo(board.gameStacks[1][board.gameStacks[1].length - 1])){
+            if(card_from_gamestack.isDescendingAndOppositeTo(board.gameStacks[1][board.gameStacks[1].length - 1])){
                 board.moveBetweenGameStacks(0, 1, 1);
                 passed1 = true;
             }

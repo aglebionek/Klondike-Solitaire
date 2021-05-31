@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Login.css";
+import "./LoginCyberpunk.css";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 import agent from '../../agent/agent.js';
@@ -57,7 +57,7 @@ const buttonHover = () => {
       <div className="login__container__menu-button">
         <a href="/" className="login__container__menu-button__link" onMouseDown={buttonSound}
               onMouseOver={buttonHover}>
-          Menu
+          MENU
         </a>
       </div>
       <div>
@@ -103,6 +103,10 @@ const buttonHover = () => {
             >
               Zarejestruj się
             </a>
+            <button type="submit" className="login__container__buttons__btn">
+              Zaloguj się
+            </button>
+            
           </div>
         </form>
         <div className="login__container__reminder"></div>

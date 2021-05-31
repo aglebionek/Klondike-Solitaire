@@ -6,7 +6,8 @@ const userJoin = (id, username, room) => {
   const user = {
     id,
     username,
-    room
+    room,
+    inGame: false
   };
 
   users.push(user);
@@ -36,6 +37,18 @@ const getRoomUsers = room => {
   return users.filter(user => user.room === room);
 };
 
+const setUsersInGame = room => {
+  const users = getRoomUsers(room);
+
+  users.forEach(user => user.inGame = true)
+}
+
+/*const setUsersOutOfGame = room => {
+  const users = getRoomUsers(room);
+
+  users.forEach(user => user.inGame = false);
+}*/
+
 const modifyRoom = (room, newName) => {
   users.forEach(user => {
     if (user.room === room){
@@ -50,5 +63,6 @@ module.exports = {
   userLeave,
   getRoomUsers,
   modifyRoom,
-  getAllUsers
+  getAllUsers,
+  setUsersInGame
 };
