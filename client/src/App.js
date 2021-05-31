@@ -16,10 +16,8 @@ import AppInfo from "./Components/AppInfo/AppInfo";
 import Spinner from "./Components/Spinner/Spinner";
 import agent from './agent/agent.js';
 
-function App() {
-
-    //turn off SoundManager's console logs
-    window.soundManager.setup({debugMode: false});
+function App() {  
+  window.soundManager.setup({debugMode: false});
 
   const [eff, setEffect] = useState(100);
   const [vol, setVolume] = useState(100);
@@ -42,6 +40,8 @@ function App() {
         localStorage.setItem('isLogged', false);
       });
     }, []);
+
+
   
   return (
     <Switch>
