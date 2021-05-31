@@ -21,13 +21,23 @@ function App() {
 
   const [eff, setEffect] = useState(100);
   const [vol, setVolume] = useState(100);
+  const [cardset, setCardSet] = useState(2); // 1 = cyber, 2 = default
   const userId = 10;
   
   useEffect(() => {
       agent.get(`settings/${userId}`).then(({ data }) => {
-        const { volume, effect } = data;
+        const { cardset_id, volume, effect } = data;
+        setCardSet(cardset_id);
         setEffect(effect);
         setVolume(volume);
+      });
+
+      agent.get("auth/verify")
+      .then(() => {
+        localStorage.setItem('isLogged', true);
+      })
+      .catch(() => {
+        localStorage.setItem('isLogged', false);
       });
     }, []);
 
@@ -38,9 +48,9 @@ function App() {
       <Route exact path="/" component={() => <MainMenu effect={eff}  /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
-      <PrivateRoute path="/settings" component={Settings} />
+      <Route path="/settings" component={Settings} />
       <PrivateRoute path="/global-stats" component={() => <GlobalStats effect={eff}/> } />
-      <Route path="/game-view" component={() => <GameView effect={eff} volume={vol}  /> } />
+      <Route path="/game-view" component={() => <GameView effect={eff} volume={vol}  cardset_id={cardset}/> } />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
       <PrivateRoute path="/account" component={() => <Account effect={eff}/> } />
       <PrivateRoute path="/game-lobby" component={JoinRoom} />
