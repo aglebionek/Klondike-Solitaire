@@ -97,25 +97,17 @@ function Login() {
               </p>
             </div>
           </div>
-          <div className="login__container__buttons">
-            <button
-              type="submit"
-              className="login__container__buttons__btn"
-              onMouseOver={buttonHover}
-            >
-              Przejdz do gry
-            </button>
+          <div className="login__container__buttons">   
             <a
               href="/register"
               type="button"
-              className="login__container__buttons__btn login__container__buttons__btn--link"
+              className="login__container__buttons__btn"
               onMouseDown={buttonSound}
               onMouseOver={buttonHover}
             >
               Zarejestruj się
             </a>
-            <button type="submit" className="login__container__buttons__btn" onMouseDown={buttonSound}
-              onMouseOver={buttonHover}>
+            <button type="submit" className="login__container__buttons__btn">
               Zaloguj się
             </button>
           </div>
