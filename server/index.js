@@ -35,21 +35,8 @@ app.use(
   })
 );
 
-// comment these ones to work on local
-
-app.use(express.static(path.resolve(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
-
-////////////////////
-
-app.get("/", (req, res) => {
-  res.send("Some shit");
-});
-
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "https://pasjansklondike.herokuapp.com/");
 
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -152,3 +139,8 @@ app.use("/auth", authRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
 app.use("/account", accountRoute);
+
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
