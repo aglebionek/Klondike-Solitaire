@@ -65,9 +65,9 @@ const Settings = () => {
       card_animation: isCardAnimation,
     });
   };
-  if (loading) return (
-    <Spinner></Spinner>
-  );
+ // if (loading) return (
+ //   <Spinner></Spinner>
+  //);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -102,26 +102,25 @@ const Settings = () => {
                     soundEffect={effectVolume}
                   />
                 </div>
-
-                <div className={styles.item}>
-                  <div className={styles.name}>Efekty dźwiekowe</div>
-                  <div className={styles.switch}>
-                    <AudioSlider
-                      volume={effectVolume}
-                      setVolume={setEffectVolume}
-                    />
-                  </div>
+              </div>
+              <div className={styles.item}>
+                <div className={styles.name}>Efekty dźwiekowe</div>
+                <div className={styles.switch}>
+                  <AudioSlider
+                    volume={effectVolume}
+                    setVolume={setEffectVolume}
+                  />
                 </div>
-
-                <div className={styles.item}>
-                  <div className={styles.name}>Głośność</div>
-                  <div className={styles.switch}>
-                    <AudioSlider
-                      volume={musicVolume}
-                      setVolume={setMusicVolume}
-                    />
-                  </div>
+              </div>
+              <div className={styles.item}>
+                <div className={styles.name}>Głośność</div>
+                <div className={styles.switch}>
+                  <AudioSlider
+                    volume={musicVolume}
+                    setVolume={setMusicVolume}
+                  />
                 </div>
+              </div>
               </div>
             </div>
             {isCardSelectionOpen && (
@@ -156,22 +155,12 @@ const Settings = () => {
                 </button>
               </div>
             )}
-          <div className={styles.saveButtonContainer}>
-            <button
-              className={`${styles.saveButton} ${
-                isCardSelectionOpen ? styles.disabledButton : ""
-              }`}
-              type={isCardSelectionOpen ? "button" : "submit"}
-              onMouseDown={buttonSound}
-            >
-              Zapisz
-            </button>
+          
           </div>
+          </form>
         </div>
         </div>
-      </form>
-      </div>
-    </div>
+      
   );
 };
 
