@@ -155,6 +155,8 @@ const Settings = () => {
                 </button>
               </div>
             )}
+          
+          </div>
           <div className={styles.saveButtonContainer}>
             <button
               className={`${styles.saveButton} ${
@@ -165,7 +167,6 @@ const Settings = () => {
             >
               Zapisz
             </button>
-          </div>
           </div>
           </form>
         </div>
