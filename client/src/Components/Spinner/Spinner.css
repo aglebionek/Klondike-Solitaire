@@ -23,9 +23,9 @@
   left: 0;
 
   border-radius: 50%;
-  border-left: 10px rgba(0, 214, 252, 0.8) solid;
-  border-top: 10px rgba(0, 214, 252, 0.8) solid;
-  border-bottom: 10px rgba(0, 214, 252, 0.8) solid;
+  border-left: 10px rgba(0, 214, 252, 1) solid;
+  border-top: 10px rgba(0, 214, 252, 1) solid;
+  border-bottom: 10px rgba(0, 214, 252, 1) solid;
   border-right: 10px transparent solid;
 
   transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(0deg);
