@@ -65,9 +65,9 @@ const Settings = () => {
       card_animation: isCardAnimation,
     });
   };
- // if (loading) return (
- //   <Spinner></Spinner>
-  //);
+  if (loading) return (
+    <Spinner></Spinner>
+  );
   return (
     <div className={styles.container}>
       <div className={styles.header}>
