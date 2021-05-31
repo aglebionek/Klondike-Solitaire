@@ -102,25 +102,26 @@ const Settings = () => {
                     soundEffect={effectVolume}
                   />
                 </div>
-              </div>
-              <div className={styles.item}>
-                <div className={styles.name}>Efekty dźwiekowe</div>
-                <div className={styles.switch}>
-                  <AudioSlider
-                    volume={effectVolume}
-                    setVolume={setEffectVolume}
-                  />
+
+                <div className={styles.item}>
+                  <div className={styles.name}>Efekty dźwiekowe</div>
+                  <div className={styles.switch}>
+                    <AudioSlider
+                      volume={effectVolume}
+                      setVolume={setEffectVolume}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.item}>
-                <div className={styles.name}>Głośność</div>
-                <div className={styles.switch}>
-                  <AudioSlider
-                    volume={musicVolume}
-                    setVolume={setMusicVolume}
-                  />
+
+                <div className={styles.item}>
+                  <div className={styles.name}>Głośność</div>
+                  <div className={styles.switch}>
+                    <AudioSlider
+                      volume={musicVolume}
+                      setVolume={setMusicVolume}
+                    />
+                  </div>
                 </div>
-              </div>
               </div>
             </div>
             {isCardSelectionOpen && (
@@ -155,8 +156,6 @@ const Settings = () => {
                 </button>
               </div>
             )}
-          
-          </div>
           <div className={styles.saveButtonContainer}>
             <button
               className={`${styles.saveButton} ${
@@ -168,10 +167,11 @@ const Settings = () => {
               Zapisz
             </button>
           </div>
-          </form>
         </div>
         </div>
-      
+      </form>
+      </div>
+    </div>
   );
 };
 
