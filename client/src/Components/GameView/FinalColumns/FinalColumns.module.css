@@ -1,0 +1,22 @@
+.finalColumnContainer {
+  display: flex;
+  width: 56%;
+}
+
+.finalColumn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 110px;
+  width: 25%;
+}
+
+.cardShadow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(4.8em - 2px);
+  height: calc(6.675em - 2px);
+  border: 1px solid grey;
+}
