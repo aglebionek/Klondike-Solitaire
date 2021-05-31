@@ -54,12 +54,10 @@ const buttonHover = () => {
 
   return (
     <div className="login__container">
-      <div className="login__container__menu-button">
-        <a href="/" className="login__container__menu-button__link" onMouseDown={buttonSound}
-              onMouseOver={buttonHover}>
-          MENU
-        </a>
-      </div>
+      <a href="/" className="login__back" onMouseDown={buttonSound}
+            onMouseOver={buttonHover}>
+        &#129044;
+      </a>
       <div>
         <header className="login__container__header"> Logowanie </header>
         <form onSubmit={handleSubmit}>

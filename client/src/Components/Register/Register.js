@@ -83,10 +83,10 @@ const buttonHover = () => {
 
   return (
     <div className="register__container">
-      <div className="register__container__menu-button">
-        <a href="/" className="register__container__menu-button__link" onMouseDown={buttonSound}
+      <div className="register__back">
+        <a href="/" className="register__back" onMouseDown={buttonSound}
               onMouseOver={buttonHover}>
-          MENU
+          &#129044;
         </a>
       </div>
       <div>
