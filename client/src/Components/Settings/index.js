@@ -70,11 +70,9 @@ const Settings = () => {
   );
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <a href="/" className={styles.menuButton} onMouseDown={buttonSound}>
-          MENU
-        </a>
-      </div>
+      <a href="/" className="settings__back" onMouseDown={buttonSound}>
+        &#129044;
+      </a>
       <div>
       <header className={styles.title}>Ustawienia Gry</header>
       <form onSubmit={handleSubmit}>
