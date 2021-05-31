@@ -4,13 +4,12 @@ import "./passwordResetCyberpunk.css"
 function PasswordReset (){
     return (
     <div className="password__reset__container">
-      <div className="password__reset__container__menu-button">
-        <a href="/" className="password__reset__container__menu-button__link">
-          MENU
-        </a>
-      </div>
+      <a href="/" className="password__reset__back">
+        &#129044;
+      </a>
       <div>
-        <header className="password__reset__container__header"> Rejestracja </header>
+        <header className="password__reset__container__header"> Resetuj hasło </header>
+        <info className="password__reset__info">Aby odzyskać hasło, wpisz swój email, na który wyślemy link do resetowania hasła: </info>
         <form>
           <div className="password__reset__container__creds">
             <div className="password__reset__container__creds__field">
