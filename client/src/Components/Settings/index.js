@@ -155,7 +155,17 @@ const Settings = () => {
                 </button>
               </div>
             )}
-          
+          <div className={styles.saveButtonContainer}>
+            <button
+              className={`${styles.saveButton} ${
+                isCardSelectionOpen ? styles.disabledButton : ""
+              }`}
+              type={isCardSelectionOpen ? "button" : "submit"}
+              onMouseDown={buttonSound}
+            >
+              Zapisz
+            </button>
+          </div>
           </div>
           </form>
         </div>
