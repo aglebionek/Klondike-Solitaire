@@ -71,8 +71,8 @@ const Settings = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <a href="/" className={styles.menuButton} onMouseDown={buttonSound}>
-          MENU
+        <a href="/" className={styles.settings__back} onMouseDown={buttonSound}>
+          &#129044;
         </a>
       </div>
       <div>

@@ -93,6 +93,12 @@ function Register() {
   if (isLoggedIn) return <Redirect to="/" />;
   return (
     <div className="register__container">
+<<<<<<< HEAD
+      <div className="register__back">
+        <a href="/" className="register__back" onMouseDown={buttonSound}
+              onMouseOver={buttonHover}>
+          &#129044;
+=======
       <div className="register__container__menu-button">
         <a
           href="/"
@@ -101,6 +107,7 @@ function Register() {
           onMouseOver={buttonHover}
         >
           MENU
+>>>>>>> main
         </a>
       </div>
       <div>

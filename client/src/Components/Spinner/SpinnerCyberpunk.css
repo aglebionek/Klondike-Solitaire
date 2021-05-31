@@ -1,0 +1,34 @@
+@keyframes rotateSpinner {
+  from{
+    transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(0deg);
+  }
+  to{
+    transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(360deg);
+  }
+}
+.waiting-spinner-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+}
+
+.waiting-spinner{
+  display: block;
+  background-color: transparent;
+  width: 50px;
+  height: 50px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  border-radius: 50%;
+  border-left: 10px rgba(0, 214, 252, 0.9) solid;
+  border-top: 10px rgba(0, 214, 252, 0.9) solid;
+  border-bottom: 10px rgba(0, 214, 252, 0.9) solid;
+  border-right: 10px transparent solid;
+
+  transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(0deg);
+
+  animation: rotateSpinner .8s ease-in-out .1s infinite normal forwards;
+}
