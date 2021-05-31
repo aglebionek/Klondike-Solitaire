@@ -68,7 +68,10 @@ function Register() {
           password: password,
         })
         .then((resp) => {
-          if (resp.status === 200) setLoggedIn(true);
+          if (resp.status === 200) {
+            localStorage.setItem('isLogged', true);
+            setLoggedIn(true);
+          }
         })
         .catch((err) => {
           const { data } = err.response;

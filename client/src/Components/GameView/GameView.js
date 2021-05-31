@@ -11,7 +11,7 @@ import MainColumns from "./MainColumns/MainColumns";
 import GameMusic from "./GameMusicKlondike";
 import "../CardMotives/CardMotives.css";
 
-function GameView({ effect, volume }) {
+function GameView({cardset_id, effect, volume }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -242,7 +242,7 @@ function GameView({ effect, volume }) {
   if (isGameEnded) return <div>Gra zakończona</div>;
   return (
     <DndProvider backend={HTML5Backend}>
-      {volume > 0 && <GameMusic musicVolume={volume} />}
+      {volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>}
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
         <div className={styles.cardTop}>

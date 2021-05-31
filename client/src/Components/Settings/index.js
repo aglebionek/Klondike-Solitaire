@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SettingCyberpunk.module.css";
-import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 import Spinner from "../Spinner/Spinner";
 import agent from '../../agent/agent.js';
+import CardMotives from "../CardMotives/CardMotives";
 
 const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
   const [card, setCard] = useState(1);
-  const [temporaryCard, setTemporaryCard] = useState("card1");
-  const [musicVolume, setMusicVolume] = useState(10);
-  const [effectVolume, setEffectVolume] = useState(40);
-  const [isCardAnimation  , setCardAnimation] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [temporaryCard, setTemporaryCard] = useState("vA hearts");
+  const [musicVolume, setMusicVolume] = useState(JSON.parse(localStorage.getItem('guestMusic')) ?? 20);
+  const [effectVolume, setEffectVolume] = useState(JSON.parse(localStorage.getItem('guestEffect')) ?? 20);
+  const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
+  const [loading, setLoading] = useState(isLogged);
 
-  const cards = ["card1", "card2"];
+
+  const cards = ["vA hearts cyberpunk","vA hearts"];
   const userId = 10;
 
   const nextCard = () => {
@@ -34,8 +35,8 @@ const Settings = () => {
   };
 
   const setNewCard = () => {
-    const num = temporaryCard.match(/\d+/)[0];
-    setCard(Number(num));
+    const num = cards.indexOf(temporaryCard);
+    setCard(Number(num) + 1);
     setCardSelectionOpen(false);
   };
   const buttonSound = (event) => {
@@ -45,25 +46,29 @@ const Settings = () => {
   }
 
   useEffect(() => {
-    agent.get(`settings/${userId}`).then(({ data }) => {
-      const { carset_id, volume, effect, card_animation } = data;
-      console.log("aaaA");
-      setTemporaryCard("card" + carset_id);
-      setMusicVolume(Number(volume));
-      setEffectVolume(effect);
-      setCardAnimation(Boolean(card_animation));
-      setLoading(false);
-    }).catch(error =>console.log(error.response));
+    if (isLogged) {
+      agent.get(`settings/${userId}`).then(({ data }) => {
+        const { cardset_id, volume, effect } = data;
+        setTemporaryCard(cards[cardset_id-1]);
+        setMusicVolume(Number(volume));
+        setEffectVolume(effect);
+        setLoading(false);
+      }).catch(error =>console.log(error.response));
+    }
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    agent.put(`settings/edit/${userId}`, {
-      cardset_id: card,
-      music: musicVolume,
-      effect: effectVolume,
-      card_animation: isCardAnimation,
-    });
+    if (isLogged) {
+      agent.put(`settings/edit/${userId}`, {
+        cardset_id: card,
+        music: musicVolume,
+        effect: effectVolume,
+      });
+    } else {
+      localStorage.setItem('guestMusic', musicVolume);
+      localStorage.setItem('guestEffect', effectVolume);
+    }
   };
   if (loading) return (
     <Spinner></Spinner>
@@ -81,47 +86,37 @@ const Settings = () => {
         <div className={styles.content}>
           <div className={styles.contentWrapper}>
             <div className={styles.itemsContainer}>
+              {isLogged && (<>
+                <div className={styles.item}>
+                  <div className={styles.name}>Talia</div>
+                  <div className={styles.switch}>
+                    <Button
+                      text="Zmień"
+                      isCardSelectionOpen={isCardSelectionOpen}
+                      setCardSelectionOpen={setCardSelectionOpen}
+                      soundEffect={effectVolume}
+                    />
+                  </div>
+                </div>
+              </>)}
               <div className={styles.item}>
-                <div className={styles.name}>Animacje kart</div>
+                <div className={styles.name}>Efekty dźwiekowe</div>
                 <div className={styles.switch}>
-                  <Checkbox
-                    name="cardAnimations"
-                    status={isCardAnimation}
-                    setStatus={setCardAnimation}
-                    soundEffect={effectVolume}
+                  <AudioSlider
+                    volume={effectVolume}
+                    setVolume={setEffectVolume}
                   />
                 </div>
               </div>
               <div className={styles.item}>
-                <div className={styles.name}>Talia</div>
+                <div className={styles.name}>Głośność</div>
                 <div className={styles.switch}>
-                  <Button
-                    text="Zmień"
-                    isCardSelectionOpen={isCardSelectionOpen}
-                    setCardSelectionOpen={setCardSelectionOpen}
-                    soundEffect={effectVolume}
+                  <AudioSlider
+                    volume={musicVolume}
+                    setVolume={setMusicVolume}
                   />
                 </div>
-
-                <div className={styles.item}>
-                  <div className={styles.name}>Efekty dźwiekowe</div>
-                  <div className={styles.switch}>
-                    <AudioSlider
-                      volume={effectVolume}
-                      setVolume={setEffectVolume}
-                    />
-                  </div>
-                </div>
-
-                <div className={styles.item}>
-                  <div className={styles.name}>Głośność</div>
-                  <div className={styles.switch}>
-                    <AudioSlider
-                      volume={musicVolume}
-                      setVolume={setMusicVolume}
-                    />
-                  </div>
-                </div>
+              </div>
               </div>
             </div>
             {isCardSelectionOpen && (
@@ -134,11 +129,7 @@ const Settings = () => {
                     &lt;
                   </div>
                   <div>
-                    <img
-                      src={`./images/${temporaryCard}.png`}
-                      alt="karta"
-                      className={styles.card}
-                    />
+                    <CardMotives card_classes={temporaryCard}/>
                   </div>
                   <div
                     className={`${styles.arrow} ${styles.arrowRight}`}
@@ -156,6 +147,8 @@ const Settings = () => {
                 </button>
               </div>
             )}
+          
+          </div>
           <div className={styles.saveButtonContainer}>
             <button
               className={`${styles.saveButton} ${
@@ -167,11 +160,10 @@ const Settings = () => {
               Zapisz
             </button>
           </div>
+          </form>
         </div>
         </div>
-      </form>
-      </div>
-    </div>
+      
   );
 };
 
