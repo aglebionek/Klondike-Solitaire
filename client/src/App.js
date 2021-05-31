@@ -31,6 +31,14 @@ function App() {
         setEffect(effect);
         setVolume(volume);
       });
+
+      agent.get("auth/verify")
+      .then(() => {
+        localStorage.setItem('isLogged', true);
+      })
+      .catch(() => {
+        localStorage.setItem('isLogged', false);
+      });
     }, []);
   
   return (
@@ -38,7 +46,7 @@ function App() {
       <Route exact path="/" component={() => <MainMenu effect={eff}  /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
-      <PrivateRoute path="/settings" component={Settings} />
+      <Route path="/settings" component={Settings} />
       <PrivateRoute path="/global-stats" component={() => <GlobalStats effect={eff}/> } />
       <Route path="/game-view" component={() => <GameView effect={eff} volume={vol}  /> } />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />

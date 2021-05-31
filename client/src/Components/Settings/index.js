@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SettingCyberpunk.module.css";
-import Checkbox from "./Checkbox";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
@@ -11,10 +10,11 @@ const Settings = () => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
   const [card, setCard] = useState(1);
   const [temporaryCard, setTemporaryCard] = useState("card1");
-  const [musicVolume, setMusicVolume] = useState(10);
-  const [effectVolume, setEffectVolume] = useState(40);
-  const [isCardAnimation  , setCardAnimation] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [musicVolume, setMusicVolume] = useState(JSON.parse(localStorage.getItem('guestMusic')) ?? 20);
+  const [effectVolume, setEffectVolume] = useState(JSON.parse(localStorage.getItem('guestEffect')) ?? 20);
+  const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
+  const [loading, setLoading] = useState(isLogged);
+
 
   const cards = ["card1", "card2"];
   const userId = 10;
@@ -45,25 +45,29 @@ const Settings = () => {
   }
 
   useEffect(() => {
-    agent.get(`settings/${userId}`).then(({ data }) => {
-      const { carset_id, volume, effect, card_animation } = data;
-      console.log("aaaA");
-      setTemporaryCard("card" + carset_id);
-      setMusicVolume(Number(volume));
-      setEffectVolume(effect);
-      setCardAnimation(Boolean(card_animation));
-      setLoading(false);
-    }).catch(error =>console.log(error.response));
+    if (isLogged) {
+      agent.get(`settings/${userId}`).then(({ data }) => {
+        const { carset_id, volume, effect } = data;
+        setTemporaryCard("card" + carset_id);
+        setMusicVolume(Number(volume));
+        setEffectVolume(effect);
+        setLoading(false);
+      }).catch(error =>console.log(error.response));
+    }
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    agent.put(`settings/edit/${userId}`, {
-      cardset_id: card,
-      music: musicVolume,
-      effect: effectVolume,
-      card_animation: isCardAnimation,
-    });
+    if (isLogged) {
+      agent.put(`settings/edit/${userId}`, {
+        cardset_id: card,
+        music: musicVolume,
+        effect: effectVolume,
+      });
+    } else {
+      localStorage.setItem('guestMusic', musicVolume);
+      localStorage.setItem('guestEffect', effectVolume);
+    }
   };
   if (loading) return (
     <Spinner></Spinner>
@@ -81,28 +85,19 @@ const Settings = () => {
         <div className={styles.content}>
           <div className={styles.contentWrapper}>
             <div className={styles.itemsContainer}>
-              <div className={styles.item}>
-                <div className={styles.name}>Animacje kart</div>
-                <div className={styles.switch}>
-                  <Checkbox
-                    name="cardAnimations"
-                    status={isCardAnimation}
-                    setStatus={setCardAnimation}
-                    soundEffect={effectVolume}
-                  />
+              {isLogged && (<>
+                <div className={styles.item}>
+                  <div className={styles.name}>Talia</div>
+                  <div className={styles.switch}>
+                    <Button
+                      text="Zmień"
+                      isCardSelectionOpen={isCardSelectionOpen}
+                      setCardSelectionOpen={setCardSelectionOpen}
+                      soundEffect={effectVolume}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.item}>
-                <div className={styles.name}>Talia</div>
-                <div className={styles.switch}>
-                  <Button
-                    text="Zmień"
-                    isCardSelectionOpen={isCardSelectionOpen}
-                    setCardSelectionOpen={setCardSelectionOpen}
-                    soundEffect={effectVolume}
-                  />
-                </div>
-              </div>
+              </>)}
               <div className={styles.item}>
                 <div className={styles.name}>Efekty dźwiekowe</div>
                 <div className={styles.switch}>

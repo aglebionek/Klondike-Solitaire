@@ -23,7 +23,10 @@ function Login() {
           password,
         })
         .then((resp) => {
-          if (resp.status === 200) setLoggedIn(true);
+          if (resp.status === 200) {
+            localStorage.setItem('isLogged', true);
+            setLoggedIn(true);
+          }
         })
         .catch((err) => {
           if (err.response.data) setServerError(err.response.data);
