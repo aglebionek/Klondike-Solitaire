@@ -1,5 +1,5 @@
 import React from 'react';
-import './AppInfo.css';
+import './AppInfoCyberpunk.css';
 
 function AppInfo() {
   return (
