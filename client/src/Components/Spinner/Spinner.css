@@ -6,6 +6,11 @@
     transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(360deg);
   }
 }
+.waiting-spinner-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+}
 
 .waiting-spinner{
   display: block;
@@ -18,9 +23,9 @@
   left: 0;
 
   border-radius: 50%;
-  border-left: 10px grey solid;
-  border-top: 10px grey solid;
-  border-bottom: 10px grey solid;
+  border-left: 10px rgba(0, 214, 252, 0.8) solid;
+  border-top: 10px rgba(0, 214, 252, 0.8) solid;
+  border-bottom: 10px rgba(0, 214, 252, 0.8) solid;
   border-right: 10px transparent solid;
 
   transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(0deg);
