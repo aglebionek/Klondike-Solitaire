@@ -28,6 +28,7 @@ function MainMenu( {effect} ) {
                 agent.post("auth/logout")
                 .then(() => {
                     setLog(false);
+                    localStorage.setItem('isLogged', false);
                 })
                 
             return;

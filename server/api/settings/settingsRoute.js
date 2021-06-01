@@ -5,7 +5,7 @@ const router = express.Router();
 const mysqlQuery = require("../../database/connection/mysql_query");
 
 router.put("/edit/:userId", async (req, res) => {
-  const { cardset_id, music, effect, card_animation } = req.body;
+  const { cardset_id, music, effect } = req.body;
   const card = {
     1: true,
     2: true,
@@ -16,8 +16,6 @@ router.put("/edit/:userId", async (req, res) => {
     return res.status(400).json("invalid music volume");
   if (isNaN(effect) || effect < 0 || effect > 100)
     return res.status(400).json("invalid effect volume");
-  if (typeof card_animation !== "boolean")
-    return res.status(400).json("invalid value of card animation");
 
   const userId = req.params.userId;
 
@@ -36,7 +34,7 @@ router.put("/edit/:userId", async (req, res) => {
     )
     .toString();
 
-  await mysqlQuery(query, [cardset_id, music, effect, card_animation, userId]);
+  await mysqlQuery(query, [cardset_id, music, effect, userId]);
 
   return res.status(200).json("settings updated successfully");
 });

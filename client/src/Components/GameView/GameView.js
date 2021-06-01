@@ -1,75 +1,305 @@
-import './GameView.css';
-import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
-import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
-import buttonUndoSound from '../../soundtrack/SoundDesign/button_undo.mp3';
-import GameMusic from './GameMusicKlondike';
+import React, { useState, useEffect } from "react";
+import styles from "./GameView.module.css";
+import CustomDragLayer from "./CustomDrag/Custom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { isDroppable, shuffleCards, numMoves } from "../../utils/card";
+import Deck from "./Deck/Deck";
+import Buttons from "./Buttons/Buttons";
+import FinalColumns from "./FinalColumns/FinalColumns";
+import MainColumns from "./MainColumns/MainColumns";
+import GameMusic from "./GameMusicKlondike";
+import "../CardMotives/CardMotives.css";
 
-function GameView({effect, volume}) {
-  const score = 1234;
-  const stopwatch = '12:34';  
+function GameView({cardset_id, effect, volume }) {
+  const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
+  const [startCardIndex, setStartCardIndex] = useState(0);
+  const [isLoading, setLoading] = useState(true);
+  const [moveNumbers, setMoveNumbers] = useState(0);
+  const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
+  const [gameNumber, setGameNumber] = useState(0);
+  const [isGameEnded, setGameEnd] = useState(false);
+  const [bonus, setBonus] = useState(1200);
+  const [gameTime, setGameTime] = useState(0);
+  const [points, setPoints] = useState(0);
 
-  const buttonSound = () => {
-      let beep = new Audio(buttonMenuClick);
-      beep.volume=(effect/100);
-      beep.play();   
-  }
-  const buttonHover = () => {
-      let beep = new Audio(buttonHoverSound);
-      beep.volume=(effect/100);
-      beep.play();   
-  }
-  const buttonUndo = () => {
-    let beep = new Audio(buttonUndoSound);
-    beep.volume=(effect/100);
-    beep.play();   
-}
+  const [mainColumn1, setMainColumn1] = useState([]);
+  const [mainColumn2, setMainColumn2] = useState([]);
+  const [mainColumn3, setMainColumn3] = useState([]);
+  const [mainColumn4, setMainColumn4] = useState([]);
+  const [mainColumn5, setMainColumn5] = useState([]);
+  const [mainColumn6, setMainColumn6] = useState([]);
+  const [mainColumn7, setMainColumn7] = useState([]);
 
+  const [finalColumn1, setFinalColumn1] = useState([]);
+  const [finalColumn2, setFinalColumn2] = useState([]);
+  const [finalColumn3, setFinalColumn3] = useState([]);
+  const [finalColumn4, setFinalColumn4] = useState([]);
+
+  const [startColumn1, setStartColumn1] = useState([]);
+  const [startColumn2, setStartColumn2] = useState([]);
+
+  const [history, setHistory] = useState([]);
+
+  const startColumns = {
+    startColumn1: {
+      get: startColumn1,
+      set: setStartColumn1,
+    },
+    startColumn2: {
+      get: startColumn2,
+      set: setStartColumn2,
+    },
+  };
+
+  const mainColumns = {
+    mainColumn1: {
+      set: setMainColumn1,
+      get: mainColumn1,
+    },
+    mainColumn2: {
+      set: setMainColumn2,
+      get: mainColumn2,
+    },
+    mainColumn3: {
+      set: setMainColumn3,
+      get: mainColumn3,
+    },
+    mainColumn4: {
+      set: setMainColumn4,
+      get: mainColumn4,
+    },
+    mainColumn5: {
+      set: setMainColumn5,
+      get: mainColumn5,
+    },
+    mainColumn6: {
+      set: setMainColumn6,
+      get: mainColumn6,
+    },
+    mainColumn7: {
+      set: setMainColumn7,
+      get: mainColumn7,
+    },
+  };
+
+  const finalColumns = {
+    finalColumn1: {
+      set: setFinalColumn1,
+      get: finalColumn1,
+    },
+    finalColumn2: {
+      set: setFinalColumn2,
+      get: finalColumn2,
+    },
+    finalColumn3: {
+      set: setFinalColumn3,
+      get: finalColumn3,
+    },
+    finalColumn4: {
+      set: setFinalColumn4,
+      get: finalColumn4,
+    },
+  };
+
+  const columns = { ...finalColumns, ...mainColumns, ...startColumns };
+
+  useEffect(() => {
+    const initialShuffle = shuffleCards();
+    Object.entries(initialShuffle).map(([key, item]) => {
+      columns[key].set(item);
+    });
+    setLoading(false);
+    // startTimer();
+  }, []);
+
+  let timer;
+
+  const startTimer = () => {
+    timer = setInterval(() => {
+      const reducedBonus = bonus - 1;
+      setGameTime((prev) => prev + 1);
+      if (reducedBonus < 0) {
+        setBonus(0);
+      } else setBonus(reducedBonus);
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    clearInterval(timer);
+    setPoints((prev) => prev + bonus);
+  };
+
+  useEffect(() => {
+    if (gameNumber > 0) {
+      const initialShuffle = shuffleCards();
+      Object.entries(initialShuffle).map(([key, item]) => {
+        columns[key].set(item);
+      });
+      setMoveNumbers(0);
+
+      Object.entries(finalColumns).map(([key, column]) => {
+        column.set([]);
+      });
+      setStartCardIndex(0);
+      setStartColumn2([]);
+    }
+  }, [gameNumber]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      console.log("odświeżam");
+      const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
+        return mainColumns[key].get;
+      });
+      const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
+        return finalColumns[key].get;
+      });
+
+      const possibleMoves = numMoves(
+        mainColumnsArr,
+        finalColumnsArr,
+        startColumn1
+      );
+      console.log(possibleMoves);
+      if (possibleMoves === 0) {
+        setGameEnd(true);
+      } else setPossibleMoveNumbers(possibleMoves);
+    }
+  }, [moveNumbers, isLoading, gameNumber]);
+
+  const handleDrop = (currentCards, draggingCards) => {
+    const selectedCard =
+      currentCards.array[currentCards.array.length - 1] || null;
+    const dropTarget = draggingCards.array[0];
+    const dragArrayLength = draggingCards.array.length;
+    const carriedArray = columns[draggingCard.title].get;
+    const carriedArrayLength = carriedArray.length;
+    const sliceEnd = carriedArrayLength - dragArrayLength;
+    const carriedTarget = draggingCard.target;
+    setMoveNumbers((prev) => prev + 1);
+    if (isDroppable(selectedCard, dropTarget)) {
+      if (draggingCards.title.includes("finalColumn")) {
+        const newPoints = points - 10;
+        if (newPoints < 0) setPoints(0);
+        else setPoints(newPoints);
+      }
+      let newHistoryStep;
+      if (draggingCards.title === "startColumn2") {
+        const source = columns["startColumn1"].get;
+        const index = draggingCard.cardIndex;
+        source.splice(index - 1, 1);
+        columns[draggingCard.title].set([]);
+        columns["startColumn1"].set(source);
+        columns[currentCards.title].set([
+          ...currentCards.array,
+          ...draggingCards.array,
+        ]);
+        newHistoryStep = {
+          source: draggingCard.title,
+          target: currentCards.title,
+          draggedCards: draggingCard.array,
+          cardIndex: index,
+        };
+      } else {
+        columns[currentCards.title].set([
+          ...currentCards.array,
+          ...draggingCards.array,
+        ]);
+
+        const reducedColumn = carriedArray.slice(0, sliceEnd);
+        let reversed = null;
+        if (
+          reducedColumn.length > 0 &&
+          !reducedColumn[reducedColumn.length - 1].isVisible
+        ) {
+          reversed = reducedColumn.length - 1;
+        }
+        if (reducedColumn.length > 0)
+          reducedColumn[reducedColumn.length - 1].isVisible = true;
+        columns[draggingCard.title].set(reducedColumn);
+
+        newHistoryStep = {
+          source: draggingCard.title,
+          target: currentCards.title,
+          draggedCards: draggingCard.array,
+          reversed,
+        };
+      }
+
+      setHistory([...history, newHistoryStep]);
+    } else {
+      carriedTarget.style.opacity = 1;
+      let sibling = carriedTarget.nextElementSibling;
+      while (sibling !== null) {
+        sibling.style.opacity = 1;
+        sibling = sibling.nextElementSibling;
+      }
+    }
+    setDraggingCard({ title: "", array: [] });
+  };
+  if (isLoading) return <div>loading...</div>;
+  if (isGameEnded) return <div>Gra zakończona</div>;
   return (
-    <div className="App">
-      {volume>0 && <GameMusic musicVolume={volume}/> }
-    <div className="menu_top">
-        <a className="game-view__back" href="./..">
-          &#129044;
-        </a>
-        <header className="widok_gry_header">
-            <h3 className="klondike_title">Klondike</h3>
-        </header>
-        <div className="points_time">
-        <p className="score_points">Punkty: {score}</p>
-        <p className="score_time">Czas: {stopwatch}</p>
+    <DndProvider backend={HTML5Backend}>
+      {volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>}
+      <CustomDragLayer draggingCard={draggingCard} />
+      <div className={styles.container}>
+        <div className={styles.cardTop}>
+          <Deck
+            startColumn1={startColumn1}
+            startColumn2={startColumn2}
+            startCardIndex={startCardIndex}
+            handleDrop={handleDrop}
+            setDraggingCard={setDraggingCard}
+            draggingCard={draggingCard}
+            setStartCardIndex={setStartCardIndex}
+            setStartColumn2={setStartColumn2}
+            setHistory={setHistory}
+            history={history}
+            points={points}
+            setPoints={setPoints}
+          />
+          <Buttons
+            history={history}
+            startCardIndex={startCardIndex}
+            startColumn1={startColumn1}
+            setStartCardIndex={setStartCardIndex}
+            setStartColumn2={setStartColumn2}
+            columns={columns}
+            setHistory={setHistory}
+            setMoveNumbers={setMoveNumbers}
+            setGameNumber={setGameNumber}
+            points={points}
+            setPoints={setPoints}
+            effect={effect}
+          />
+          <FinalColumns
+            finalColumns={finalColumns}
+            columns={columns}
+            draggingCard={draggingCard}
+            setHistory={setHistory}
+            history={history}
+            setDraggingCard={setDraggingCard}
+            setMoveNumbers={setMoveNumbers}
+            setPoints={setPoints}
+            handleDrop={handleDrop}
+          />
         </div>
-
+        <MainColumns
+          mainColumns={mainColumns}
+          setDraggingCard={setDraggingCard}
+          handleDrop={handleDrop}
+          draggingCard={draggingCard}
+        />
+        <div className={styles.statistics}>
+          <div>Punkty: {points}</div>
+          <div>Czas: {gameTime}</div>
+          <p>Ilość możliwych ruchów: {possiblemoveNumbers}</p>
+          <p>Wykonane ruchy: {moveNumbers}</p>
         </div>
-        <div className="karty_container">
-        <div className="karty_top">
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img id="druga_top" src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img id="ostatnia_karta" src="./images/sample_karta.jpg" alt="karta"></img>
-        </div>
-
-        <div className="karty_bottom">
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img src="./images/sample_karta.jpg" alt="karta"></img>
-        <img id="ostatnia_karta" src="./images/sample_karta.jpg" alt="karta"></img>
-        </div>
-        </div>
-        <div className="bottom_section">
-        <button className="undo_button" onMouseDown={buttonUndo} onMouseOver={buttonHover}>Cofnij</button>
-        <div className="info_section">
-        <p className="moves_left">Ilość ruchów do wykonania: 1234</p>
-        <p className="is_possible">Czy możliwe jest skończenie partii: TAK/NIE</p>
-        <p className="moves_done">Ruchy: 1234</p>
-
       </div>
-      </div>
-    </div>
+    </DndProvider>
   );
 }
 
