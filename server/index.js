@@ -109,10 +109,12 @@ io.on("connection", (socket) => {
 
     userLeave(socket.id);
 
-    io.to(user.room).emit("pass-room", {
-      room: user.room,
-      users: getRoomUsers(user.room),
-    });
+    if(user){
+      io.to(user.room).emit("pass-room", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    }
   });
 
   socket.on("kick", ({ player }) => {

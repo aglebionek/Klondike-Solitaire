@@ -70,6 +70,7 @@ function CreateRoom() {
     }
 
     updateRoomBuffer(roomData.name);
+
   };
 
   const handleRoomModifyButton = (evt) => {
@@ -95,8 +96,6 @@ function CreateRoom() {
     socket.on('start', () => {
       history.push('/game-view');
     });
-
-    socket.emit('export-room');
 
     return () => {
       socket.off('start', () => {
