@@ -22,6 +22,7 @@ function GameView({cardset_id, effect, volume }) {
   const [bonus, setBonus] = useState(1200);
   const [gameTime, setGameTime] = useState(0);
   const [points, setPoints] = useState(0);
+  const [playMusic, setPlayMusic] = useState(false);
 
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
@@ -238,11 +239,14 @@ function GameView({cardset_id, effect, volume }) {
     }
     setDraggingCard({ title: "", array: [] });
   };
+  window.addEventListener("click", function(event) {
+    setPlayMusic(true);
+  });
   if (isLoading) return <div>loading...</div>;
   if (isGameEnded) return <div>Gra zakończona</div>;
   return (
     <DndProvider backend={HTML5Backend}>
-      {volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>}
+      {playMusic ? volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>: <></>}
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
         <div className={styles.cardTop}>
