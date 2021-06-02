@@ -1,44 +1,85 @@
-const { createServer } = require("http");
-const { Server } = require("socket.io");
-const Client = require("socket.io-client");
+import React from "react";
+import ReactDOM from 'react-dom';
+import {act} from "react-dom/test-utils";
+import socket from './../socketConfig.js';
+import CreateRoom from "./CreateRoom";
+import {BrowserRouter} from 'react-router-dom';
 
-// Przykład z https://socket.io/docs/v3/testing/#Example-with-jest
-describe("my awesome project", () => {
-    let io, serverSocket, clientSocket;
+// tworzę zmienna na konterner
+// wyrederowana treść komponentów bedzie znajdowana się tutaj
+let container;
 
-    beforeAll((done) => {
-        const httpServer = createServer();
-        io = new Server(httpServer);
-        httpServer.listen(() => {
-            const port = httpServer.address().port;
-            clientSocket = new Client(`http://localhost:${port}`);
-            io.on("connection", (socket) => {
-                serverSocket = socket;
-            });
-            clientSocket.on("connect", done);
-        });
+// ta funkcja bedzie wykonywałą się przed każdym testem
+beforeEach(() => {
+    // jako konterner ustanawiam element HTML div
+    // następnie dodaje go body w dokumencie
+    container = document.createElement("div");
+    document.body.appendChild(container);
+});
+
+// ta funkcja będzie wykonywała się po każdym teście
+afterEach(() => {
+    // usuwam z dokumentu kontener
+    // a nastepnie zawartość jego zmiennej
+    // zabopiegnie to problemów z
+    // renderowaniem przy każdym teście
+    document.body.removeChild(container);
+    container = null;
+});
+// Od kierowniczki
+test('Export room on start', () => {
+    // definuje że socket bedzie mockowany
+    jest.mock('./../socketConfig.js');
+    // mowie co konkretnie bedzie mockowane
+    socket.emit = jest.fn();
+
+    act(() => {
+        ReactDOM.render(<BrowserRouter><CreateRoom/></BrowserRouter>, container);
     });
 
-    afterAll(() => {
-        io.close();
-        clientSocket.close();
+    expect(socket.emit).toHaveBeenCalledWith("export-room");
+});
+// Od kierowniczki
+test('Update room data with new data', () => {
+    act(() => {
+        ReactDOM.render(<BrowserRouter><CreateRoom/></BrowserRouter>, container);
     });
 
-    test("should work", (done) => {
-        clientSocket.on("hello", (arg) => {
-            expect(arg).toBe("world");
-            done();
-        });
-        serverSocket.emit("hello", "world");
+    // definuje że socket bedzie mockowany
+    jest.mock('./../socketConfig.js');
+
+    // Tworzę pokój
+    const initialRoom = {room: 4, users: 2};
+
+    socket.emit('pass-room', initialRoom);
+    socket.on('pass-room', ({room, users}) => {
+        expect(room).toBe(initialRoom.room);
     });
 
-    test("should work (with ack)", (done) => {
-        serverSocket.on("hi", (cb) => {
-            cb("hola");
-        });
-        clientSocket.emit("hi", (arg) => {
-            expect(arg).toBe("hola");
-            done();
-        });
+    const updateRoomData = {room: 'funny', users: 2};
+
+    socket.emit('pass-room', updateRoomData);
+    socket.on('pass-room', ({room, users}) => {
+        expect(room).toBe('funny');
+    });
+});
+// Coś z localStorage
+test('localstorage is even working?', () => {
+    act(() => {
+        ReactDOM.render(<BrowserRouter><CreateRoom/></BrowserRouter>, container);
+    });
+
+    // definuje że socket bedzie mockowany
+    jest.mock('./../socketConfig.js');
+
+    // Tworzę pokój
+    const localRoomTest = {room: 4, users: 2};
+
+    socket.emit('pass-room', localRoomTest);
+
+    socket.on('pass-room', ({room, users}) => {
+        expect(room).toBe(localRoomTest.room);
+        expect(users).toBe(localRoomTest.users);
+        expect(localStorage.setItem).toHaveBeenCalledTimes(1);
     });
 });
