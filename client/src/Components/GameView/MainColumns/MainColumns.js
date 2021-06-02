@@ -9,6 +9,7 @@ const MainColumns = ({
   setDraggingCard,
   handleDrop,
   draggingCard,
+  effect,
 }) => {
   return (
     <div className={styles.cardBottom}>
@@ -37,6 +38,7 @@ const MainColumns = ({
                     onDrop={handleDrop}
                     currentArr={column.get}
                     draggingArr={draggingCard}
+                    effect={effect}
                   />
                 );
               })}

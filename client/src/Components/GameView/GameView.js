@@ -10,6 +10,7 @@ import FinalColumns from "./FinalColumns/FinalColumns";
 import MainColumns from "./MainColumns/MainColumns";
 import GameMusic from "./GameMusicKlondike";
 import "../CardMotives/CardMotives.css";
+import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 
 function GameView({cardset_id, effect, volume }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
@@ -168,7 +169,12 @@ function GameView({cardset_id, effect, volume }) {
       } else setPossibleMoveNumbers(possibleMoves);
     }
   }, [moveNumbers, isLoading, gameNumber]);
-
+  const cardSound = (src) => {
+    let beep = new Audio(src);
+    beep.volume=(effect/100);
+    beep.play();   
+  };
+  
   const handleDrop = (currentCards, draggingCards) => {
     const selectedCard =
       currentCards.array[currentCards.array.length - 1] || null;
@@ -183,7 +189,7 @@ function GameView({cardset_id, effect, volume }) {
       if (draggingCards.title.includes("finalColumn")) {
         const newPoints = points - 10;
         if (newPoints < 0) setPoints(0);
-        else setPoints(newPoints);
+        else setPoints(newPoints);       
       }
       let newHistoryStep;
       if (draggingCards.title === "startColumn2") {
@@ -227,7 +233,7 @@ function GameView({cardset_id, effect, volume }) {
           reversed,
         };
       }
-
+      cardSound(cardRight);
       setHistory([...history, newHistoryStep]);
     } else {
       carriedTarget.style.opacity = 1;
@@ -263,6 +269,7 @@ function GameView({cardset_id, effect, volume }) {
             history={history}
             points={points}
             setPoints={setPoints}
+            effect={effect}
           />
           <Buttons
             history={history}
@@ -288,6 +295,7 @@ function GameView({cardset_id, effect, volume }) {
             setMoveNumbers={setMoveNumbers}
             setPoints={setPoints}
             handleDrop={handleDrop}
+            effect={effect}
           />
         </div>
         <MainColumns
@@ -295,6 +303,7 @@ function GameView({cardset_id, effect, volume }) {
           setDraggingCard={setDraggingCard}
           handleDrop={handleDrop}
           draggingCard={draggingCard}
+          effect={effect}
         />
         <div className={styles.statistics}>
           <div>Punkty: {points}</div>
