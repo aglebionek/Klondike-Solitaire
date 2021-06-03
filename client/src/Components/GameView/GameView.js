@@ -8,7 +8,7 @@ import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
 import MainColumns from "./MainColumns/MainColumns";
-import GameMusic from "./GameMusicKlondike";
+import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 
