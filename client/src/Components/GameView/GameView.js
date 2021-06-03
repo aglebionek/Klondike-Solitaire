@@ -13,7 +13,9 @@ import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
 
-function GameView({ cardset_id, effect, volume }) {
+import socket from '../Mutiplayer/socketConfig';
+
+function GameView({cardset_id, effect, volume }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -43,7 +45,9 @@ function GameView({ cardset_id, effect, volume }) {
   const [startColumn2, setStartColumn2] = useState([]);
 
   const [history, setHistory] = useState([]);
+  const [playersOnEndGame, setPlayersOnEndGame] = useState([]);
   const location = useLocation();
+  
 
   const startColumns = {
     startColumn1: {
@@ -135,6 +139,24 @@ function GameView({ cardset_id, effect, volume }) {
   };
 
   useEffect(() => {
+    socket.on('write-to-end-list', ({ player, score }) => {
+      let arr = playersOnEndGame.slice();
+    
+      arr.push({
+        name: player,
+        score
+      })
+      console.log("tablica: " + arr);
+
+      setPlayersOnEndGame(arr);
+    });
+
+    return () => {
+      socket.off('write-to-end-list');
+    }
+  }, []);
+
+  useEffect(() => {
     if (gameNumber > 0) {
       const initialShuffle = shuffleCards();
       Object.entries(initialShuffle).map(([key, item]) => {
@@ -168,7 +190,9 @@ function GameView({ cardset_id, effect, volume }) {
       if(location.time !== undefined){
         if(gameTime >= location.time){
           setGameEnd(true);
-          stopTimer();
+          stopTimer(); //to nie działa - zabugowane
+          // tablica z graczami, ktorzy do gry weszli jest pod location.players
+          socket.emit('end-game', { score: points });
         }
       }
 
@@ -252,6 +276,23 @@ function GameView({ cardset_id, effect, volume }) {
     setPlayMusic(true);
   });
   if (isLoading) return <div>loading...</div>;
+
+  if (isGameEnded) { 
+    return (
+      <div>
+        <p>Gra zakończona</p>
+        <p>Lista wyników:</p>
+        <ul>
+          {
+            playersOnEndGame.map((player, index) => (
+              <li key={index}>{player.name} {player.score}</li>
+            ))
+          }
+        </ul>
+      </div>
+    )
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       {playMusic ? volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>: <></>}

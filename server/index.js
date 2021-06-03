@@ -127,6 +127,17 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("end-game", ({ score }) => {
+    const player = getCurrentUser(socket.id);
+
+    console.log(player.room);
+
+    io.to(player.room).emit("write-to-end-list", {
+      player: player.username,
+      score
+    });
+  })
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
     userLeave(socket.id);

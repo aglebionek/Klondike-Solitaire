@@ -4,8 +4,6 @@ import './JoinRoom.css';
 
 import socket from './../socketConfig.js';
 
-const SECONDS_IN_MINUTE = 60;
-
 function JoinRoom () {
   const history = useHistory();
   const initialData = {
@@ -32,7 +30,8 @@ function JoinRoom () {
     socket.on('start', ({ time }) => {
       history.push({
         pathname: '/game-view',
-        time
+        time,
+        players: roomData.players
       });
     });
 
@@ -40,7 +39,7 @@ function JoinRoom () {
       socket.off('start');
       socket.off('pass-room');
     }
-  }, []);
+  });
 
   return (
     <section className="joined-room">

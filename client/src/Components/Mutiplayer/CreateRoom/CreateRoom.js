@@ -104,7 +104,8 @@ function CreateRoom() {
     socket.on('start', ({ time }) => {
       history.push({
         pathname: '/game-view',
-        time
+        time,
+        players: roomData.players
       });
     });
 
@@ -192,6 +193,7 @@ function CreateRoom() {
                 name="game-time"
                 required
               >
+                <option value="1">1</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
