@@ -70,9 +70,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("game-start", ({ room }) => {
+  socket.on("game-start", ({ room, time }) => {
     setUsersInGame(room);
-    io.to(room).emit('start');
+    io.to(room).emit('start', { time });
 
     // po wyjściu z gry, userzy dalej są w grze - na aktualnym stadium nierozwiązywalne, ale po dodaniu integracji z planszą - TODO
   });

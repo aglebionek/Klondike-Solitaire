@@ -43,6 +43,7 @@ function GameView({ cardset_id, effect, volume }) {
   const [startColumn2, setStartColumn2] = useState([]);
 
   const [history, setHistory] = useState([]);
+  const location = useLocation();
 
   const startColumns = {
     startColumn1: {
@@ -163,20 +164,23 @@ function GameView({ cardset_id, effect, volume }) {
         finalColumnsArr,
         startColumn1
       );
+
+      if(location.time !== undefined){
+        if(gameTime >= location.time){
+          setGameEnd(true);
+          stopTimer();
+        }
+      }
+
+      //console.log(possibleMoves);
       if (possibleMoves === 0) {
         setGameEnd(true);
       } else setPossibleMoveNumbers(possibleMoves);
     }
-  }, [moveNumbers, isLoading, gameNumber]);
-  const cardSound = (src) => {
-    let beep = new Audio(src);
-    beep.volume=(effect/100);
-    beep.play();   
-  };
-  
+  }, [moveNumbers, isLoading, gameNumber, gameTime]);
+
   const handleDrop = (currentCards, draggingCards) => {
-    const selectedCard =
-      currentCards.array[currentCards.array.length - 1] || null;
+    const selectedCard = currentCards.array[currentCards.array.length - 1] || null;
     const dropTarget = draggingCards.array[0];
     const dragArrayLength = draggingCards.array.length;
     const carriedArray = columns[draggingCard.title].get;
