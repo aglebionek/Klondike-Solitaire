@@ -80,7 +80,7 @@ const Account =({effect}) => {
         }
 
     const selstyle ={
-            menu: (menu_styles, state)=> ({...menu_styles, 
+            menu: (menu_styles)=> ({...menu_styles, 
                 background: 'black', 
                 border: 'solid 1px rgba(0, 214, 252, 0.6)',
                 
@@ -108,7 +108,7 @@ const Account =({effect}) => {
                     boxShadow: '0px 0px 10px rgba(0, 214, 252, 1)'
                 },
             }),
-            dropdownIndicator: (dropdown_styles, state)=> ({...dropdown_styles, 
+            dropdownIndicator: (dropdown_styles)=> ({...dropdown_styles, 
                 color: 'inherit',
                 "&:hover": {
                     color: 'inherit',
@@ -116,8 +116,11 @@ const Account =({effect}) => {
                     textShadowRadius: 10
                 }
             }),
-            indicatorSeparator: (indicator_styles, state)=> ({...indicator_styles, background: 'rgba(0, 214, 252, 0.6)'}),
-            placeholder: (placeholder_styles, state)=> ({...placeholder_styles, color: 'rgba(0, 214, 252, 0.9)'}),
+            indicatorSeparator: (indicator_styles)=> ({...indicator_styles, background: 'rgba(0, 214, 252, 0.6)'}),
+            placeholder: (placeholder_styles)=> ({...placeholder_styles, color: 'rgba(0, 214, 252, 0.9)'}),
+            input: (input_styles)=> ({...input_styles, color: 'rgba(0, 214, 252, 0.9)'}),
+            noOptionsMessage: (noOptions_styles)=> ({...noOptions_styles, color: 'rgba(0, 214, 252, 0.9)'})
+
         };
 
     const buttonSound = () => {
