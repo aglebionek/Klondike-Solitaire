@@ -141,13 +141,12 @@ function GameView({cardset_id, effect, volume }) {
   useEffect(() => {
     socket.on('write-to-end-list', ({ player, score }) => {
       let arr = playersOnEndGame.slice();
-    
+      
       arr.push({
         name: player,
-        score
+        score: score
       })
-      console.log("tablica: " + arr);
-
+ 
       setPlayersOnEndGame(arr);
     });
 
@@ -188,11 +187,12 @@ function GameView({cardset_id, effect, volume }) {
       );
 
       if(location.time !== undefined){
-        if(gameTime >= location.time){
+        if(gameTime >= 15){
           setGameEnd(true);
-          stopTimer(); //to nie działa - zabugowane
+           stopTimer(); //to nie działa - zabugowane
           // tablica z graczami, ktorzy do gry weszli jest pod location.players
-          socket.emit('end-game', { score: points });
+
+          socket.emit('end-game', { score: points });     
         }
       }
 
@@ -277,7 +277,17 @@ function GameView({cardset_id, effect, volume }) {
   });
   if (isLoading) return <div>loading...</div>;
 
+   const compareScore = (a, b) => {
+    if (a.score < b.score) { return -1; }
+    if (a.score > b.score) { return 1; }
+    return 0;
+  }
+  
   if (isGameEnded) { 
+    
+    playersOnEndGame.sort(compareScore)
+    playersOnEndGame.reverse()
+   
     return (
       <div>
         <p>Gra zakończona</p>
