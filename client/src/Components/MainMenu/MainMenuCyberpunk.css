@@ -20,7 +20,6 @@
     background: none;
     color: rgba(0, 214, 252, 0.8);
     letter-spacing: 1.8px;
-    border-radius: 3px;
 }
 
 .main-menu__top-bar > div > button:hover, .dropdown__button-top:hover {
@@ -82,7 +81,6 @@
     outline: none;
     position: relative;
     letter-spacing: 1.8px;
-    border-radius: 3px;
 }
 
 .main-elements__buttons > button::before {

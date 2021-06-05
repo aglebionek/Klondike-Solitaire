@@ -19,28 +19,20 @@
     display: flex;
     align-items: center;
     width: 100%;
-  }
+}
   
-  .profile-menu-button {
-    display: flex;
+.account__back{
     text-decoration: none;
-    background: none;
-    border: solid 1px rgba(0, 214, 252, 0.6);
+    font-size: 2rem;
+    padding: 10px;
     color: rgba(0, 214, 252, 0.8);
-    letter-spacing: 1.8px;
-    border-radius: 3px;
-    font-size: 24px;
-    padding-left: 5px;
-    padding-right: 5px;
     cursor: default;
-    margin-top: 10px;
-    margin-left: 10px;
-  }
-  
-  .profile-menu-button:hover {
-    box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
-    text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
-  }
+}
+
+.account__back:hover {
+    text-shadow: 0 0 7px rgba(0, 214, 252, 0.9),
+    0 0 3px rgba(0, 214, 252, 0.9);
+}
 
 /* PROFILE HEADING*/
 .profile-heading{
@@ -177,7 +169,7 @@
 .modal-content{
     width: 600px;
     height: 500px;
-    background: none;
+    user-select: none;
 }
 
 .modal-settings{
@@ -199,14 +191,11 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-}
-
-.modal-avatar {
     margin-top: 50px;
 }
 
 .row-one{
-    width: 34.5%;
+    width: 31.4%;
     padding-right: 10px;
 }
 
@@ -222,31 +211,36 @@
 .red-star{
     color:red;
     font-size: medium;
+    margin-left: 10px;
 }
 
 .arrow {
     display: flex;
     align-items: center;
     font-size: 3.5rem;
-    color: rgba(0, 214, 252, 0.9);
-    cursor: pointer;
+    color: rgba(0, 214, 252, 0.7);
+    cursor: default;
 }
   
 .arrow:hover {
     text-shadow: 0 0 10px rgba(0, 214, 252, 0.9);
 }
 
-.modal-password-old-input, .modal-nick-input, .modal-password-input-new, .modal-password-input-new-repeat, .modal-country-input {
+.account_modal-password-old-input, .account_modal-nick-input, .account_modal-password-input-new,
+.account_modal-password-input-new-repeat,
+.account_modal-password-old-input:-webkit-autofill, .account_modal-nick-input:-webkit-autofill, .account_modal-password-input-new:-webkit-autofill,
+.account_modal-password-input-new-repeat:-webkit-autofill{
     margin-bottom: 8px;
     background: none;
     color: rgba(0, 214, 252, 0.9);
     border: solid 1px rgba(0, 214, 252, 0.6);
     border-radius: 3px;
     padding: 3px;
-    margin-right: 10px;
+    font-size: 16px;
 }
 
-.modal-password-old-input:focus, .modal-nick-input:focus, .modal-password-input-new:focus, .modal-password-input-new-repeat:focus, .modal-country-input:focus {
+.account_modal-password-old-input:focus, .account_modal-nick-input:focus,
+.account_modal-password-input-new:focus, .account_modal-password-input-new-repeat:focus, .account_modal-country-input:focus {
     border: solid 1px rgba(0, 214, 252, 0.6);
     box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
     outline: none;
