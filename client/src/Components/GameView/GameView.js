@@ -12,6 +12,7 @@ import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
+import { useLocation } from "react-router-dom";
 
 import socket from '../Mutiplayer/socketConfig';
 
@@ -47,7 +48,6 @@ function GameView({cardset_id, effect, volume }) {
   const [history, setHistory] = useState([]);
   const [playersOnEndGame, setPlayersOnEndGame] = useState([]);
   const location = useLocation();
-  
 
   const startColumns = {
     startColumn1: {
@@ -202,6 +202,12 @@ function GameView({cardset_id, effect, volume }) {
       } else setPossibleMoveNumbers(possibleMoves);
     }
   }, [moveNumbers, isLoading, gameNumber, gameTime]);
+
+  const cardSound = (src) => {
+    let beep = new Audio(src);
+    beep.volume=(effect/100);
+    beep.play();   
+  };
 
   const handleDrop = (currentCards, draggingCards) => {
     const selectedCard = currentCards.array[currentCards.array.length - 1] || null;
