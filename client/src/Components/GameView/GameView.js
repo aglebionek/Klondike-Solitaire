@@ -11,8 +11,9 @@ import MainColumns from "./MainColumns/MainColumns";
 import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
+import Statistics from "./Statistics/Statistics";
 
-function GameView({cardset_id, effect, volume }) {
+function GameView({ cardset_id, effect, volume }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -112,7 +113,7 @@ function GameView({cardset_id, effect, volume }) {
       columns[key].set(item);
     });
     setLoading(false);
-    // startTimer();
+    startTimer();
   }, []);
 
   let timer;
@@ -150,7 +151,6 @@ function GameView({cardset_id, effect, volume }) {
 
   useEffect(() => {
     if (!isLoading) {
-      console.log("odświeżam");
       const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
         return mainColumns[key].get;
       });
@@ -163,7 +163,6 @@ function GameView({cardset_id, effect, volume }) {
         finalColumnsArr,
         startColumn1
       );
-      console.log(possibleMoves);
       if (possibleMoves === 0) {
         setGameEnd(true);
       } else setPossibleMoveNumbers(possibleMoves);
@@ -249,10 +248,14 @@ function GameView({cardset_id, effect, volume }) {
     setPlayMusic(true);
   });
   if (isLoading) return <div>loading...</div>;
-  if (isGameEnded) return <div>Gra zakończona</div>;
   return (
     <DndProvider backend={HTML5Backend}>
       {playMusic ? volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>: <></>}
+      {isGameEnded && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>Gra zakończona</div>
+        </div>
+      )}
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
         <div className={styles.cardTop}>
@@ -305,12 +308,12 @@ function GameView({cardset_id, effect, volume }) {
           draggingCard={draggingCard}
           effect={effect}
         />
-        <div className={styles.statistics}>
-          <div>Punkty: {points}</div>
-          <div>Czas: {gameTime}</div>
-          <p>Ilość możliwych ruchów: {possiblemoveNumbers}</p>
-          <p>Wykonane ruchy: {moveNumbers}</p>
-        </div>
+        <Statistics
+          points={points}
+          gameTime={gameTime}
+          possiblemoveNumbers={possiblemoveNumbers}
+          moveNumbers={moveNumbers}
+        />
       </div>
     </DndProvider>
   );

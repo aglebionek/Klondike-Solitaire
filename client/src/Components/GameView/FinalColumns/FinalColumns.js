@@ -18,6 +18,7 @@ const FinalColumns = ({
   effect,
 }) => {
   const handleReverseDrop = (currentCards, draggingCards) => {
+    if (draggingCards.array.length === 0) return;
     const selectedCard =
       currentCards.array[currentCards.array.length - 1] || null;
     const dropTarget = draggingCards.array[0];
@@ -92,21 +93,23 @@ const FinalColumns = ({
         const columnLength = column.get.length;
         const card = column.get[columnLength - 1];
         let card2 = null;
-        if (draggingCard.array.length) {
+        if (
+          draggingCard.array.length &&
+          draggingCard.title &&
+          draggingCard.title.includes("finalColumn")
+        ) {
           if (columnLength - 2 >= 0) card2 = column.get[columnLength - 2];
         }
         return (
           <div className={styles.finalColumn} key={key}>
             <div className={styles.cardShadow}>
-              {console.log(card?.rank)}
               {card?.rank === "A" ? (
                 <FinalColumnItem item={card} />
               ) : card ? (
                 <DraggableCard
                   type="card"
-                  key={0}
                   top={0}
-                  index={1}
+                  index={3}
                   item={card}
                   name={key}
                   setDraggingCard={setDraggingCard}
