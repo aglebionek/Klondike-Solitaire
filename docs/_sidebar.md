@@ -1,0 +1,12 @@
+- Dokumentacja wstępna
+
+- [Start](/)
+- [Opis](opis.md "Opis gry Klondike")
+- [instrukcja obsługi aplikacji](instrukcjaklient.md)
+- [soundtrack](soundtrack.md)
+- [dbconfig.js](dbconfig.md)
+- [database.js](database.md)
+- [authors](authors.md)
+- [Card Motives](cardmotives.md)
+- [Images](images.md)
+- [Instrukcja obsługi dla użytkownika](instrukcjauzytkownika.md)
