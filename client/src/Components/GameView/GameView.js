@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./GameView.module.css";
+import styles from "./GameViewCyberpunk.module.css";
 import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";

@@ -9,10 +9,11 @@
 .button {
   width: 3.5em;
   height: 2.5em;
-  background-color: #fff;
-  border: 1px solid grey;
-  border-radius: 0.3em;
-  cursor: pointer;
+  background: none;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
+  font-size: 14px;
+  padding-top: 4px;
 }
 
 .disabledButton {
