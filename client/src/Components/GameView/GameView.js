@@ -187,9 +187,9 @@ function GameView({cardset_id, effect, volume }) {
       );
 
       if(location.time !== undefined){
-        if(gameTime >= 15){
+        if(gameTime >= location.time){
           setGameEnd(true);
-           stopTimer(); //to nie działa - zabugowane
+          stopTimer(); //to nie działa - zabugowane
           // tablica z graczami, ktorzy do gry weszli jest pod location.players
 
           socket.emit('end-game', { score: points });     
