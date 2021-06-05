@@ -18,7 +18,7 @@ const Settings = () => {
 
 
   const cards = ["vA hearts cyberpunk","vA hearts"];
-  const userId = 10;
+  const userId = 26;
 
   const nextCard = () => {
     let index = cards.indexOf(temporaryCard);

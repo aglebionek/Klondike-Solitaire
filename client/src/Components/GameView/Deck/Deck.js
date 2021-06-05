@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Deck.module.css";
 import Card from "../Card/Card";
 import DraggableCard from "../DraggableCard/DraggableCard";
+import cardDraw from "../../../soundtrack/SoundDesign/card_draw.mp3";
 
 const Deck = ({
   startColumn1,
@@ -16,6 +17,7 @@ const Deck = ({
   history,
   points,
   setPoints,
+  effect,
 }) => {
   const revealTheCard = () => {
     if (startCardIndex + 1 > startColumn1.length) {
@@ -33,12 +35,18 @@ const Deck = ({
       target: "startColumn2",
       draggedCards: [startColumn1[startCardIndex]],
     };
+   
     setHistory([...history, newHistoryStep]);
   };
+  const cardSound = () => {
+      let beep = new Audio(cardDraw);
+      beep.volume=(effect/100);
+      beep.play();   
+  } 
   return (
     <div className={styles.deckContainer}>
       <div className={styles.deck}>
-        <div className={styles.cardShadow} onClick={revealTheCard}>
+        <div className={styles.cardShadow} onClick={revealTheCard} onMouseDown={cardSound}>
           {startColumn1[startCardIndex] ? (
             <Card item={startColumn1[startCardIndex]} index={0} />
           ) : null}
@@ -59,6 +67,7 @@ const Deck = ({
               onDrop={handleDrop}
               currentArr={startColumn2}
               draggingArr={draggingCard}
+              effect={effect}
             />
           ) : null}
         </div>

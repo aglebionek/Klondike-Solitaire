@@ -17,12 +17,10 @@ import Spinner from "./Components/Spinner/Spinner";
 import agent from './agent/agent.js';
 
 function App() {  
-  window.soundManager.setup({debugMode: false});
-
   const [eff, setEffect] = useState(100);
   const [vol, setVolume] = useState(100);
   const [cardset, setCardSet] = useState(2); // 1 = cyber, 2 = default
-  const userId = 10;
+  const userId = 26;
   
   useEffect(() => {
       agent.get(`settings/${userId}`).then(({ data }) => {

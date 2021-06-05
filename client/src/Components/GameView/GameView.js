@@ -8,9 +8,10 @@ import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
 import MainColumns from "./MainColumns/MainColumns";
+import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
+import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
-import MusicWrapper from "./MusicWrapper/MusicWrapper";
 
 function GameView({ cardset_id, effect, volume }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
@@ -23,6 +24,7 @@ function GameView({ cardset_id, effect, volume }) {
   const [bonus, setBonus] = useState(1200);
   const [gameTime, setGameTime] = useState(0);
   const [points, setPoints] = useState(0);
+  const [playMusic, setPlayMusic] = useState(false);
 
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
@@ -166,7 +168,12 @@ function GameView({ cardset_id, effect, volume }) {
       } else setPossibleMoveNumbers(possibleMoves);
     }
   }, [moveNumbers, isLoading, gameNumber]);
-
+  const cardSound = (src) => {
+    let beep = new Audio(src);
+    beep.volume=(effect/100);
+    beep.play();   
+  };
+  
   const handleDrop = (currentCards, draggingCards) => {
     const selectedCard =
       currentCards.array[currentCards.array.length - 1] || null;
@@ -181,7 +188,7 @@ function GameView({ cardset_id, effect, volume }) {
       if (draggingCards.title.includes("finalColumn")) {
         const newPoints = points - 10;
         if (newPoints < 0) setPoints(0);
-        else setPoints(newPoints);
+        else setPoints(newPoints);       
       }
       let newHistoryStep;
       if (draggingCards.title === "startColumn2") {
@@ -225,7 +232,7 @@ function GameView({ cardset_id, effect, volume }) {
           reversed,
         };
       }
-
+      cardSound(cardRight);
       setHistory([...history, newHistoryStep]);
     } else {
       carriedTarget.style.opacity = 1;
@@ -237,9 +244,13 @@ function GameView({ cardset_id, effect, volume }) {
     }
     setDraggingCard({ title: "", array: [] });
   };
+  window.addEventListener("click", function(event) {
+    setPlayMusic(true);
+  });
   if (isLoading) return <div>loading...</div>;
   return (
     <DndProvider backend={HTML5Backend}>
+      {playMusic ? volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>: <></>}
       {isGameEnded && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>Gra zakończona</div>
@@ -261,6 +272,7 @@ function GameView({ cardset_id, effect, volume }) {
             history={history}
             points={points}
             setPoints={setPoints}
+            effect={effect}
           />
           <Buttons
             history={history}
@@ -286,6 +298,7 @@ function GameView({ cardset_id, effect, volume }) {
             setMoveNumbers={setMoveNumbers}
             setPoints={setPoints}
             handleDrop={handleDrop}
+            effect={effect}
           />
         </div>
         <MainColumns
@@ -293,6 +306,7 @@ function GameView({ cardset_id, effect, volume }) {
           setDraggingCard={setDraggingCard}
           handleDrop={handleDrop}
           draggingCard={draggingCard}
+          effect={effect}
         />
         <Statistics
           points={points}
@@ -305,4 +319,4 @@ function GameView({ cardset_id, effect, volume }) {
   );
 }
 
-export default MusicWrapper(GameView);
+export default GameView;

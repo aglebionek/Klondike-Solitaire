@@ -5,6 +5,7 @@ import ReactCountryFlag from "react-country-flag"
 import dataCountry from './country-list.json';
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
 import agent from '../../agent/agent.js';
+import Spinner from "../Spinner/Spinner";
 
 const Account =({effect}) => {
     const [show, setShow] = useState(false);
@@ -25,7 +26,10 @@ const Account =({effect}) => {
     const [countryName, setCountryName] = useState('Poland');
     const [newCountryName, setNewCountryName] = useState('');
 
-    const userId = 10;
+    const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
+    const [loading, setLoading] = useState(isLogged);
+
+    const userId = 26;
     const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {
@@ -89,6 +93,7 @@ const Account =({effect}) => {
     }     
 
     useEffect(() => {
+        if (isLogged) {
         agent.get(`account/${userId}`).then(({ data }) => {
           const { username, registration_date, country, icon_id, password} = data;     
           setUserName(username);
@@ -98,9 +103,11 @@ const Account =({effect}) => {
           setAvatar(icon_id) ;
           setCurrentPassword(password);
           setCountryName(options.find( ({value}) => value === country).label);
-            
-                
-        });
+          setLoading(false);  
+
+        }).catch(error =>console.log(error.response));
+        }  
+
       }, []);
 
     const handleSubmit = (e) => {
@@ -112,7 +119,9 @@ const Account =({effect}) => {
         country: country,
         });
       };   
-
+      if (loading) return (
+        <Spinner></Spinner>
+      );
     return (<>
         <div className = "profile-container">
             <a className="stats__back" href="./..">

@@ -15,6 +15,7 @@ const FinalColumns = ({
   setMoveNumbers,
   setPoints,
   handleDrop,
+  effect,
 }) => {
   const handleReverseDrop = (currentCards, draggingCards) => {
     if (draggingCards.array.length === 0) return;
@@ -116,6 +117,7 @@ const FinalColumns = ({
                   onDrop={handleDrop}
                   currentArr={column.get}
                   draggingArr={draggingCard}
+                  effect={effect}
                 />
               ) : null}
               {card2 && <FinalColumnItem item={card2} />}
