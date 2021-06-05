@@ -170,6 +170,8 @@ export const numMoves = function (
   revealedCardStack
 ) {
   var nummov = 0;
+  let i = 0;
+  let j = 0;
   for (const column of columnList) {
     if (column.length !== 0) {
       for (const revealedCard of revealedCardStack) {
@@ -180,13 +182,21 @@ export const numMoves = function (
     }
     for (const column1 of columnList) {
       if (column.length !== 0 && column1.length !== 0) {
-        if (
-          isDroppable(column1[column1.length - 1], column[column.length - 1])
-        ) {
-          nummov += 1;
+        if (i !== j) {
+          for (const card of column1) {
+            if (
+              card.isVisible &&
+              isDroppable(column[column.length - 1], card)
+            ) {
+              nummov += 1;
+            }
+          }
         }
       }
+      j += 1;
     }
+    j = 0;
+    i += 1;
   }
   for (const column of columnList) {
     for (const foundation of foundationList) {
