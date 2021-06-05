@@ -12,8 +12,11 @@ import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
+import { useLocation } from "react-router-dom";
 
-function GameView({ cardset_id, effect, volume }) {
+import socket from '../Mutiplayer/socketConfig';
+
+function GameView({cardset_id, effect, volume }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -43,6 +46,8 @@ function GameView({ cardset_id, effect, volume }) {
   const [startColumn2, setStartColumn2] = useState([]);
 
   const [history, setHistory] = useState([]);
+  const [playersOnEndGame, setPlayersOnEndGame] = useState([]);
+  const location = useLocation();
 
   const startColumns = {
     startColumn1: {
@@ -134,6 +139,23 @@ function GameView({ cardset_id, effect, volume }) {
   };
 
   useEffect(() => {
+    socket.on('write-to-end-list', ({ player, score }) => {
+      let arr = playersOnEndGame.slice();
+      
+      arr.push({
+        name: player,
+        score: score
+      })
+ 
+      setPlayersOnEndGame(arr);
+    });
+
+    return () => {
+      socket.off('write-to-end-list');
+    }
+  }, []);
+
+  useEffect(() => {
     if (gameNumber > 0) {
       const initialShuffle = shuffleCards();
       Object.entries(initialShuffle).map(([key, item]) => {
@@ -163,20 +185,32 @@ function GameView({ cardset_id, effect, volume }) {
         finalColumnsArr,
         startColumn1
       );
+
+      if(location.time !== undefined){
+        if(gameTime >= location.time){
+          setGameEnd(true);
+          stopTimer(); //to nie działa - zabugowane
+          // tablica z graczami, ktorzy do gry weszli jest pod location.players
+
+          socket.emit('end-game', { score: points });     
+        }
+      }
+
+      //console.log(possibleMoves);
       if (possibleMoves === 0) {
         setGameEnd(true);
       } else setPossibleMoveNumbers(possibleMoves);
     }
-  }, [moveNumbers, isLoading, gameNumber]);
+  }, [moveNumbers, isLoading, gameNumber, gameTime]);
+
   const cardSound = (src) => {
     let beep = new Audio(src);
     beep.volume=(effect/100);
     beep.play();   
   };
-  
+
   const handleDrop = (currentCards, draggingCards) => {
-    const selectedCard =
-      currentCards.array[currentCards.array.length - 1] || null;
+    const selectedCard = currentCards.array[currentCards.array.length - 1] || null;
     const dropTarget = draggingCards.array[0];
     const dragArrayLength = draggingCards.array.length;
     const carriedArray = columns[draggingCard.title].get;
@@ -248,6 +282,33 @@ function GameView({ cardset_id, effect, volume }) {
     setPlayMusic(true);
   });
   if (isLoading) return <div>loading...</div>;
+
+   const compareScore = (a, b) => {
+    if (a.score < b.score) { return -1; }
+    if (a.score > b.score) { return 1; }
+    return 0;
+  }
+  
+  if (isGameEnded) { 
+    
+    playersOnEndGame.sort(compareScore)
+    playersOnEndGame.reverse()
+   
+    return (
+      <div>
+        <p>Gra zakończona</p>
+        <p>Lista wyników:</p>
+        <ul>
+          {
+            playersOnEndGame.map((player, index) => (
+              <li key={index}>{player.name} {player.score}</li>
+            ))
+          }
+        </ul>
+      </div>
+    )
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       {playMusic ? volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>: <></>}

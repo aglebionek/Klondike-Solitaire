@@ -70,9 +70,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("game-start", ({ room }) => {
+  socket.on("game-start", ({ room, time }) => {
     setUsersInGame(room);
-    io.to(room).emit('start');
+    io.to(room).emit('start', { time });
 
     // po wyjściu z gry, userzy dalej są w grze - na aktualnym stadium nierozwiązywalne, ale po dodaniu integracji z planszą - TODO
   });
@@ -109,10 +109,12 @@ io.on("connection", (socket) => {
 
     userLeave(socket.id);
 
-    io.to(user.room).emit("pass-room", {
-      room: user.room,
-      users: getRoomUsers(user.room),
-    });
+    if(user){
+      io.to(user.room).emit("pass-room", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    }
   });
 
   socket.on("kick", ({ player }) => {
@@ -125,6 +127,15 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("end-game", ({ score }) => {
+    const player = getCurrentUser(socket.id);
+
+    io.to(player.room).emit("write-to-end-list", {
+      player: player.username,
+      score: score
+    });
+  })
+ 
   socket.on("disconnect", () => {
     console.log("user disconnected");
     userLeave(socket.id);

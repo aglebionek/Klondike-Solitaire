@@ -65,7 +65,14 @@ function MainMenu( {effect} ) {
                     <h1>Pasjans Klondike</h1>
                 </div>
                 <div className='main-elements__buttons'>
-                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('game-view')}>JEDNOOSOBOWA</button>
+                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push({pathname: '/game-view', time: Number.MAX_SAFE_INTEGER, players: [
+                        {
+                            id: 0,
+                            username: 'Guest',
+                            room: null,
+                            inGame: true
+                        }
+                    ]})}>JEDNOOSOBOWA</button>
                     <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
                 </div>
             </div>   

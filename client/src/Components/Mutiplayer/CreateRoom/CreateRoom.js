@@ -7,7 +7,9 @@ import { useHistory } from "react-router-dom";
 import agent from '../../../agent/agent';
 
 let player = 'player';
+
 const userId = 10;
+const SECONDS_IN_MINUTE = 60;
 
 agent.get(`/account/${userId}`).then(({ data }) => {
   player = data.username;
@@ -81,6 +83,13 @@ function CreateRoom() {
     }));
   };
 
+  const handleGameBegin = () => {
+    socket.emit('game-start', {
+      room: roomData.name,
+      time: roomData.minutes * SECONDS_IN_MINUTE
+    });
+  }
+
   useEffect(() => {
     socket.on('pass-room', ({ room, users }) => {
       updateRoomData((prevData) => ({
@@ -92,17 +101,16 @@ function CreateRoom() {
       localStorage.setItem('roomData', JSON.stringify(roomData));
     });
 
-    socket.on('start', () => {
-      history.push('/game-view');
+    socket.on('start', ({ time }) => {
+      history.push({
+        pathname: '/game-view',
+        time,
+        players: roomData.players
+      });
     });
 
-    socket.emit('export-room');
-
     return () => {
-      socket.off('start', () => {
-        history.push('/game-view');
-      });
-
+      socket.off('start');
       socket.off('pass-room');
     }
   });
@@ -128,7 +136,7 @@ function CreateRoom() {
                   <li key={index} className="player-row">
                     <div>
                       <p>{player.username}</p>
-                      <button onClick={() => socket.emit("kick", { player })}>X</button>
+                      <button onClick={() => socket.emit("kick", { player })}>x</button>
                     </div>
                   </li>
                 ))
@@ -145,7 +153,7 @@ function CreateRoom() {
                 </button>
             </Link>
             <button onClick={handleRoomModifyButton}>Modyfikuj</button>
-            <button onClick={() => socket.emit('game-start', {room: roomData.name})}>Rozpocznij grę</button>
+            <button onClick={handleGameBegin}>Rozpocznij grę</button>
           </div>
         </div>
       </section>
@@ -157,7 +165,9 @@ function CreateRoom() {
           &#129044;
         </a>
         <div className="lobby__inner-container">
-          <h1 className="lobby__headline">Tworzenie pokoju</h1>
+          <h1 className="lobby__headline">
+            {roomData.isBeingModified ? "Modyfikowanie pokoju" : "Tworzenie pokoju"}
+          </h1>
           <form
             onSubmit={handleRoomCreateButton}
             className="lobby__create-room-form"
@@ -175,7 +185,7 @@ function CreateRoom() {
               />
             </div>
             <div>
-              <label htmlFor="room-name">Czas gry</label>
+              <label htmlFor="room-name">Czas gry (w minutach):</label>
               <select
                 onChange={handleTimeChange}
                 value={roomData.minutes}
@@ -183,6 +193,7 @@ function CreateRoom() {
                 name="game-time"
                 required
               >
+                <option value="1">1</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>

@@ -57,7 +57,7 @@ function LobbyMultiplayer() {
         setUsers(usersArr);
       });
     }
-  }, []);
+  });
 
   return (
     <>

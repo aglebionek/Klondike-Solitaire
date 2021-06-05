@@ -27,19 +27,19 @@ function JoinRoom () {
     socket.emit('export-room');
     socket.emit('export-users');
 
-    socket.on('start', () => {
-      history.push('/game-view');
+    socket.on('start', ({ time }) => {
+      history.push({
+        pathname: '/game-view',
+        time,
+        players: roomData.players
+      });
     });
 
     return () => {
-      socket.off('start', () => {
-        history.push('/game-view');
-      });
-      
+      socket.off('start');
       socket.off('pass-room');
     }
-
-  }, []);
+  });
 
   return (
     <section className="joined-room">
