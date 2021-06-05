@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./CreateRoom.css";
-
+import "./CreateRoomCyberpunk.css";
+import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
@@ -45,7 +45,7 @@ function CreateRoom() {
   const handleTimeChange = (evt) => {
     updateRoomData((prevData) => ({
       ...prevData,
-      minutes: parseInt(evt.target.value),
+      minutes: parseInt(evt.value),
     }));
   };
 
@@ -90,6 +90,50 @@ function CreateRoom() {
     });
   }
 
+  const selstyle ={
+    menu: (menu_styles)=> ({...menu_styles, 
+        background: 'black', 
+        border: 'solid 1px rgba(0, 214, 252, 0.6)',
+        
+    }),
+    option: (menuList_styles, state)=> ({...menuList_styles,
+        color: 'rgba(0, 214, 252, 0.9)',
+        background: 'black',
+        textShadow: state.isFocused ? '0px 0px 10px rgba(0, 214, 252, 1), 0px 0px 10px rgba(0, 214, 252, 1)' : 'none',
+        "&:hover": {
+            background: 'black',
+            textShadow: '0px 0px 10px rgba(0, 214, 252, 1), 0px 0px 10px rgba(0, 214, 252, 1)'
+        }
+    }),
+    singleValue: (singleValue_styles)=> ({...singleValue_styles,
+        color: 'rgba(0, 214, 252, 0.9)'
+    }),
+    control: (control_styles, state)=> ({...control_styles,
+        width: '203px', 
+        background: 'none', 
+        border: 'solid 1px rgba(0, 214, 252, 0.6)',
+        border: state.isFocused ? 'solid 1px rgba(0, 214, 252, 0.6)' : 'solid 1px rgba(0, 214, 252, 0.6)',
+        boxShadow: state.isFocused ? '0px 0px 10px rgba(0, 214, 252, 1)' : 'none',
+        "&:hover": {
+            border: 'solid 1px rgba(0, 214, 252, 0.6)',
+            boxShadow: '0px 0px 10px rgba(0, 214, 252, 1)'
+        },
+    }),
+    dropdownIndicator: (dropdown_styles)=> ({...dropdown_styles, 
+        color: 'inherit',
+        "&:hover": {
+            color: 'inherit',
+            textShadowColor: 'rgba(0, 214, 252, 1)',
+            textShadowRadius: 10
+        }
+    }),
+    indicatorSeparator: (indicator_styles)=> ({...indicator_styles, background: 'rgba(0, 214, 252, 0.6)'}),
+    placeholder: (placeholder_styles)=> ({...placeholder_styles, color: 'rgba(0, 214, 252, 0.9)'}),
+    input: (input_styles)=> ({...input_styles, color: 'rgba(0, 214, 252, 0.9)'}),
+    noOptionsMessage: (noOptions_styles)=> ({...noOptions_styles, color: 'rgba(0, 214, 252, 0.9)'})
+
+  };
+
   useEffect(() => {
     socket.on('pass-room', ({ room, users }) => {
       updateRoomData((prevData) => ({
@@ -119,7 +163,7 @@ function CreateRoom() {
     return (
       <section className="lobby__container">
         <div className="lobby__inner-container">
-          <h1 className="lobby__headline">Pokój utworzony</h1>
+          <div className="lobby__headline">Pokój utworzony</div>
           <div className="lobby__created-data">
             <p>Nazwa:</p>
             <p>{roomData.name}</p>
@@ -161,20 +205,20 @@ function CreateRoom() {
   } else {
     return (
       <section className="lobby__container">
-        <a className="multiplayer__back" href="/multiplayer">
+        <a className="lobby__back" href="/multiplayer">
           &#129044;
         </a>
         <div className="lobby__inner-container">
-          <h1 className="lobby__headline">
+          <div className="lobby__headline">
             {roomData.isBeingModified ? "Modyfikowanie pokoju" : "Tworzenie pokoju"}
-          </h1>
+          </div>
           <form
             onSubmit={handleRoomCreateButton}
             className="lobby__create-room-form"
             action=""
           >
             <div>
-              <label htmlFor="room-name">Nazwa</label>
+              <label className='lobby__label' htmlFor="room-name">Nazwa pokoju</label>
               <input
                 onChange={handleNameChange}
                 value={roomData.name}
@@ -185,22 +229,19 @@ function CreateRoom() {
               />
             </div>
             <div>
-              <label htmlFor="room-name">Czas gry (w minutach):</label>
-              <select
-                onChange={handleTimeChange}
-                value={roomData.minutes}
-                id="game-time"
-                name="game-time"
-                required
-              >
-                <option value="1">1</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </select>
+              <label className='lobby__label' htmlFor="room-name">Czas gry (w minutach):</label>  
+              <Select id="game-time" name="game-time"
+                options={[
+                  { value: '1', label: '1' },
+                  { value: '5', label: '5' },
+                  { value: '10', label: '10' },
+                  { value: '15', label: '15' },
+                  { value: '20', label: '20' }
+                ]} 
+                value={roomData.minutes} styles={selstyle} onChange={handleTimeChange} required
+              />
             </div>
-            <button 
+            <button className='lobby__create-room-button'
               onClick={() => setTimeout(() => {
                   socket.emit('export-room');
                   socket.emit('export-users');
