@@ -1,13 +1,16 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import {act} from "react-dom/test-utils";
-import socket from './../socketConfig.js';
 import JoinRoom from "./JoinRoom";
 import {BrowserRouter} from 'react-router-dom';
+import SocketMock from 'socket.io-mock';
+import socket from './../socketConfig';
 
 // tworzę zmienna na konterner
 // wyrederowana treść komponentów bedzie znajdowana się tutaj
 let container;
+
+const socketMock = new SocketMock();
 
 // ta funkcja bedzie wykonywałą się przed każdym testem
 beforeEach(() => {
@@ -41,19 +44,28 @@ test('Export room on start', () => {
 });
 
 test('User can be kicked', () => {
+    jest.mock('./../socketConfig.js');
+    socket.on = jest.fn();
+    socket.emit = jest.fn();
+
+    socket.emit.mockImplementation((eventKey, ...args) => {
+        socketMock.socketClient.emit(eventKey, ...args)
+    });
+    socket.on.mockImplementation((evt, cb) => {
+        socketMock.on(evt, cb)
+    });
+
     act(() => {
         ReactDOM.render(<BrowserRouter><JoinRoom/></BrowserRouter>, container);
     });
 
-    // definuje że socket bedzie mockowany
-    jest.mock('./../socketConfig.js');
-
     let lobbyModal = container.querySelector('.lobby__modal-container');
     expect(lobbyModal.classList.contains('active')).toBeFalsy();
 
-    socket.emit('kicked');
-
     socket.on('kicked', () => {
+        console.log(lobbyModal.classList.toString())
         expect(lobbyModal.classList.contains('active')).toBeTruthy();
     });
+
+    socket.emit('kicked');
 });
