@@ -122,11 +122,11 @@ function CreateRoom() {
           <h1 className="lobby__headline">Pokój utworzony</h1>
           <div className="lobby__created-data">
             <p>Nazwa:</p>
-            <p>{roomData.name}</p>
+            <p id={'Name'}>{roomData.name}</p>
           </div>
           <div className="lobby__created-data">
             <p>Czas gry (w minutach):</p>
-            <p>{roomData.minutes}</p>
+            <p id={'Minutes'}>{roomData.minutes}</p>
           </div>
           <div className="lobby__created-data">
             <p>Gracze:</p>
@@ -135,7 +135,7 @@ function CreateRoom() {
                 Object.values(roomData.players).map((player, index) => (
                   <li key={index} className="player-row">
                     <div>
-                      <p>{player.username}</p>
+                      <p className="PUsername">{player.username}</p>
                       <button onClick={() => socket.emit("kick", { player })}>x</button>
                     </div>
                   </li>
@@ -152,7 +152,7 @@ function CreateRoom() {
                   Rozwiąż
                 </button>
             </Link>
-            <button onClick={handleRoomModifyButton}>Modyfikuj</button>
+            <button onClick={handleRoomModifyButton} id={'Modify'}>Modyfikuj</button>
             <button onClick={handleGameBegin}>Rozpocznij grę</button>
           </div>
         </div>
