@@ -18,6 +18,7 @@
 - - [authors](authors.md)
 - - [Card Motives](cardmotives.md)
 - - [Main Menu](mainmenu.md)
+- - [Register](register.md)
 - data_objects
 
 - SERVER

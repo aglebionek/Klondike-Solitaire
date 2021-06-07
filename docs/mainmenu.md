@@ -1,4 +1,4 @@
-# MainMenu.js
+## MainMenu.js
 
 Plik odpowiadający za zwrócenie komponentu `MainMenu`, czyli główne menu gry.
 
@@ -40,3 +40,5 @@ let dropdown__class = display ? "dropdown__button" : "dropdown__button-hidden";
 Ustala klasę `dropdown__class` na podstawie wartości `display`.
 
 Wartość ta z góry jest ustalona jako false, a po kliknięciu wywołuje się `setDisplay(!display)`, który zmienia wartość na przeciwną.
+
+`MainMenu.css` i `MainMenuCyberpunk.css` to pliki `.css` odpowiadające za styl głównego menu. Pierwszy z nich to normalny styl, drugi to styl 'Cyberpunk'.
