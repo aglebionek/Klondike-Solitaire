@@ -8,4 +8,4 @@
 - Opisy gry i zasady działania
 
 [GitHub](https://github.com/PasjansProjektIO/Pasjans)
-[Start](readme.md)
+[Start](#Gra)

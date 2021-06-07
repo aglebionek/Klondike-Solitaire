@@ -30,20 +30,4 @@ W przypadku użycia kwerend obsługa błędu wypisuje w konsoli informacje o bł
 
 `register.sql` - dodanie danych z rejestracji do bazy danych.
 
-`test.sql?` i `test1.sql?` czeka na info o tym czy będzie usunięte.
-
 `update_settings` - zaktualizowanie danych dla danego konta.
-
-# scripts
-
-czeka na info o tym czy będzie usunięte.
-
-`db_create.sql`
-
-`db_user_create.sql`
-
-`sample_records.sql`
-
-`starter.sql`
-
-`table_create.sql`

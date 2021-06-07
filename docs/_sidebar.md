@@ -2,11 +2,27 @@
 
 - [Start](/)
 - [Opis](opis.md "Opis gry Klondike")
-- [instrukcja obsługi aplikacji](instrukcjaklient.md)
-- [soundtrack](soundtrack.md)
-- [dbconfig.js](dbconfig.md)
-- [database.js](database.md)
-- [authors](authors.md)
-- [Card Motives](cardmotives.md)
-- [Images](images.md)
+- [Instrukcja obsługi aplikacji](instrukcjaklient.md)
 - [Instrukcja obsługi dla użytkownika](instrukcjauzytkownika.md)
+
+- public
+
+- - [Images](images.md)
+
+- src
+
+- - [Soundtrack](soundtrack.md)
+
+- src/components
+- - [authors](authors.md)
+- - [Card Motives](cardmotives.md)
+- data_objects
+
+- SERVER
+
+- api
+- config
+- - [dbconfig.js](dbconfig.md)
+- database
+- - [database](database.md)
+- utils
