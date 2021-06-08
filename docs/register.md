@@ -2,13 +2,15 @@
 
 Odpowiada za rejestracje użytkownika.
 
-Przy użyciu `useState()` pobierane są stałe potrzebne do rejestracji.
+`useState()` przechowuje pewien stan aplikacji, który jest używany do ustalania stałych `email`, `username` itd.
 
 `isValid()` odpowiada za walidacje wpisywanych danych do rejestracji.
 
 `isValid` zmienia się na false w przypadku gdy nie spełnione są późniejsze warunki związane z `emailRegex` czyli dokładnym regex'em maila, maksymalną długością `username`, minimalną i maksymalną długością `password`. Sprawdzane jest też czy `confirmPassword` jest takie samo jak `password`.
 
-`handle submit` to przycisk wysyłający wypełniony formularz tylko jeśli `isValid()` zwróci true.
+`handleSubmit` to funkcja wywołująca się zawsze, ale nie zawsze wykonuje request do api. Wykonuje się jeśli formularz przejdzie walidacje w `isValid()`.
+
+przycisk wysyłający wypełniony formularz tylko jeśli `isValid()` zwróci true.
 
 ```js
 agent
@@ -49,6 +51,6 @@ onChange={(e) => {
 }
 ```
 
-które przeprowadza walidacje pola 'Prop'.
+które przeprowadza walidacje pola 'Prop'. `onChange` działa ze zmienną, która jest używana w `useState` (w tym przypadku wartości wpisane w input)
 
 `Register.css` i `RegisterCyberpunk.css` to pliki `.css` odpowiadające za styl widoku rejestracji. Pierwszy z nich to normalny styl, drugi to styl 'Cyberpunk'.

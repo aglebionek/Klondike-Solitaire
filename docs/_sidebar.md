@@ -19,6 +19,7 @@
 - - [Card Motives](cardmotives.md)
 - - [Main Menu](mainmenu.md)
 - - [Register](register.md)
+- - [Multiplayer](multiplayer.md)
 - data_objects
 
 - SERVER
