@@ -380,3 +380,4 @@ test('Adding incorrect card to the result stack, where is an Ace card', () => {
     expect(board.resultStacks[0][0].rank).toBe('A');
     expect(board.revealedCardStack[0].rank).toBe('3');
 });
+
