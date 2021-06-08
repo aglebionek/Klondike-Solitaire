@@ -135,7 +135,7 @@ function CreateRoom() {
                 Object.values(roomData.players).map((player, index) => (
                   <li key={index} className="player-row">
                     <div>
-                      <p className="PUsername">{player.username}</p>
+                      <p id={"PUsername"}>{player.username}</p>
                       <button onClick={() => socket.emit("kick", { player })}>x</button>
                     </div>
                   </li>

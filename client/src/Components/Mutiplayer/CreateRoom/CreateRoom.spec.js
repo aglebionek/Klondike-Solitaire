@@ -149,7 +149,7 @@ test('check User Name', () => {
     socket.emit('pass-room', initialRoom);
     socket.on('pass-users', () => {
 
-        expect(playerRows[0].querySelector('.PUsername').innerHTML).toBe('');
+        expect(playerRows[0].querySelector("#PUsername").innerHTML).toBe('');
 
     });
 
