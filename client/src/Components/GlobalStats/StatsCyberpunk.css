@@ -1,0 +1,255 @@
+
+#header {
+    background-color: #A79C9C;
+    height:40px;
+    
+}
+.App {
+  background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+  color: rgba(0, 214, 252, 0.9);
+  min-height: 100vh;
+}
+.App h1{
+  margin-top: 60px;
+}
+
+.stats__back{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  text-decoration: none;
+  font-size: 2rem;
+  padding: 10px;
+  color: rgba(0, 214, 252, 0.8);
+  cursor: default;
+}
+
+.stats__back:hover {
+  text-shadow: 0 0 7px rgba(0, 214, 252, 0.9),
+  0 0 3px rgba(0, 214, 252, 0.9);
+}
+
+.inline-with-margin {
+    display: inline-block;
+    margin:8px;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.avatar {
+    width: 40px;
+    height:40px;
+
+}
+.avatar.center {
+    margin:0 auto;
+}
+.avatar.absolute {
+    position: absolute;
+    left:0;
+    right:0;
+    margin: 0 auto;
+}
+
+.pageNumbers {
+    display: flex;
+    padding: 8px 16px;
+    list-style: none;
+    list-style-type: none;
+}
+
+.pageNumbers li{
+    padding: 10px;
+    border: solid 1px rgba(0, 214, 252, 0.6);
+    cursor: default;
+    display: inline;
+    list-style-type: none;
+    background: none;
+    margin: 0 4px;
+    font-size: 16px;
+    user-select: none;
+}
+
+.pageNumbers li:hover:not(.active) {
+  box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+  text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
+}
+
+.pageNumbers li.active{
+  box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+  text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
+}
+
+.pageNumbers li button {
+  background: none;
+  border: none;
+  color: rgba(0, 214, 252, 0.9);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: default;
+  align-self: center;
+}
+
+
+.red {
+    background-color: red;
+}
+
+td a { 
+	display: block;
+	width: 100%;
+}
+
+
+.headerSortDown-by-name:after,
+.headerSortUp-by-name:after {
+  content: ' ';
+  position: relative;
+  left: 10px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-name:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-name:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-name,
+.headerSortUp-by-name {
+  padding-right: 10px;
+}
+
+.headerSortDown-by-rank:after,
+.headerSortUp-by-rank:after {
+  content: ' ';
+  position: relative;
+  left: 10px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-rank:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-rank:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-rank,
+.headerSortUp-by-rank {
+  padding-right: 10px;
+}
+
+
+
+.headerSortDown-by-WDL:after,
+.headerSortUp-by-WDL:after {
+  content: ' ';
+  position: relative;
+  left: 20px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-WDL:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-WDL:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-WDL,
+.headerSortUp-by-WDL {
+  padding-right: 10px;
+}
+
+.headerSortDown-by-d:after,
+.headerSortUp-by-d:after {
+  content: ' ';
+  position: relative;
+  left: 20px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-d:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-d:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-d,
+.headerSortUp-by-d {
+  padding-right: 10px;
+}
+
+.headerSortDown-by-l:after,
+.headerSortUp-by-l:after {
+  content: ' ';
+  position: relative;
+  left: 20px;
+  border: 7px solid transparent;
+  cursor: pointer;
+}
+
+.headerSortDown-by-l:after {
+  top: 15px;
+  border-top-color: silver;
+}
+
+.headerSortUp-by-l:after {
+  bottom: 5px;
+  border-bottom-color: silver;
+}
+
+.headerSortDown-by-l,
+.headerSortUp-by-l {
+  padding-right: 10px;
+}
+
+.buttonfilter {
+  cursor: pointer;
+  position: relative;
+  left: 999px;
+  top:-50px;
+  background: none;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
+  padding: 5px;
+  text-align: center;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: default;
+  align-self: center;
+  user-select: none;
+}
+
+
+
+
+.wdl {
+  position: relative;
+  top: 35px;
+}

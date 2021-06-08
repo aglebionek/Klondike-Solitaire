@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Posts from "./Posts";
-import "./Stats.css";
+import "./StatsCyberpunk.css";
 import _ from 'lodash';
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
