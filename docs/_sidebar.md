@@ -17,9 +17,11 @@
 - src/components
 - - [authors](authors.md)
 - - [Card Motives](cardmotives.md)
+- - [Game View](gameview.md)
 - - [Main Menu](mainmenu.md)
 - - [Register](register.md)
 - - [Multiplayer](multiplayer.md)
+
 - data_objects
 
 - SERVER

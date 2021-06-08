@@ -1,6 +1,6 @@
 ## CreateRoom.js
 
-Do tworzenia pokoju ustawione jest pobranie danych z bazy, a następnie `player = data.username`, nazwa jest ustawiana jako `username`.
+Do tworzenia pokoju ustawione jest pobranie danych z bazy, a następnie zmienna player otrzymuje wartość z bazy `player = data.username`.
 
 ```js
 agent.get(`/account/${userId}`).then(({ data }) => {
@@ -8,26 +8,34 @@ agent.get(`/account/${userId}`).then(({ data }) => {
 });
 ```
 
-Funkcja `CreateRoom()` tworzy nowy pokój.
+Komponent `CreateRoom()` odpowiada za reprezentacje formularza tworzenia pokoju.
 
-`const initialRoomData` to bazowe dane, które ma pokój.
-
-Aby zmienić ustawienia pokoju useState pobiera lokalne ustawienia pokoju i ustawia je w `roomData`.
+`initialRoomData` to bazowe dane, które ma pokój.
 
 ```js
-  const [roomData, updateRoomData] = useState(() => {
-    const storageValue = localStorage.getItem('roomData');
+{
+    isCreated: Boolean,
+    isBeingModified: Boolean,
+    name: String,
+    minutes: Number,
+    players: Array
+}
 ```
 
-`useEffect` używane jest do obslugiwania stanu, kontroluje jak zmieniają się wartości zmiennych.
-
-Na koniec zwracane jest
+Aby zmienić ustawienia pokoju `useState()` pobiera lokalne ustawienia pokoju i ustawia je w `roomData`.
 
 ```js
-socket.on("start", () => {
-  history.push("/game-view");
+const [roomData, updateRoomData] = useState(() => {
+  const storageValue = localStorage.getItem("roomData");
+
+  return storageValue !== null ? JSON.parse(storageValue) : initialRoomData;
 });
 ```
+
+Od rozpoczęcia działania komponentu są nasłuchiwane kolejne zdarzenia:
+
+- `'start'` nasłuchuje czy rozpoczęto rozgrywke.
+- `'pass-room'` pobiera z backendu informacje o pokoju.
 
 Gdy są spełnione warunki
 
@@ -35,9 +43,7 @@ Gdy są spełnione warunki
 if (roomData.isCreated && !roomData.isBeingModified)
 ```
 
-zwracany jest komponent utworzonego pokoju.
-
-W lobby z `roomData` pobierane są dane np. `.name` lub `.minutes`.
+zwracana jest sekcja utworzonego pokoju.
 
 W liście zwracani są gracze jako wartości `Object`.
 
@@ -47,7 +53,13 @@ W liście zwracani są gracze jako wartości `Object`.
 
 Służy do wyrzucenia gracza.
 
-Po naciśnięciu "Rozpocznij grę" uruchamia się funkcja `socket.emit('game-start', {room: roomData.name}`, która rozpoczyna grę w danym pokoju.
+Po naciśnięciu "Rozpocznij grę", przesyłana do socketów jest informacja o `"game-start"`, czyli o rozpoczęciu gry.
+
+```js
+<button onClick={() => socket.emit("game-start", { room: roomData.name })}>
+  Rozpocznij grę
+</button>
+```
 
 W przypadku nie spełnienia warunku
 
@@ -65,11 +77,11 @@ Mechanizm opiera się głównie na `socket`, który synchronizuje ze sobą wszys
 
 # LobbyMultiplayer.js
 
-Odpowiada za lobby multiplayer, posiada funkcje `joinRoom`, która pozwala dołączyć do pokoju.
+Odpowiada za lobby multiplayer, posiada funkcje `joinRoom()`, która pozwala dołączyć do pokoju.
 
-`getRooms` to funkcja zwracająca obecnie dostępne pokoje.
+`getRooms()` to funkcja zwracająca obecnie dostępne pokoje.
 
-`function LobbyMultiplayer()` zwraca komponent służący do poruszania się po pokojach, tworzeniu ich i dołączaniu.
+`LobbyMultiplayer()` jest komponentem służący do poruszania się po pokojach, tworzeniu ich i dołączaniu.
 
 # socketConfig.js
 
