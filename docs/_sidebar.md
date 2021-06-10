@@ -15,15 +15,17 @@
 - - [Soundtrack](soundtrack.md)
 
 - src/components
+- - [AppInfo](appinfo.md)
 - - [authors](authors.md)
 - - [Card Motives](cardmotives.md)
 - - [Game View](gameview.md)
 - - [Main Menu](mainmenu.md)
 - - [Register](register.md)
+- - [Spinner](spinner.md)
 - - [Multiplayer](multiplayer.md)
 
 - data_objects
-
+- - [Card](card.md)
 - SERVER
 
 - api
