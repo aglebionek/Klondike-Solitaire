@@ -210,10 +210,11 @@ const buttonHover = () => {
 
   return (
     <div className="App">
-      <a className="stats__back" href="./..">
-         &#129044;
-      </a>
-      <h1>Statystyki</h1>
+      <div className="stats__back-div">
+        <a className="stats__back" href="./..">
+          &#129044;
+        </a>
+      </div>
       {/* przyciski filtrowania */}
       <div className="filter">
         <a className="buttonfilter"  id={'filter-by-all'} onClick={filterByAll} onMouseDown={buttonSound} onMouseOver={buttonHover}>Pokaż wszystkie</a>
@@ -222,7 +223,8 @@ const buttonHover = () => {
         <a className="buttonfilter"  id={'filter-top-30'} onClick={filterByTop30} onMouseDown={buttonSound} onMouseOver={buttonHover}>Top 30</a>
         <a className="buttonfilter"  id={'filter-top-50'} onClick={filterByTop50} onMouseDown={buttonSound} onMouseOver={buttonHover}>Top 50</a>
       </div>
-      
+      <div className="stats__title">Statystyki</div>
+       
 		  <table cellSpacing="0" cellPadding="0" border="0" style={{width: "100%"}}>
 		    <thead>
 		      <tr id="header">
