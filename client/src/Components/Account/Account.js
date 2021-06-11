@@ -151,8 +151,10 @@ const Account =({effect, userId}) => {
           setCurrentPassword(password);
           setCountryName(options.find( ({value}) => value === country).label);
           setLoading(false);  
-
-        }).catch(error =>console.log(error.response));
+        })
+        .catch((error) =>{
+            console.log(error.response.data)
+        });
         }  
 
       }, []);
@@ -164,6 +166,9 @@ const Account =({effect, userId}) => {
         username: userName,
         password: currentPassword,
         country: country,
+        })
+        .catch((error) =>{
+            console.log(error.response.data)
         });
       };   
       if (loading) return (

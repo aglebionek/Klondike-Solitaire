@@ -6,18 +6,20 @@ import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
 import agent from '../../../agent/agent';
 
-let player = 'player';
 
-const userId = 10;
-const SECONDS_IN_MINUTE = 60;
 
-agent.get(`/account/${userId}`).then(({ data }) => {
-  player = data.username;
-});
-
-function CreateRoom() {
+function CreateRoom({userId}) {
   const history = useHistory();
+  let player = 'player';
 
+  const SECONDS_IN_MINUTE = 60;
+  
+  agent.get(`/account/${userId}`).then(({ data }) => {
+    player = data.username;
+  })
+    .catch((error) =>{
+      console.log(error.response.data)
+  });
   const initialRoomData = {
     isCreated: false,
     isBeingModified: false,
@@ -25,7 +27,7 @@ function CreateRoom() {
     minutes: 5,
     players: []
   };
-
+  console.log(initialRoomData)
   const [roomData, updateRoomData] = useState(() => {
     const storageValue = localStorage.getItem('roomData');
 

@@ -51,10 +51,10 @@ function App() {
       <Route path="/settings" component={() => <Settings ID={userId}  /> } />
       <PrivateRoute path="/global-stats" component={() => <GlobalStats effect={eff}/> } />
       <Route path="/game-view" component={() => <GameViewRoute /> } />
-      <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
+      <PrivateRoute path="/multiplayer" component={() => <LobbyMultiplayer userId={userId} /> } />
       <PrivateRoute path="/account" component={() => <Account effect={eff} userId={userId}/> } />
       <PrivateRoute path="/game-lobby" component={JoinRoom} />
-      <PrivateRoute path="/create-room" component={CreateRoom} />
+      <PrivateRoute path="/create-room" component={() => <CreateRoom userId={userId} /> } />
       <Route path="/app-info" component={AppInfo} />
       <Route path="/authors" component={Authors} />
     </Switch>
