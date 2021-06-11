@@ -7,7 +7,6 @@ import soundDefault from '../../../soundtrack/Music/Music_Synthwave_Klondike.mp3
 const AudioPlayer = ({ musicVolume, cardset }) => {
     
     const src = [soundCyber, soundDefault];
-    console.log(cardset-1);
     const [trackIndex, setTrackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
   

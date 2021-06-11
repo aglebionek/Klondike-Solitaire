@@ -8,7 +8,7 @@ import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from '../../agent/agent.js';
 import Spinner from "../Spinner/Spinner";
 
-const Account =({effect}) => {
+const Account =({effect, userId}) => {
     const [show, setShow] = useState(false);
     const [userName, setUserName] = useState('Nazwa użytkownika');
     const [accountCreation, setAccountCreation] = useState('2020-01-01');
@@ -30,7 +30,7 @@ const Account =({effect}) => {
     const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
     const [loading, setLoading] = useState(isLogged);
 
-    const userId = 26;
+    
     const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
 
     const nextAvatar = () => {

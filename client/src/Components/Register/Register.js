@@ -70,6 +70,7 @@ function Register() {
         .then((resp) => {
           if (resp.status === 200) {
             localStorage.setItem('isLogged', true);
+            localStorage.setItem('userId', resp.data);
             setLoggedIn(true);
           }
         })

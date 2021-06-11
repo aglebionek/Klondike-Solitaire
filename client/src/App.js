@@ -17,40 +17,42 @@ import Spinner from "./Components/Spinner/Spinner";
 import agent from './agent/agent.js';
 
 function App() {  
-  const [eff, setEffect] = useState(100);
-  const [vol, setVolume] = useState(100);
-  const [cardset, setCardSet] = useState(2); // 1 = cyber, 2 = default
-  const userId = 26;
-  
+  const [eff, setEffect] = useState(JSON.parse(localStorage.getItem('guestEffect')) ?? 20);
+  const [vol, setVolume] = useState(JSON.parse(localStorage.getItem('guestMusic')) ?? 20);
+  const [cardset, setCardSet] = useState(2); 
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
   useEffect(() => {
+    setUserId(localStorage.getItem('userId'));
+    if(userId != 0){
       agent.get(`settings/${userId}`).then(({ data }) => {
         const { cardset_id, volume, effect } = data;
         setCardSet(cardset_id);
         setEffect(effect);
         setVolume(volume);
       });
-
+    }
       agent.get("auth/verify")
       .then(() => {
         localStorage.setItem('isLogged', true);
       })
       .catch(() => {
         localStorage.setItem('isLogged', false);
+        localStorage.setItem('userId', 0);
       });
     }, []);
-
-
+  
+ 
   
   return (
     <Switch>
       <Route exact path="/" component={() => <MainMenu effect={eff}  /> } />
       <AuthRoute path="/login" component={Login} />
       <AuthRoute path="/register" component={Register} />
-      <Route path="/settings" component={Settings} />
+      <Route path="/settings" component={() => <Settings ID={userId}  /> } />
       <PrivateRoute path="/global-stats" component={() => <GlobalStats effect={eff}/> } />
-      <Route path="/game-view" component={() => <GameView effect={eff} volume={vol}  cardset_id={cardset}/> } />
+      <Route path="/game-view" component={() => <GameViewRoute /> } />
       <PrivateRoute path="/multiplayer" component={LobbyMultiplayer} />
-      <PrivateRoute path="/account" component={() => <Account effect={eff}/> } />
+      <PrivateRoute path="/account" component={() => <Account effect={eff} userId={userId}/> } />
       <PrivateRoute path="/game-lobby" component={JoinRoom} />
       <PrivateRoute path="/create-room" component={CreateRoom} />
       <Route path="/app-info" component={AppInfo} />
@@ -58,6 +60,43 @@ function App() {
     </Switch>
   );
 }
+
+function GameViewRoute({ component: Component, ...rest }) {
+  const [isLoading, setLoading] = useState(true);
+  const [eff, setEffect] = useState(JSON.parse(localStorage.getItem('guestEffect')) ?? 20);
+  const [vol, setVolume] = useState(JSON.parse(localStorage.getItem('guestMusic')) ?? 20);
+  const [cardset, setCardSet] = useState(2); 
+  const [userId, setUserId] = useState(JSON.parse(localStorage.getItem('userId')) ?? 0);
+  useEffect(() => {
+    setUserId(localStorage.getItem('userId'));
+    if(userId != 0){
+      agent.get(`settings/${userId}`).then(({ data }) => {
+        const { cardset_id, volume, effect } = data;
+        setCardSet(cardset_id);
+        setEffect(effect);
+        setVolume(volume);
+      });
+    }
+      agent.get("auth/verify")
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
+  if (isLoading) return (
+    <Spinner></Spinner>
+  );
+  return (
+    <Route
+      {...rest}
+      render={(props) =>       
+        <GameView effect={eff} volume={vol}  cardset_id={cardset}/> 
+      }
+          />
+        );
+  };
 
 
 function PrivateRoute({ component: Component, ...rest }) {
