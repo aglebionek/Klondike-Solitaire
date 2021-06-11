@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useImperativeHandle } from "react";
 import styles from "./Deck.module.css";
 import Card from "../Card/Card";
 import DraggableCard from "../DraggableCard/DraggableCard";
@@ -18,35 +18,43 @@ const Deck = ({
   points,
   setPoints,
   effect,
+  revealCardRef,
 }) => {
-  const revealTheCard = () => {
-    if (startCardIndex + 1 > startColumn1.length) {
-      const newPoints = points - 50;
-      if (newPoints < 0) {
-        setPoints(0);
-      } else setPoints(newPoints);
-      setStartCardIndex(0);
-    } else setStartCardIndex((prev) => prev + 1);
-    const card = startColumn1[startCardIndex];
-    if (card) card.isVisible = true;
-    setStartColumn2([card]);
-    const newHistoryStep = {
-      source: "startColumn1",
-      target: "startColumn2",
-      draggedCards: [startColumn1[startCardIndex]],
-    };
-   
-    setHistory([...history, newHistoryStep]);
-  };
+  useImperativeHandle(revealCardRef, () => ({
+    revealTheCard() {
+      if (startCardIndex + 1 > startColumn1.length) {
+        const newPoints = points - 50;
+        if (newPoints < 0) {
+          setPoints(0);
+        } else setPoints(newPoints);
+        setStartCardIndex(0);
+      } else setStartCardIndex((prev) => prev + 1);
+      const card = startColumn1[startCardIndex];
+      if (card) card.isVisible = true;
+      setStartColumn2([card]);
+      const newHistoryStep = {
+        source: "startColumn1",
+        target: "startColumn2",
+        draggedCards: [startColumn1[startCardIndex]],
+      };
+
+      setHistory([...history, newHistoryStep]);
+    },
+  }));
+
   const cardSound = () => {
-      let beep = new Audio(cardDraw);
-      beep.volume=(effect/100);
-      beep.play();   
-  } 
+    let beep = new Audio(cardDraw);
+    beep.volume = effect / 100;
+    beep.play();
+  };
   return (
     <div className={styles.deckContainer}>
       <div className={styles.deck}>
-        <div className={styles.cardShadow} onClick={revealTheCard} onMouseDown={cardSound}>
+        <div
+          className={styles.cardShadow}
+          onClick={() => revealCardRef.current.revealTheCard()}
+          onMouseDown={cardSound}
+        >
           {startColumn1[startCardIndex] ? (
             <Card item={startColumn1[startCardIndex]} index={0} />
           ) : null}

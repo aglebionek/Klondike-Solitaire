@@ -217,5 +217,112 @@ export const numMoves = function (
       }
     }
   }
+
+  for (const foundation of foundationList) {
+    if (foundation.length > 0 && foundation.length < 13) {
+      const lastFoundationCard = foundation[foundation.length - 1] || null;
+      for (const column of columnList) {
+        if (column.length !== 0) {
+          const lastColumnCard = column[column.length - 1];
+          if (isDroppable(lastColumnCard, lastFoundationCard)) {
+            nummov += 1;
+          }
+        }
+      }
+    }
+  }
   return nummov;
+};
+
+export const isGameWin = (finalColumns) => {
+  for (const column of finalColumns) {
+    if (column.length < 13) return false;
+  }
+  return true;
+};
+
+export const drop = (
+  currentCards,
+  draggingCards,
+  columns,
+  draggingCard,
+  setMoveNumbers,
+  setPoints,
+  points,
+  revealCardRef,
+  cardSound,
+  setHistory,
+  history,
+  cardRight,
+  setDraggingCard
+) => {
+  const selectedCard =
+    currentCards.array[currentCards.array.length - 1] || null;
+  const dropTarget = draggingCards.array[0];
+  const dragArrayLength = draggingCards.array.length;
+  const carriedArray = columns[draggingCard.title].get;
+  const carriedArrayLength = carriedArray.length;
+  const sliceEnd = carriedArrayLength - dragArrayLength;
+  const carriedTarget = draggingCard.target;
+  setMoveNumbers((prev) => prev + 1);
+  if (isDroppable(selectedCard, dropTarget)) {
+    if (draggingCards.title.includes("finalColumn")) {
+      const newPoints = points - 10;
+      if (newPoints < 0) setPoints(0);
+      else setPoints(newPoints);
+    }
+    let newHistoryStep;
+    if (draggingCards.title === "startColumn2") {
+      const source = columns["startColumn1"].get;
+      const index = draggingCard.cardIndex;
+      source.splice(index - 1, 1);
+      columns[draggingCard.title].set([]);
+      columns["startColumn1"].set(source);
+      columns[currentCards.title].set([
+        ...currentCards.array,
+        ...draggingCards.array,
+      ]);
+      newHistoryStep = {
+        source: draggingCard.title,
+        target: currentCards.title,
+        draggedCards: draggingCard.array,
+        cardIndex: index,
+      };
+      revealCardRef.current.revealTheCard();
+    } else {
+      columns[currentCards.title].set([
+        ...currentCards.array,
+        ...draggingCards.array,
+      ]);
+
+      const reducedColumn = carriedArray.slice(0, sliceEnd);
+      let reversed = null;
+      if (
+        reducedColumn.length > 0 &&
+        !reducedColumn[reducedColumn.length - 1].isVisible
+      ) {
+        reversed = reducedColumn.length - 1;
+      }
+      if (reducedColumn.length > 0)
+        reducedColumn[reducedColumn.length - 1].isVisible = true;
+      columns[draggingCard.title].set(reducedColumn);
+
+      newHistoryStep = {
+        source: draggingCard.title,
+        target: currentCards.title,
+        draggedCards: draggingCard.array,
+        reversed,
+      };
+    }
+    cardSound(cardRight);
+    setHistory([...history, newHistoryStep]);
+  } else {
+    carriedTarget.style.opacity = 1;
+    let sibling = carriedTarget.nextElementSibling;
+    while (sibling !== null) {
+      sibling.style.opacity = 1;
+      sibling = sibling.nextElementSibling;
+    }
+  }
+  setDraggingCard({ title: "", array: [] });
 };

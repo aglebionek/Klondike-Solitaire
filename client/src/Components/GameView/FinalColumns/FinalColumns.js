@@ -16,6 +16,7 @@ const FinalColumns = ({
   setPoints,
   handleDrop,
   effect,
+  revealCardRef,
 }) => {
   const handleReverseDrop = (currentCards, draggingCards) => {
     if (draggingCards.array.length === 0) return;
@@ -49,6 +50,7 @@ const FinalColumns = ({
           draggedCards: draggingCard.array,
           cardIndex: index,
         };
+        revealCardRef.current.revealTheCard();
       } else {
         columns[currentCards.title].set([
           ...currentCards.array,
