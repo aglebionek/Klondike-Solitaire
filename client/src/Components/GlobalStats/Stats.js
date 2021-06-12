@@ -227,49 +227,39 @@ const buttonHover = () => {
        
 		  <table cellSpacing="0" cellPadding="0" border="0" style={{width: "100%"}}>
 		    <thead>
-		      <tr id="header">
-		        <td width="40%" align="left">
-            <div className ="inline">
-              Gracz
-            </div> 
-            <div className="inline">
-              <a onClick={sortByName} id={'sort-up-by-name'} className="headerSortUp-by-name" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
-              <a onClick={sortByNameDesc} id={'sort-down-by-name'} className="headerSortDown-by-name" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+          <div className="stats__header">
+            <div className="stats__header-player">
+              <div className="stats__header-name">Gracz</div>
+              <div className="stats__header-arrows">
+                <a onClick={sortByName} id={'sort-up-by-name'} className="stats__header-arrows-up" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+                <a onClick={sortByNameDesc} id={'sort-down-by-name'} className="stats__header-arrows-down" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+              </div>
             </div>
-		        </td>
-		        <td width="30%" align="center">
-              <div className="inline">
-                Ranking
+            <div className="stats__header-rank">
+              <div className="stats__header-name">Ranking</div>
+              <div className="stats__header-arrows">
+                <a onClick={sortByRank} id={'sort-up-by-name'} className="stats__header-arrows-up" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+                <a onClick={sortByRankDesc} id={'sort-down-by-name'} className="stats__header-arrows-down" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
               </div>
-              <div className="inline"> 
-                <a onClick={sortByRank} id={'sort-up-by-rank'} className="headerSortUp-by-rank" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
-                <a onClick={sortByRankDesc} id={'sort-down-by-rank'} className="headerSortDown-by-rank" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
-              </div>
-		        </td>
-		        <td width="30%" align="center" id="header">
-            <div className="inline-with-margin"> 
-              <div className="wdl">
-                W 
-              </div>
-              <a onClick={sortByWins} id={'sort-up-by-wins'} className="headerSortUp-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
-              <a onClick={sortByWinsDesc} id={'sort-down-by-wins'} className="headerSortDown-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
             </div>
-            <div className="inline-with-margin"> 
-              <div className="wdl">
-              /D 
+            <div className="stats__header-wdl">
+              <div className="stats__header-name">W</div>
+              <div className="stats__header-arrows">
+                <a onClick={sortByWins} id={'sort-up-by-name'} className="stats__header-arrows-up" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+                <a onClick={sortByWinsDesc} id={'sort-down-by-name'} className="stats__header-arrows-down" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
               </div>
-              <a onClick={sortByDraw} id={'sort-up-by-draws'} className="headerSortUp-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
-              <a onClick={sortByDrawDesc} id={'sort-down-by-draws'} className="headerSortDown-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
-            </div>
-            <div className="inline-with-margin"> 
-              <div className="wdl">
-                /L 
+              <div className="stats__header-name">D</div>
+              <div className="stats__header-arrows">
+                <a onClick={sortByDraw} id={'sort-up-by-name'} className="stats__header-arrows-up" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+                <a onClick={sortByDrawDesc} id={'sort-down-by-name'} className="stats__header-arrows-down" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
               </div>
-              <a onClick={sortByLosers} id={'sort-up-by-lost'} className="headerSortUp-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
-              <a onClick={sortByLosersDesc} id={'sort-down-by-lost'} className="headerSortDown-by-WDL" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+              <div className="stats__header-name">L</div>
+              <div className="stats__header-arrows">
+                <a onClick={sortByLosers} id={'sort-up-by-name'} className="stats__header-arrows-up" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+                <a onClick={sortByLosersDesc} id={'sort-down-by-name'} className="stats__header-arrows-down" onMouseDown={buttonSound} onMouseOver={buttonHover}></a>
+              </div>
             </div>
-		        </td>
-          </tr>
+          </div>
         </thead>
       </table>
       <Posts statsList={currentPosts} loading={loading} userID={userID}/>
