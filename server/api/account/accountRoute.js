@@ -17,27 +17,19 @@ router.get("/:userId", async (req, res) => {
   .toString();
 
     let resp = await mysqlQuery(userExistQuery, [userId]);
-    if (resp.length == 0) return res.status(404).json("user doesn't exist");
-
+    if (resp.length == 0) return res.status(404).json("użytkownik nie istnieje");
 
     const query = fs
     .readFileSync(path.join(__dirname, "../../database/queries/account_select.sql")) 
     .toString();
-   // const resp = await mysqlQuery(query,{ id: id } ); //select * from players where id = 1
-
-    // res.send(resp);
+   
     resp = await mysqlQuery(query, [userId]);
-    if (resp.length == 0) return resp.status(204);
-    return res.status(200).json(resp[0]);
 
-    //res.status(200).json({ resp });
+    return res.status(200).json(resp[0]);
 });
 
 router.put("/edit/:userId", async (req, res) => {
-
-
     const { icon_id, username, password, country } = req.body;
-
     const avatar = {
         1: true,
         2: true,
@@ -46,19 +38,28 @@ router.put("/edit/:userId", async (req, res) => {
         5: true,
         6: true,
       };
-      if (!avatar[icon_id]) return res.status(400).json("invalid icon_id");
+      if (!avatar[icon_id]) return res.status(400).json("brak awatara w bazie");
 
     const userId = req.params.userId;
+
+    const userExistQuery = fs
+    .readFileSync(
+      path.join(__dirname, "../../database/queries/player_exists.sql")
+    )
+    .toString();
+  
+      let resp = await mysqlQuery(userExistQuery, [userId]);
+      if (resp.length == 0) return res.status(404).json("użytkownik nie istnieje");
 
     const query = fs
     .readFileSync(
       path.join(__dirname, "../../database/queries/account_update.sql")
     )
     .toString();
-    //     console.log(query, [icon_id, userId]);
+
     await mysqlQuery(query, [icon_id,username,password,country, userId]);
 
-    return res.status(200).json("settings updated successfully");
+    return res.status(200).json("konto zaktualizowane pomyślnie");
 });
 
 

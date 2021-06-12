@@ -11,11 +11,11 @@ router.put("/edit/:userId", async (req, res) => {
     2: true,
   };
 
-  if (!card[cardset_id]) return res.status(400).json("invalid cardset_id");
+  if (!card[cardset_id]) return res.status(400).json("niepawidołe ID motywu kart");
   if (isNaN(music) || music < 0 || music > 100)
-    return res.status(400).json("invalid music volume");
+    return res.status(400).json("nieprawidłowa głośność muzyki");
   if (isNaN(effect) || effect < 0 || effect > 100)
-    return res.status(400).json("invalid effect volume");
+    return res.status(400).json("nieprawidłowa głośność efektów");
 
   const userId = req.params.userId;
 
@@ -26,7 +26,7 @@ router.put("/edit/:userId", async (req, res) => {
     .toString();
 
   const resp = await mysqlQuery(userExistQuery, [userId]);
-  if (resp.length == 0) return res.status(404).json("user doesn't exist");
+  if (resp.length == 0) return res.status(404).json("użytkownik nie istnieje");
 
   const query = fs
     .readFileSync(
@@ -36,7 +36,7 @@ router.put("/edit/:userId", async (req, res) => {
 
   await mysqlQuery(query, [cardset_id, music, effect, userId]);
 
-  return res.status(200).json("settings updated successfully");
+  return res.status(200).json("ustawienia zaktualizowane pomyślnie");
 });
 
 router.get("/:userId", async (req, res) => {
@@ -49,7 +49,7 @@ router.get("/:userId", async (req, res) => {
     .toString();
 
   let resp = await mysqlQuery(userExistQuery, [userId]);
-  if (resp.length == 0) return res.status(404).json("user doesn't exist");
+  if (resp.length == 0) return res.status(404).json("użytkownik nie istnieje");
 
   const query = fs
     .readFileSync(

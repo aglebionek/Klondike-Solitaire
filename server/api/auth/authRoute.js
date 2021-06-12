@@ -60,7 +60,21 @@ router.post("/register", async (req, res) => {
   resp = await mysqlQuery(query, [username, email, hashedPassword]);
 
   if (!resp) return res.status(500).json("Problem łaczenia z bazą danych");
+  resp = await mysqlQuery(checkIfUserExistsQuery, [email]);
+  const { id } = resp[0];
 
+  const insertSettings = fs 
+  .readFileSync(
+    path.join(
+      __dirname,
+      "../../database/queries/settings_insert.sql"
+    )
+  )
+  .toString();
+
+  resp = await mysqlQuery(insertSettings, [id]);
+  if (!resp) return res.status(500).json("Problem łaczenia z bazą danych");
+  
   const key = process.env.TOKEN_KEY;
   const token = jwt.sign(
     {
@@ -79,7 +93,8 @@ router.post("/register", async (req, res) => {
     sameSite: true,
   });
 
-  return res.status(200).json("user created successfully");
+ 
+  return res.status(200).json(id);
 });
 
 router.post("/login", async (req, res) => {
@@ -103,7 +118,6 @@ router.post("/login", async (req, res) => {
   const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
   if (!isPasswordCorrect)
     return res.status(401).json("Email lub hasło jest niepoprawne");
-
   const key = process.env.TOKEN_KEY;
   const token = jwt.sign(
     {
@@ -122,7 +136,7 @@ router.post("/login", async (req, res) => {
     sameSite: true,
   });
 
-  return res.status(200).json("ok");
+  return res.status(200).json(id);
 });
 
 module.exports = router;
