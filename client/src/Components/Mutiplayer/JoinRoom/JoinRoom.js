@@ -50,8 +50,8 @@ function JoinRoom () {
         </div>
       </div>
       <div className="lobby__inner-container">
-          <h1 className="lobby__headline">Widok lobby</h1>
-          <div id = {"lobby__created-data_name"} className="lobby__created-data">
+          <div className="lobby__headline">Widok lobby</div>
+          <div className="lobby__created-data">
             <p>Nazwa:</p>
             <p>{roomData.name}</p>
           </div>
@@ -69,7 +69,7 @@ function JoinRoom () {
               }
             </ul>
           </div>
-          <div className="lobby__created-data__btns">
+          <div className="lobby__created-data__btns lobby-extra-button-class">
             <Link to="/multiplayer">
               <button id = "lobby-leave" onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
             </Link>

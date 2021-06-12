@@ -1,11 +1,12 @@
 .joined-room{
   width: 100vw;
-  height: 90vh;
-
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+  user-select: none;
+  flex-direction: column;
 }
 
 .lobby__modal-container{
@@ -34,9 +35,29 @@
   justify-content: center;
   align-items: center;
 
-  background-color: #fff;
+  background-color: black;
 }
 
 .lobby__modal button{
-  margin: 5px;
+  background: none;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  margin-top: 40px;
+  display: inline-block;
+  font-size: 16px;
+  width: 200px;
+  text-decoration: none;
+  cursor: default;
+}
+
+.lobby__modal button:hover {
+  box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+  text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
+}
+
+.lobby-extra-button-class {
+  justify-content: center;
 }

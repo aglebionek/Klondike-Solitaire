@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./LobbyMultiplayer.css";
+import "./LobbyMultiplayerCyberpunk.css";
 import agent from '../../agent/agent';
 
 // socket client
@@ -61,12 +61,17 @@ function LobbyMultiplayer({userId}) {
 
   return (
     <>
-      <a className="multiplayer__back" href="./..">
-         &#129044;
-      </a>
+    <div className="multiplayer__container">
+      <div className="multiplayer__back-div">
+        <a className="multiplayer__back" href="./..">
+          &#129044;
+        </a>
+      </div>
       <div className="row">
         <div className="Multi">Tryb Wieloosobowy</div>
-        <div className="ButtRoom">
+      </div>
+      <div className="row">
+      <div className="ButtRoom">
           <Link to={`/create-room`}>
             <button className="button">Stwórz nowy pokój</button>
           </Link>
@@ -92,6 +97,7 @@ function LobbyMultiplayer({userId}) {
           </div>
         ))}
         <div className="Line"></div>
+      </div>
       </div>
     </>
   );
