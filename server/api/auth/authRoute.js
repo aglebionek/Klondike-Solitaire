@@ -136,7 +136,10 @@ router.post("/login", async (req, res) => {
     sameSite: true,
   });
 
-  return res.status(200).json(id);
+  return res.status(200).json({
+    id,
+    username
+  });
 });
 
 module.exports = router;

@@ -52,3 +52,30 @@
   height: 200px;
   border: 1px solid black;
 }
+
+.stats{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats__h1{
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.stats__table{
+  border-collapse: collapse;
+  margin-bottom: 50px;
+}
+
+.stats__cell{
+  width: 150px;
+  border: 1px black solid;
+}
+
+.stats__cell__header{
+  font-weight: 700;
+  border: 1px black solid;
+}

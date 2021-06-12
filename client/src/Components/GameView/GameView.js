@@ -12,9 +12,10 @@ import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import socket from '../Mutiplayer/socketConfig';
+import agent from '../../agent/agent';
 
 function GameView({cardset_id, effect, volume }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
@@ -133,11 +134,6 @@ function GameView({cardset_id, effect, volume }) {
     }, 1000);
   };
 
-  const stopTimer = () => {
-    clearInterval(timer);
-    setPoints((prev) => prev + bonus);
-  };
-
   useEffect(() => {
     socket.on('write-to-end-list', ({ player, score }) => {
       let arr = playersOnEndGame.slice();
@@ -146,10 +142,12 @@ function GameView({cardset_id, effect, volume }) {
         name: player,
         score: score
       })
- 
-      setPlayersOnEndGame(arr);
+  
+      setPlayersOnEndGame(arr); 
     });
 
+    console.log(location.players);
+  
     return () => {
       socket.off('write-to-end-list');
     }
@@ -171,6 +169,28 @@ function GameView({cardset_id, effect, volume }) {
     }
   }, [gameNumber]);
 
+  useEffect(
+    () => {
+      if(isGameEnded){
+        clearInterval(timer);
+
+        if(location.time === Number.MAX_SAFE_INTEGER){
+          let arr = playersOnEndGame.slice();
+  
+          arr.push({
+            name: location.players[0].username,
+            score: points + bonus
+          })
+  
+          setPlayersOnEndGame(arr);
+        }
+        else{
+          socket.emit('end-game', { score: points + bonus});
+        }
+      }
+    }
+  , [isGameEnded]);
+
   useEffect(() => {
     if (!isLoading) {
       const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
@@ -186,17 +206,10 @@ function GameView({cardset_id, effect, volume }) {
         startColumn1
       );
 
-      if(location.time !== undefined){
-        if(gameTime >= location.time){
-          setGameEnd(true);
-          stopTimer(); //to nie działa - zabugowane
-          // tablica z graczami, ktorzy do gry weszli jest pod location.players
-
-          socket.emit('end-game', { score: points });     
-        }
+      if(gameTime === 10){
+        setGameEnd(true);
       }
 
-      //console.log(possibleMoves);
       if (possibleMoves === 0) {
         setGameEnd(true);
       } else setPossibleMoveNumbers(possibleMoves);
@@ -208,6 +221,24 @@ function GameView({cardset_id, effect, volume }) {
     beep.volume=(effect/100);
     beep.play();   
   };
+
+  const saveScore = (isWin, completionTime) => {
+    if(location.players[0].room !== null){
+      agent.post("/game/insert-game-occur", {
+        player_id: JSON.parse(localStorage.getItem("user")).id,
+        game_id: location.id, 
+        points: points + bonus, 
+        completion_time: completionTime, 
+        moves: moveNumbers, 
+        starting_distribution: '', 
+        is_win: isWin
+      });
+
+      if(location.time !== Number.MAX_SAFE_INTEGER){
+        socket.emit("lobby-leave");
+      }
+    }
+  }
 
   const handleDrop = (currentCards, draggingCards) => {
     const selectedCard = currentCards.array[currentCards.array.length - 1] || null;
@@ -290,21 +321,43 @@ function GameView({cardset_id, effect, volume }) {
   }
   
   if (isGameEnded) { 
-    
-    playersOnEndGame.sort(compareScore)
-    playersOnEndGame.reverse()
+    playersOnEndGame.sort(compareScore);
+    playersOnEndGame.reverse();
+
+    console.log(playersOnEndGame)
+
+    let isWin = true//location.username === playersOnEndGame[0].name;
+    let completionTime = gameTime;
    
     return (
-      <div>
-        <p>Gra zakończona</p>
-        <p>Lista wyników:</p>
-        <ul>
-          {
-            playersOnEndGame.map((player, index) => (
-              <li key={index}>{player.name} {player.score}</li>
-            ))
-          }
-        </ul>
+      <div className={styles.stats}>
+        <p className={styles.stats__h1}>Gra zakończona</p>
+        <p>Lista wyników</p>
+        <table className={styles.stats__table}>
+          <thead>
+            <tr>
+              <td className={styles.stats__cell__header}>
+                Gracz
+              </td>
+              <td className={styles.stats__cell__header}>
+                Wynik
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              playersOnEndGame.map((player, index) => (
+                <tr key={index}>
+                  <td className={styles.stats__cell}>{player.name}</td>
+                  <td className={styles.stats__cell}>{player.score}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <Link to="/">
+          <button onClick={() => saveScore(isWin, completionTime)}>Zakończ grę</button>
+        </Link>
       </div>
     )
   };

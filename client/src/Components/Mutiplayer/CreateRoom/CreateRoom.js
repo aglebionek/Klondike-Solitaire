@@ -6,9 +6,9 @@ import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
 import agent from '../../../agent/agent';
 
+const SECONDS_IN_MINUTE = 60;
 
-
-function CreateRoom({userId}) {
+function CreateRoom() {
   const history = useHistory();
   let player = 'player';
 
@@ -25,7 +25,8 @@ function CreateRoom({userId}) {
     isBeingModified: false,
     name: "Nowy pokój",
     minutes: 5,
-    players: []
+    players: [],
+    id: 0,
   };
   console.log(initialRoomData)
   const [roomData, updateRoomData] = useState(() => {
@@ -35,7 +36,9 @@ function CreateRoom({userId}) {
       ? JSON.parse(storageValue)
       : initialRoomData;
   });
+
   const [roomNameBuffer, updateRoomBuffer] = useState(roomData.name);
+  const [player, setPlayer] = useState(() => (JSON.parse(localStorage.getItem("user"))).username);
 
   const handleNameChange = (evt) => {
     updateRoomData((prevData) => ({
@@ -54,6 +57,11 @@ function CreateRoom({userId}) {
   const handleRoomCreateButton = (evt) => {
     evt.preventDefault();
 
+    setTimeout(() => {
+      socket.emit('export-room');
+      socket.emit('export-users');
+    }, 10);
+
     updateRoomData((prevData) => ({
       ...prevData,
       isCreated: true,
@@ -69,7 +77,7 @@ function CreateRoom({userId}) {
     else{
       socket.emit('lobby-join', { 
         player, 
-        room: roomData.name 
+        room: roomData.name,
       });
     }
 
@@ -86,9 +94,28 @@ function CreateRoom({userId}) {
   };
 
   const handleGameBegin = () => {
+    let id;
+
+    const start = new Date();
+    const now = start.toISOString().slice(0, 19).replace('T', ' ');
+    let then = new Date();
+
+    then.setMinutes(start.getMinutes() + roomData.minutes);
+    then = then.toISOString().slice(0, 19).replace('T', ' ');
+
+    agent.post("/game/insert-game", {
+      start: now,
+      end: then
+    })
+
+    agent
+      .post("/game/get-last-id")
+      .then(data => id = data)
+
     socket.emit('game-start', {
       room: roomData.name,
-      time: roomData.minutes * SECONDS_IN_MINUTE
+      time: roomData.minutes * SECONDS_IN_MINUTE,
+      id
     });
   }
 
@@ -140,17 +167,18 @@ function CreateRoom({userId}) {
       updateRoomData((prevData) => ({
         ...prevData,
         name: room,
-        players: users
+        players: users,
       }));
 
       localStorage.setItem('roomData', JSON.stringify(roomData));
     });
 
-    socket.on('start', ({ time }) => {
+    socket.on('start', ({ time, id }) => {
       history.push({
         pathname: '/game-view',
         time,
-        players: roomData.players
+        players: roomData.players,
+        id: id
       });
     });
 
@@ -245,14 +273,7 @@ function CreateRoom({userId}) {
                 required
               />
             </div>
-            <button className='lobby__create-room-button'
-              onClick={() => setTimeout(() => {
-                  socket.emit('export-room');
-                  socket.emit('export-users');
-                } 
-                , 10
-              )} // async loading hack
-            >
+            <button>
               {roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}
             </button>
           </form>

@@ -6,6 +6,7 @@ const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
 const authRoute = require("./api/auth/authRoute");
 const accountRoute = require("./api/account/accountRoute");
+const gameRoute = require("./api/game/gameRoute");
 const path = require("path");
 
 const PORT = process.env.PORT || 3001;
@@ -18,7 +19,8 @@ const {
   getRoomUsers,
   modifyRoom,
   getAllUsers,
-  setUsersInGame
+  setUsersInGame,
+  setUsersOutOfGame
 } = require("./utils/users");
 require("dotenv").config();
 app.use(cookieParser());
@@ -70,9 +72,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("game-start", ({ room, time }) => {
+  socket.on("game-start", ({ room, time, id }) => {
     setUsersInGame(room);
-    io.to(room).emit('start', { time });
+    io.to(room).emit('start', { time, id });
 
     // po wyjściu z gry, userzy dalej są w grze - na aktualnym stadium nierozwiązywalne, ale po dodaniu integracji z planszą - TODO
   });
@@ -149,6 +151,7 @@ app.use("/auth", authRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
 app.use("/account", accountRoute);
+app.use("/game", gameRoute);
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.get('*', (req, res) => {

@@ -6,8 +6,7 @@ import agent from '../../agent/agent';
 // socket client
 import socket from './socketConfig';
 
-
-
+function LobbyMultiplayer() {
 
 function LobbyMultiplayer({userId}) {
   let player = 'player';
@@ -17,6 +16,7 @@ function LobbyMultiplayer({userId}) {
   });
   
   const [users, setUsers] = useState([]);
+  const [player, setPlayer] = useState('');
 
   const joinRoom = (evt) => {
     const room = evt.target.getAttribute('data-room');
@@ -50,7 +50,10 @@ function LobbyMultiplayer({userId}) {
       setUsers(usersArr);
     });
 
+    setPlayer(JSON.parse(localStorage.getItem("user")).username);
+
     socket.emit('export-users');
+    localStorage.removeItem("roomData");
 
     return () => {
       socket.off('pass-users', (usersArr) => {

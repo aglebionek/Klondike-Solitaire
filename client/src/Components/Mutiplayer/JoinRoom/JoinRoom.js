@@ -3,12 +3,13 @@ import { Link, useHistory } from 'react-router-dom';
 import './JoinRoom.css';
 
 import socket from './../socketConfig.js';
+import agent from '../../../agent/agent';
 
 function JoinRoom () {
   const history = useHistory();
   const initialData = {
     name: 'test',
-    players: []
+    players: [],
   }
   const [roomData, updateRoomData] = useState(initialData);
 
@@ -16,7 +17,7 @@ function JoinRoom () {
     socket.on('pass-room', ({ room, users }) => {
       updateRoomData({
         name: room,
-        players: users
+        players: users,
       });
     });
 
@@ -27,11 +28,12 @@ function JoinRoom () {
     socket.emit('export-room');
     socket.emit('export-users');
 
-    socket.on('start', ({ time }) => {
+    socket.on('start', ({ time, id }) => {
       history.push({
         pathname: '/game-view',
         time,
-        players: roomData.players
+        players: roomData.players,
+        id: id
       });
     });
 
@@ -40,6 +42,8 @@ function JoinRoom () {
       socket.off('pass-room');
     }
   });
+
+
 
   return (
     <section className="joined-room">
@@ -71,7 +75,7 @@ function JoinRoom () {
           </div>
           <div className="lobby__created-data__btns lobby-extra-button-class">
             <Link to="/multiplayer">
-              <button id = "lobby-leave" onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
+              <button id="lobby-leave" onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
             </Link>
           </div>
         </div>
