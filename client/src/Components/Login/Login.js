@@ -4,6 +4,7 @@ import "./LoginCyberpunk.css";
 import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from "../../agent/agent.js";
+import { GrWindows } from "react-icons/gr";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,9 @@ function Login() {
         .then((resp) => {
           if (resp.status === 200) {
             localStorage.setItem('isLogged', true);
+            localStorage.setItem('userId', resp.data);
             setLoggedIn(true);
+            window.location.href = '/';
           }
         })
         .catch((err) => {

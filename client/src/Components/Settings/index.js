@@ -7,7 +7,7 @@ import Spinner from "../Spinner/Spinner";
 import agent from '../../agent/agent.js';
 import CardMotives from "../CardMotives/CardMotives";
 
-const Settings = () => {
+const Settings = ({ID}) => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
   const [card, setCard] = useState(1);
   const [temporaryCard, setTemporaryCard] = useState("vA hearts");
@@ -15,11 +15,10 @@ const Settings = () => {
   const [effectVolume, setEffectVolume] = useState(JSON.parse(localStorage.getItem('guestEffect')) ?? 20);
   const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
   const [loading, setLoading] = useState(isLogged);
-
+  const userId = ID;
 
   const cards = ["vA hearts cyberpunk","vA hearts"];
-  const userId = 26;
-
+  
   const nextCard = () => {
     let index = cards.indexOf(temporaryCard);
     if (index === cards.length - 1) index = 0;

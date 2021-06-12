@@ -6,18 +6,20 @@ import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
 import agent from '../../../agent/agent';
 
-let player = 'player';
 
-const userId = 10;
-const SECONDS_IN_MINUTE = 60;
 
-agent.get(`/account/${userId}`).then(({ data }) => {
-  player = data.username;
-});
-
-function CreateRoom() {
+function CreateRoom({userId}) {
   const history = useHistory();
+  let player = 'player';
 
+  const SECONDS_IN_MINUTE = 60;
+  
+  agent.get(`/account/${userId}`).then(({ data }) => {
+    player = data.username;
+  })
+    .catch((error) =>{
+      console.log(error.response.data)
+  });
   const initialRoomData = {
     isCreated: false,
     isBeingModified: false,
@@ -25,7 +27,7 @@ function CreateRoom() {
     minutes: 5,
     players: []
   };
-
+  console.log(initialRoomData)
   const [roomData, updateRoomData] = useState(() => {
     const storageValue = localStorage.getItem('roomData');
 
@@ -165,11 +167,11 @@ function CreateRoom() {
           <div className="lobby__headline">Pokój utworzony</div>
           <div className="lobby__created-data">
             <p>Nazwa:</p>
-            <p>{roomData.name}</p>
+            <p id={'Name'}>{roomData.name}</p>
           </div>
           <div className="lobby__created-data">
             <p>Czas gry (w minutach):</p>
-            <p>{roomData.minutes}</p>
+            <p id={'Minutes'}>{roomData.minutes}</p>
           </div>
           <div className="lobby__created-data">
             <p>Gracze:</p>
@@ -178,7 +180,7 @@ function CreateRoom() {
                 Object.values(roomData.players).map((player, index) => (
                   <li key={index} className="player-row">
                     <div>
-                      <p>{player.username}</p>
+                      <p id={"PUsername"}>{player.username}</p>
                       <button onClick={() => socket.emit("kick", { player })}>x</button>
                     </div>
                   </li>
@@ -195,7 +197,7 @@ function CreateRoom() {
                   Rozwiąż
                 </button>
             </Link>
-            <button onClick={handleRoomModifyButton}>Modyfikuj</button>
+            <button onClick={handleRoomModifyButton} id={'Modify'}>Modyfikuj</button>
             <button onClick={handleGameBegin}>Rozpocznij grę</button>
           </div>
         </div>

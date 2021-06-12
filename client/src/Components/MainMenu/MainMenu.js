@@ -6,7 +6,7 @@ import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 import agent from '../../agent/agent.js';
 
-function MainMenu( {effect} ) {
+function MainMenu( {effect, handleButton} ) {
     const history = useHistory();
     const [isLogged, setLog] = useState(false);
 
@@ -29,6 +29,7 @@ function MainMenu( {effect} ) {
                 .then(() => {
                     setLog(false);
                     localStorage.setItem('isLogged', false);
+                    localStorage.setItem('userId',0);
                 })
                 
             return;

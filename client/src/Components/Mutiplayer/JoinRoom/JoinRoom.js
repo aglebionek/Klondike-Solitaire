@@ -44,9 +44,9 @@ function JoinRoom () {
   return (
     <section className="joined-room">
       <div className="lobby__modal-container">
-        <div className="lobby__modal">
+        <div id = "lobby_modal" className="lobby__modal">
           <p>Wyrzucono cię z pokoju</p>
-          <button onClick={() => { history.push('/multiplayer') }}>Potwierdź</button>
+          <button id = "accept-multiplayer-game" onClick={() => { history.push('/multiplayer') }}>Potwierdź</button>
         </div>
       </div>
       <div className="lobby__inner-container">
@@ -55,7 +55,7 @@ function JoinRoom () {
             <p>Nazwa:</p>
             <p>{roomData.name}</p>
           </div>
-          <div className="lobby__created-data">
+          <div id = {"lobby__created-data_players"} className="lobby__created-data">
             <p>Gracze:</p>
             <ul>
               {
@@ -71,7 +71,7 @@ function JoinRoom () {
           </div>
           <div className="lobby__created-data__btns lobby-extra-button-class">
             <Link to="/multiplayer">
-              <button onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
+              <button id = "lobby-leave" onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
             </Link>
           </div>
         </div>

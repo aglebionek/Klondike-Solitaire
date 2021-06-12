@@ -6,16 +6,16 @@ import agent from '../../agent/agent';
 // socket client
 import socket from './socketConfig';
 
-// cóż, to jedyny dostępny user przy logowaniu także no... xD
-let player = 'player';
-const userId = 10;
 
-agent.get(`/account/${userId}`).then(({ data }) => {
-  player = data.username;
-});
 
-function LobbyMultiplayer() {
 
+function LobbyMultiplayer({userId}) {
+  let player = 'player';
+  
+  agent.get(`/account/${userId}`).then(({ data }) => {
+    player = data.username;
+  });
+  
   const [users, setUsers] = useState([]);
 
   const joinRoom = (evt) => {
