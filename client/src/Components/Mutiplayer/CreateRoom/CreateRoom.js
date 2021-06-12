@@ -131,7 +131,6 @@ function CreateRoom() {
     placeholder: (placeholder_styles)=> ({...placeholder_styles, color: 'rgba(0, 214, 252, 0.9)'}),
     input: (input_styles)=> ({...input_styles, color: 'rgba(0, 214, 252, 0.9)'}),
     noOptionsMessage: (noOptions_styles)=> ({...noOptions_styles, color: 'rgba(0, 214, 252, 0.9)'})
-
   };
 
   useEffect(() => {
@@ -237,8 +236,11 @@ function CreateRoom() {
                   { value: '10', label: '10' },
                   { value: '15', label: '15' },
                   { value: '20', label: '20' }
-                ]} 
-                value={roomData.minutes} styles={selstyle} onChange={handleTimeChange} required
+                ]}
+                onChange={handleTimeChange}
+                value={{value: roomData.minutes, label: roomData.minutes}}
+                styles={selstyle} 
+                required
               />
             </div>
             <button className='lobby__create-room-button'
