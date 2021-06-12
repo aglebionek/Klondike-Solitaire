@@ -29,11 +29,21 @@ function JoinRoom () {
     socket.emit('export-users');
 
     socket.on('start', ({ time, id }) => {
+      localStorage.setItem("gameInfo", {
+        startDate: new Date(),
+        timeLeft: time * 60,
+        roomName: roomData.name,
+        id,
+        players: roomData.players,
+        handicap: 0
+      });
+
       history.push({
         pathname: '/game-view',
         time,
         players: roomData.players,
-        id: id
+        id: id,
+        handicap: 0
       });
     });
 

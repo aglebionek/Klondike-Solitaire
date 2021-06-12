@@ -52,8 +52,6 @@ function MainMenu( {effect, handleButton} ) {
     }
 
     const startSingleGame = () => {
-        let id = undefined;
-
         if(user.name !== "Gość"){
             agent.post("/game/insert-game", {
                 start: new Date(),
@@ -62,24 +60,43 @@ function MainMenu( {effect, handleButton} ) {
 
             agent
                 .post("/game/get-last-id")
-                .then(data => id = data);
+                .then(res => res.data)
+                .then(data => {
+                    history.push({
+                        pathname: '/game-view', 
+                        time: Number.MAX_SAFE_INTEGER, 
+                        players: [
+                            {
+                                id: user.id,
+                                username: user.name,
+                                room: null,
+                                inGame: true
+                            }
+                        ], 
+                        id: data,
+                        handicap: 0
+                    });
+                });
         }
-        
 
-        history.push({
-            pathname: '/game-view', 
-            time: Number.MAX_SAFE_INTEGER, 
-            players: [
-                {
-                    id: user.id,
-                    username: user.name,
-                    room: null,
-                    inGame: true
-                }
-            ], 
-            id
-        });
+        else{
+            history.push({
+                pathname: '/game-view', 
+                time: Number.MAX_SAFE_INTEGER, 
+                players: [
+                    {
+                        id: user.id,
+                        username: user.name,
+                        room: null,
+                        inGame: true
+                    }
+                ], 
+                id: undefined,
+                handicap: 0
+            });
+        }
     }
+    
 
     useEffect(() => {
           agent.get("auth/verify")

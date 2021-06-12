@@ -110,13 +110,22 @@ function CreateRoom() {
 
     agent
       .post("/game/get-last-id")
-      .then(data => id = data)
-
-    socket.emit('game-start', {
-      room: roomData.name,
-      time: roomData.minutes * SECONDS_IN_MINUTE,
-      id
-    });
+      .then(res => res.data)
+      .then(data => {
+        localStorage.setItem("gameInfo", JSON.stringify({
+          startDate: new Date(),
+          time: roomData.minutes * SECONDS_IN_MINUTE,
+          roomName: roomData.name,
+          gameId: data,
+          players: roomData.players,
+        }));
+    
+        socket.emit('game-start', {
+          room: roomData.name,
+          time: roomData.minutes * SECONDS_IN_MINUTE,
+          id: data
+        });
+      })
   }
 
   const selstyle ={
@@ -178,7 +187,8 @@ function CreateRoom() {
         pathname: '/game-view',
         time,
         players: roomData.players,
-        id: id
+        id: id,
+        handicap: 0
       });
     });
 

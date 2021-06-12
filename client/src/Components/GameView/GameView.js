@@ -18,6 +18,8 @@ import socket from '../Mutiplayer/socketConfig';
 import agent from '../../agent/agent';
 
 function GameView({cardset_id, effect, volume }) {
+  const location = useLocation();
+
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -26,7 +28,7 @@ function GameView({cardset_id, effect, volume }) {
   const [gameNumber, setGameNumber] = useState(0);
   const [isGameEnded, setGameEnd] = useState(false);
   const [bonus, setBonus] = useState(1200);
-  const [gameTime, setGameTime] = useState(0);
+  const [gameTime, setGameTime] = useState(location.handicap);
   const [points, setPoints] = useState(0);
   const [playMusic, setPlayMusic] = useState(false);
 
@@ -48,7 +50,7 @@ function GameView({cardset_id, effect, volume }) {
 
   const [history, setHistory] = useState([]);
   const [playersOnEndGame, setPlayersOnEndGame] = useState([]);
-  const location = useLocation();
+  const [startTime, setStartTime] = useState(new Date());
 
   const startColumns = {
     startColumn1: {
@@ -119,6 +121,7 @@ function GameView({cardset_id, effect, volume }) {
       columns[key].set(item);
     });
     setLoading(false);
+    
     startTimer();
   }, []);
 
@@ -146,7 +149,7 @@ function GameView({cardset_id, effect, volume }) {
       setPlayersOnEndGame(arr); 
     });
 
-    console.log(location.players);
+
   
     return () => {
       socket.off('write-to-end-list');
@@ -185,7 +188,7 @@ function GameView({cardset_id, effect, volume }) {
           setPlayersOnEndGame(arr);
         }
         else{
-          socket.emit('end-game', { score: points + bonus});
+          socket.emit('end-game', { score: points + bonus });
         }
       }
     }
@@ -206,7 +209,7 @@ function GameView({cardset_id, effect, volume }) {
         startColumn1
       );
 
-      if(gameTime === 10){
+      if(gameTime === location.time){
         setGameEnd(true);
       }
 
@@ -324,9 +327,7 @@ function GameView({cardset_id, effect, volume }) {
     playersOnEndGame.sort(compareScore);
     playersOnEndGame.reverse();
 
-    console.log(playersOnEndGame)
-
-    let isWin = true//location.username === playersOnEndGame[0].name;
+    let isWin = true // tutaj albo gdzies indziej powinno sprawdzać czy ziomek wygrał
     let completionTime = gameTime;
    
     return (
@@ -356,7 +357,11 @@ function GameView({cardset_id, effect, volume }) {
           </tbody>
         </table>
         <Link to="/">
-          <button onClick={() => saveScore(isWin, completionTime)}>Zakończ grę</button>
+          <button onClick={() => {
+            saveScore(isWin, completionTime);
+
+            localStorage.removeItem("gameInfo");
+          }}>Zakończ grę</button>
         </Link>
       </div>
     )

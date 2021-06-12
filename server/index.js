@@ -75,8 +75,6 @@ io.on("connection", (socket) => {
   socket.on("game-start", ({ room, time, id }) => {
     setUsersInGame(room);
     io.to(room).emit('start', { time, id });
-
-    // po wyjściu z gry, userzy dalej są w grze - na aktualnym stadium nierozwiązywalne, ale po dodaniu integracji z planszą - TODO
   });
 
   socket.on("lobby-modify", ({ room, newName }) => {

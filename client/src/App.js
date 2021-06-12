@@ -3,7 +3,7 @@ import "./App.css";
 import MainMenu from "./Components/MainMenu/MainMenu";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import Settings from "./Components/Settings";
 import GlobalStats from "./Components/GlobalStats/Stats";
 import GameView from "./Components/GameView/GameView";
@@ -102,6 +102,9 @@ function GameViewRoute({ component: Component, ...rest }) {
 function PrivateRoute({ component: Component, ...rest }) {
   const [isAuth, setAuth] = useState(true);
   const [isLoading, setLoading] = useState(true);
+
+  const history = useHistory();
+
   useEffect(() => {
       agent.get("auth/verify")
       .then(() => {
@@ -112,10 +115,31 @@ function PrivateRoute({ component: Component, ...rest }) {
         setLoading(false);
         setAuth(false);
       });
+
+      if(localStorage.getItem("gameInfo") !== null){
+        const gameInfo = JSON.parse(localStorage.getItem("gameInfo"));
+
+        if((new Date() - new Date(gameInfo.startDate)) / 1000 < gameInfo.time){
+          history.push({
+            pathname: '/game-view', 
+            time: gameInfo.time,
+            handicap: Math.floor((new Date() - new Date(gameInfo.startDate)) / 1000),
+            players: gameInfo.players, 
+            id: gameInfo.id
+          });
+          
+        }
+        else{
+          localStorage.removeItem("gameInfo");
+        }
+      }
+
   }, []);
+
   if (isLoading) return (
     <Spinner></Spinner>
   );
+  
   return (
     <Route
       {...rest}
