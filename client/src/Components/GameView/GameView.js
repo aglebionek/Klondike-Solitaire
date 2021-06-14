@@ -139,17 +139,10 @@ function GameView({cardset_id, effect, volume }) {
 
   useEffect(() => {
     socket.on('write-to-end-list', ({ player, score }) => {
-      let arr = playersOnEndGame.slice();
-      
-      arr.push({
-        name: player,
-        score: score
-      })
-  
-      setPlayersOnEndGame(arr); 
+      setPlayersOnEndGame(prev => ([
+        ...prev, {name: player, score: score}
+      ]));
     });
-
-
   
     return () => {
       socket.off('write-to-end-list');
@@ -178,14 +171,9 @@ function GameView({cardset_id, effect, volume }) {
         clearInterval(timer);
 
         if(location.time === Number.MAX_SAFE_INTEGER){
-          let arr = playersOnEndGame.slice();
-  
-          arr.push({
-            name: location.players[0].username,
-            score: points + bonus
-          })
-  
-          setPlayersOnEndGame(arr);
+          setPlayersOnEndGame(prev => ([
+            ...prev, {name: location.players[0].username, score: points + bonus}
+          ]));
         }
         else{
           socket.emit('end-game', { score: points + bonus });
