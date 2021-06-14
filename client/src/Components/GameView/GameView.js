@@ -213,8 +213,10 @@ function GameView({cardset_id, effect, volume }) {
     beep.play();   
   };
 
-  const saveScore = (isWin, completionTime) => {
+  const saveScore = (completionTime) => {
     if(location.players[0].room !== null){
+      let isWin = playersOnEndGame[0].name === (JSON.parse(localStorage.getItem("user"))).username;
+
       agent.post("/game/insert-game-occur", {
         player_id: JSON.parse(localStorage.getItem("user")).id,
         game_id: location.id, 
@@ -315,7 +317,7 @@ function GameView({cardset_id, effect, volume }) {
     playersOnEndGame.sort(compareScore);
     playersOnEndGame.reverse();
 
-    let isWin = playersOnEndGame[0].name === (JSON.parse(localStorage.getItem("user"))).username // tutaj albo gdzies indziej powinno sprawdzać czy ziomek wygrał
+    
     let completionTime = gameTime;
    
     return (
@@ -346,7 +348,7 @@ function GameView({cardset_id, effect, volume }) {
         </table>
         <Link to="/">
           <button onClick={() => {
-            saveScore(isWin, completionTime);
+            saveScore(completionTime);
 
             localStorage.removeItem("gameInfo");
           }}>Zakończ grę</button>

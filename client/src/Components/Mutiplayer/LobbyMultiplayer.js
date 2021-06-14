@@ -7,13 +7,6 @@ import agent from '../../agent/agent';
 import socket from './socketConfig';
 
 function LobbyMultiplayer() {
-
-function LobbyMultiplayer({userId}) {
-  let player = 'player';
-  
-  agent.get(`/account/${userId}`).then(({ data }) => {
-    player = data.username;
-  });
   
   const [users, setUsers] = useState([]);
   const [player, setPlayer] = useState('');
