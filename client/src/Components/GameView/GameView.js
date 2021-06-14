@@ -315,7 +315,7 @@ function GameView({cardset_id, effect, volume }) {
     playersOnEndGame.sort(compareScore);
     playersOnEndGame.reverse();
 
-    let isWin = true // tutaj albo gdzies indziej powinno sprawdzać czy ziomek wygrał
+    let isWin = playersOnEndGame[0].name === (JSON.parse(localStorage.getItem("user"))).username // tutaj albo gdzies indziej powinno sprawdzać czy ziomek wygrał
     let completionTime = gameTime;
    
     return (
