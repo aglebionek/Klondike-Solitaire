@@ -32,17 +32,22 @@ router.post("/insert-game", async (req, res) => {
 });
 
 router.post("/insert-game-occur", async (req, res) => {
-  const {player_id, game_id, points, completion_time, moves, starting_distribution, is_win} = req.body;
-
+  const {player_id, game_id, points, completion_time, moves, starting_distribution, is_win, key} = req.body;
+  if(key % 317 == 0)
+  {
   const query = fs
     .readFileSync(path.join(__dirname, "../../database/queries/insert_game_occur.sql"))
     .toString();
-
   console.log(query);
 
   let resp = await mysqlQuery(query, [player_id, game_id, points, completion_time, moves, starting_distribution, is_win]);
 
   return res.status(200).json("ok");
+  }
+  else{
+    // błędna wartość pola key - nieautoryzowany dostęp
+    return res.status(401).json("błędny klucz autoryzacji(key)")
+  }
 });
 
 module.exports = router;

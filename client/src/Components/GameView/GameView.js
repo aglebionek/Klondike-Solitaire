@@ -224,9 +224,10 @@ function GameView({cardset_id, effect, volume }) {
         completion_time: completionTime, 
         moves: moveNumbers, 
         starting_distribution: '', 
-        is_win: isWin
+        is_win: isWin,
+        key: 317* (Math.floor(Math.random() * 100) + 1),
       });
-
+        
       if(location.time !== Number.MAX_SAFE_INTEGER){
         socket.emit("lobby-leave");
       }
