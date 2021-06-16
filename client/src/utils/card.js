@@ -143,16 +143,16 @@ export const shuffleCards = () => {
 
   for (let i = 0; i < 24; i++) {
     const random = Math.floor(Math.random() * deck.length);
-    const card = deck[random];
+    const card = { ...deck[random] };
     card.isVisible = false;
-    startColumn1.push(deck[random]);
+    startColumn1.push(card);
     deck.splice(random, 1);
   }
 
   Object.entries(mainColumns).map(([key, item], index) => {
     for (let j = 0; j < index + 1; j++) {
       const random = Math.floor(Math.random() * deck.length);
-      const card = deck[random];
+      const card = { ...deck[random] };
       if (j === index) {
         card.isVisible = true;
       } else card.isVisible = false;
@@ -160,8 +160,7 @@ export const shuffleCards = () => {
       deck.splice(random, 1);
     }
   });
-
-  return { startColumn1, ...mainColumns };
+  return { startColumn1: [...startColumn1], ...mainColumns };
 };
 
 export const numMoves = function (
@@ -288,7 +287,8 @@ export const drop = (
         draggedCards: draggingCard.array,
         cardIndex: index,
       };
-      revealCardRef.current.revealTheCard();
+      //index-1
+      revealCardRef.current.revealTheCard(true);
     } else {
       columns[currentCards.title].set([
         ...currentCards.array,

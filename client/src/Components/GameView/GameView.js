@@ -14,11 +14,20 @@ import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
 import { useLocation } from "react-router-dom";
 import Animation from "./game_end_animations/Animation";
+import WinLoseBoard from "./WinLoseBoard";
 
 import socket from "../Mutiplayer/socketConfig";
 
-function GameView({ cardset_id, effect, volume }) {
+function GameView({
+  cardset_id,
+  effect,
+  volume,
+  analysis = false,
+  history: initialHistory,
+  shuffle: initialShuffle,
+}) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
+  const [shuffle, setShuffle] = useState();
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [moveNumbers, setMoveNumbers] = useState(0);
@@ -29,7 +38,7 @@ function GameView({ cardset_id, effect, volume }) {
   const [gameTime, setGameTime] = useState(0);
   const [points, setPoints] = useState(0);
   const [playMusic, setPlayMusic] = useState(false);
-  const [gameEndEffect, setGameEndEffect] = useState("win");
+  const [gameEndEffect, setGameEndEffect] = useState(null);
 
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
@@ -118,23 +127,27 @@ function GameView({ cardset_id, effect, volume }) {
   const columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
-    const initialShuffle = shuffleCards();
-    Object.entries(initialShuffle).map(([key, item]) => {
-      columns[key].set(item);
+    let shuffle;
+    if (initialShuffle) {
+      shuffle = initialShuffle;
+    } else {
+      shuffle = { ...shuffleCards() };
+      setShuffle({ ...shuffle });
+    }
+    const copy = { ...shuffle };
+
+    Object.entries(copy).map(([key, item]) => {
+      const newArray = [];
+      for (let i = 0; i < item.length; i++) {
+        newArray.push({ ...item[i] });
+      }
+      columns[key].set(newArray);
     });
     setLoading(false);
-    startTimer();
+    if (initialHistory) {
+      setHistory(initialHistory);
+    }
   }, []);
-
-  const startTimer = () => {
-    timer.current = setInterval(() => {
-      const reducedBonus = bonus - 1;
-      setGameTime((prev) => prev + 1);
-      if (reducedBonus < 0) {
-        setBonus(0);
-      } else setBonus(reducedBonus);
-    }, 1000);
-  };
 
   const stopTimer = () => {
     clearInterval(timer.current);
@@ -161,18 +174,32 @@ function GameView({ cardset_id, effect, volume }) {
   useEffect(() => {
     if (gameNumber > 0) {
       const initialShuffle = shuffleCards();
-      Object.entries(initialShuffle).map(([key, item]) => {
-        columns[key].set(item);
+      setShuffle({ ...shuffle });
+      const copy = { ...initialShuffle };
+      Object.entries(copy).map(([key, item]) => {
+        const newArray = [];
+        for (let i = 0; i < item.length; i++) {
+          newArray.push({ ...item[i] });
+        }
+        columns[key].set(newArray);
       });
-      setMoveNumbers(0);
 
       Object.entries(finalColumns).map(([key, column]) => {
         column.set([]);
       });
+      setMoveNumbers(0);
+      setHistory([]);
       setStartCardIndex(0);
       setStartColumn2([]);
+      setGameTime(0);
     }
   }, [gameNumber]);
+
+  useEffect(() => {
+    if (history) {
+      console.log(shuffle);
+    }
+  }, [history]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -240,40 +267,27 @@ function GameView({ cardset_id, effect, volume }) {
   });
   if (isLoading) return <div>loading...</div>;
 
-  const compareScore = (a, b) => {
-    if (a.score < b.score) {
-      return -1;
-    }
-    if (a.score > b.score) {
-      return 1;
-    }
-    return 0;
-  };
-
   if (gameEndEffect) {
     setTimeout(() => {
       setGameEnd(true);
       setGameEndEffect(null);
-    }, 20000);
-    return <Animation action={gameEndEffect} />;
+    }, 500);
+    // return <Animation action={gameEndEffect} />;
+    return <div>Animation</div>;
   }
 
   if (isGameEnded) {
-    playersOnEndGame.sort(compareScore);
-    playersOnEndGame.reverse();
-
     return (
-      <div>
-        <p>Gra zakończona</p>
-        <p>Lista wyników:</p>
-        <ul>
-          {playersOnEndGame.map((player, index) => (
-            <li key={index}>
-              {player.name} {player.score}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <WinLoseBoard
+        points={points}
+        gameTime={gameTime}
+        isFinished
+        history={history}
+        shuffle={shuffle}
+        cardset_id={cardset_id}
+        effect={effect}
+        volume={volume}
+      />
     );
   }
 
@@ -284,6 +298,7 @@ function GameView({ cardset_id, effect, volume }) {
       ) : (
         <></>
       )}
+      <button onClick={() => setGameEndEffect("win")}>End game</button>
 
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
@@ -317,6 +332,8 @@ function GameView({ cardset_id, effect, volume }) {
             points={points}
             setPoints={setPoints}
             effect={effect}
+            analysis={analysis}
+            revealCardRef={revealCardRef}
           />
           <FinalColumns
             finalColumns={finalColumns}

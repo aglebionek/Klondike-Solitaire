@@ -21,22 +21,27 @@ const Deck = ({
   revealCardRef,
 }) => {
   useImperativeHandle(revealCardRef, () => ({
-    revealTheCard() {
-      if (startCardIndex + 1 > startColumn1.length) {
-        const newPoints = points - 50;
-        if (newPoints < 0) {
-          setPoints(0);
-        } else setPoints(newPoints);
-        setStartCardIndex(0);
-      } else setStartCardIndex((prev) => prev + 1);
-      const card = startColumn1[startCardIndex];
+    revealTheCard(isMoved) {
+      console.log(startCardIndex);
+      let cardIndex = startCardIndex;
+      if (isMoved) {
+        cardIndex -= 1;
+      }
+      const card = startColumn1[cardIndex];
       if (card) card.isVisible = true;
       setStartColumn2([card]);
       const newHistoryStep = {
         source: "startColumn1",
         target: "startColumn2",
-        draggedCards: [startColumn1[startCardIndex]],
+        draggedCards: [startColumn1[cardIndex]],
       };
+      if (cardIndex + 1 > startColumn1.length) {
+        const newPoints = points - 50;
+        if (newPoints < 0) {
+          setPoints(0);
+        } else setPoints(newPoints);
+        setStartCardIndex(0);
+      } else setStartCardIndex(cardIndex + 1);
 
       setHistory([...history, newHistoryStep]);
     },
