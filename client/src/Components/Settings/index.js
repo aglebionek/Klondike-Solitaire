@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./SettingCyberpunk.module.css";
+import styles from "./Settings.module.css";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';

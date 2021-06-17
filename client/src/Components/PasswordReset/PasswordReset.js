@@ -1,5 +1,5 @@
 import React from 'react';
-import "./passwordResetCyberpunk.css"
+import "./passwordReset.css"
 
 function PasswordReset (){
     return (

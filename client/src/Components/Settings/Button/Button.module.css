@@ -7,16 +7,11 @@
   width: 100%;
   height: 100%;
   background: none;
-  border: solid 1px rgba(0, 214, 252, 0.6);
-  color: rgba(0, 214, 252, 0.9);
+  border: solid 1px #102542;
+  color: #102542;
   text-align: center;
   font-size: 16px;
   text-decoration: none;
-  cursor: default;
-}
-
-.button:hover {
-  box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
-  text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
+  cursor: pointer;
 }
 

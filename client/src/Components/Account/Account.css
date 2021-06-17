@@ -1,34 +1,40 @@
-body, ::after, ::before{
+::after, ::before{
     margin:0;
     padding: 0;
 }
 
 .profile-container{
-    padding: 20px;
-    width: 70%;
-    margin: auto;
+    width: 100vw;
+    min-height: 100vh;
     min-width: 500px;
     display: flex;
     flex-direction: column;
-
+    background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
+    user-select: none;
+    align-items: center;
 }
 
-.profile__back{
-    position: absolute;
-    top: 0;
-    left: 0;
+.profile-menu-button-div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
   
+.account__back{
     text-decoration: none;
     font-size: 2rem;
     padding: 10px;
-    color: black;
-  }
+    color: #102542;
+    cursor: pointer;
+}
 
 /* PROFILE HEADING*/
 .profile-heading{
-    padding: 10px;
-    font-size: 48px;
-    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    color: #102542;
+    letter-spacing: 1.8px;
 }
 /* PROFILE HEADER */
 .profile-header{
@@ -36,6 +42,8 @@ body, ::after, ::before{
     height: 150px;
     margin-top: 20px;
     display: flex;
+    color: #102542;
+    align-items: center;
 }
 
 .profile-avatar{
@@ -69,7 +77,6 @@ body, ::after, ::before{
     display: flex;
     flex-direction: row;
     padding: 10px 0;
-
 }
 
 .country-name{
@@ -77,8 +84,22 @@ body, ::after, ::before{
     padding-left: 10px;
 }
 
-.profile-header-edit{
-    flex-grow: 1;
+.profile-edit-button, .modal-button-save, .modal-button-cancel{
+    display: flex;
+    text-decoration: none;
+    background: none;
+    border: solid 1px #102542;
+    color: #102542;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+.edition-text {
+    margin-left: auto;
+
 }
 
 .edit-profile-header{
@@ -93,18 +114,21 @@ body, ::after, ::before{
     display: flex;
     flex-direction: row;
     padding: 20px;
-    justify-content: space-between;
+    width: 40%;
+    min-width: 500px;
 }
 
 .profile-statistics{
-    width: 50%;
-    background-color: #eee;
+    width: 100%;
+    background: none;
     border-radius: 4px;
+    border: solid 1px #102542;
+    color: #102542;
 }
 
 .profile-statistics-inscription{
     font-size: 30px;
-    padding: 10px 0;
+    padding: 5px;
 }
 
 .stats{
@@ -112,7 +136,6 @@ body, ::after, ::before{
     flex-direction: row;
     justify-content: space-between;
     padding: 5px;
-    border-bottom: black solid 1px;
 }
 
 .profile-return-button{
@@ -122,45 +145,45 @@ body, ::after, ::before{
 
 /* MODAL SECTION  */
 .background-modal{
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+    background-color: #66bb6a;
+    border: solid 1px #102542;
     display: none;
+    position: absolute;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
 }
 .modal-content{
     width: 600px;
-    height: 550px;
-    background-color: white;
-    border-radius: 4px;
+    height: 500px;
+    user-select: none;
 }
+
 .modal-settings{
     font-size: 30px;
     display: flex;
     justify-content: center;
-    padding: 20px;
-}
-.modal-nick,.modal-email,.modal-country,.modal-avatar{
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
+    color: #102542;
+    margin-bottom: 20px;
 }
 
-.modal-password-old,.modal-password-new,.modal-password-new-repeat{
+.modal-nick,.modal-email,.modal-country,.modal-password-old,.modal-password-new,.modal-password-new-repeat{
     display: flex;
     flex-direction: row;
+    color: #102542;
+    text-align: right;
+}
 
-    padding: 5px 5px 5px 10px;
+.modal-avatar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
 }
 
 .row-one{
-    font-weight: bold;
-    width: 30%;
+    width: 31.4%;
+    padding-right: 10px;
 }
 
 .modal-button{
@@ -174,22 +197,34 @@ body, ::after, ::before{
 
 .red-star{
     color:red;
-    padding-left: 5px;
-    font-size:medium;
+    font-size: medium;
+    margin-left: 10px;
 }
 
 .arrow {
     display: flex;
     align-items: center;
     font-size: 3.5rem;
-    color: #00921c;
-  }
-  .account_modal-nick-input,
-  .account_modal-password-old-input,
-  .account_modal-password-input-new,
-  .account_modal-password-input-new-repeat,
-  .account_modal-country{
-        margin: 0;
-        padding:10px;
-        max-width: 200px;
-  }
+    color: #102542;
+    cursor: pointer;
+}
+  
+
+.account_modal-password-old-input, .account_modal-nick-input, .account_modal-password-input-new,
+.account_modal-password-input-new-repeat,
+.account_modal-password-old-input:-webkit-autofill, .account_modal-nick-input:-webkit-autofill, .account_modal-password-input-new:-webkit-autofill,
+.account_modal-password-input-new-repeat:-webkit-autofill{
+    margin-bottom: 8px;
+    background: none;
+    color: #102542;
+    border: solid 1px #102542;
+    border-radius: 3px;
+    padding: 3px;
+    font-size: 16px;
+}
+
+.account_modal-password-old-input:focus, .account_modal-nick-input:focus,
+.account_modal-password-input-new:focus, .account_modal-password-input-new-repeat:focus, .account_modal-country-input:focus {
+    border: solid 1px #102542;
+    outline: none;
+}

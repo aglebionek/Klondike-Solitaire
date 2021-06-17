@@ -1,5 +1,5 @@
 import React from 'react';
-import './SpinnerCyberpunk.css';
+import './Spinner.css';
 
 function Spinner () {
   return (<div className="waiting-spinner-container">

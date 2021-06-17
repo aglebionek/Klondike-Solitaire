@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import "./RegisterCyberpunk.css";
+import "./register.css";
 import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from "../../agent/agent.js";
