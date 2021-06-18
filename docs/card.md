@@ -43,7 +43,7 @@ Nieżej funkcja `suite()` nadaje odpowiednie frakcje.
   }
 ```
 ## Prywatne metody pomagające w układaniu
-`isOppositeColorTo = (card)` usatala kolor kart , sprawdzając czy karta jest czarna, w przeciwnym wypadku oczyswiście jest czerwona.
+Wyrażenie lambda `isOppositeColorTo = (card)` usatala kolor kart , sprawdzając czy karta jest czarna, w przeciwnym wypadku oczyswiście jest czerwona.
 ```js
   #isOppositeColorTo = (card) => {
     const blackSuites = ["clubs", "spades"];
@@ -54,25 +54,28 @@ Nieżej funkcja `suite()` nadaje odpowiednie frakcje.
     return thisCardSuite === cardToCheckSuite;
   };
 ```
-`#isSameSuiteTo = (card)` sprawdzenie spójności frakcji.
+Wyrażenie lambda `#isSameSuiteTo = (card)` sprawdzenie spójności frakcji.
 ```js
   #isSameSuiteTo = (card) => {
     return this.suite === card.suite;
   };
 ```
 ## Publiczne metody
-
-(Opis)
+Wyrażenie lambda `isAscendingCardInSuiteTo = (card)` sprawdza ułożenie kart o tej samej frakcji w kolejności rosnącej.
 
 ```js
 isAscendingCardInSuiteTo = (card) => {
     return this.#isSameSuiteTo(card) && (this.#id === card.#id + 1);
   };
-
+```
+Wyrażenie lambda `isDescendingAndOppositeTo = (card)` sprawdza ułożenie kart o przeciwnym kolorze w kolejności malejącej.
+```js
   isDescendingAndOppositeTo = (card) => {
     return this.#isOppositeColorTo(card) && card.isAscendingCardInSuiteTo(this);
   };
-
+```
+Wyrażenie lambda `toggleVisibility = ()`, które nie przymuje żadnego paramrtu, zmienia widok (karta zasłonięta lub odsłonięta) karty.
+```js
   toggleVisibility = () => {
     this.#isVisible = !this.#isVisible;
   }
