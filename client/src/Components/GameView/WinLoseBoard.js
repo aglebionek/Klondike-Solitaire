@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import "./WinLose.css";
 import GameView from "./GameView";
+import Animation from "./game_end_animations/Animation";
 
 class StatsBoard extends Component {
   constructor(props) {
@@ -14,7 +15,10 @@ class StatsBoard extends Component {
       shuffle: props.shuffle,
       cardset_id: props.cardset_id,
       effect: props.effect,
+      isAnimation: true,
       volume: props.volume,
+      gameReuslt: props.gameReuslt,
+      moveNumbers: props.moveNumbers,
     };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
@@ -28,7 +32,16 @@ class StatsBoard extends Component {
     this.setState({ show: false });
   };
 
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ ...this.state, isAnimation: false });
+      this.showModal();
+    }, 5000);
+  }
+
   render() {
+    if (this.state.isAnimation)
+      return <Animation action={this.props.gameReuslt} />;
     return (
       <main>
         <Modal
@@ -42,8 +55,9 @@ class StatsBoard extends Component {
           cardset_id={this.state.cardset_id}
           effect={this.state.effect}
           volume={this.state.volume}
+          moveNumbers={this.state.moveNumbers}
+          gameReuslt={this.state.gameReuslt}
         ></Modal>
-        <button onClick={this.showModal}> show </button>
       </main>
     );
   }
@@ -61,6 +75,8 @@ const Modal = ({
   cardset_id,
   effect,
   volume,
+  moveNumbers,
+  gameReuslt,
 }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
   const [gameAnalysis, setGameAnalysis] = useState(false);
@@ -99,9 +115,33 @@ const Modal = ({
         analysis
         history={history}
         shuffle={shuffle}
+        points={points}
+        gameTime={gameTime}
+        moveNumbers={moveNumbers}
+        setGameAnalysis={setGameAnalysis}
       />
     );
   }
+  const minutes = Math.floor(gameTime / 60);
+  let seconds = gameTime - 60 * minutes;
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  let minutesText = "Minut";
+  let secondsText = "Sekund";
+  if (minutes <= 4 && minutes >= 2) {
+    minutesText = "Minut";
+  }
+  if (minutes === 1) {
+    minutesText = "Minuta";
+  }
+  if (minutes <= 4 && minutes >= 2) {
+    minutesText = "Sekundy";
+  }
+  if (seconds === 1) {
+    secondsText = "Sekunda";
+  }
+
   return (
     <div className={showHideClassName}>
       <section className="modal-main">
@@ -109,16 +149,29 @@ const Modal = ({
 
         {SingleOrMulti(players)}
 
-        <div class="winlose">Wygrana</div>
+        <div class="winlose">
+          {gameReuslt === "win"
+            ? "wygrałes"
+            : gameReuslt === "lose"
+            ? "Przegrałeś"
+            : "Remis"}
+        </div>
         <div class="statistics">Punkty: {points}</div>
-        <div class="statistics">Twój czas: {gameTime}</div>
+        <div class="statistics">
+          Twój czas:{" "}
+          {minutes + " " + minutesText + " " + seconds + " " + secondsText}
+        </div>
 
         <table id="options">
           <tr>
             <th>
-              <button class="button" onClick={handleClose}>
+              <a
+                href="/"
+                class="winloseboard__button-back"
+                onClick={handleClose}
+              >
                 Zamknij
-              </button>
+              </a>
             </th>
             <th>
               <button class="button" onClick={() => setGameAnalysis(true)}>

@@ -68,7 +68,6 @@ const Buttons = ({
       }
 
       if (lastStep.source === "startColumn1") {
-        console.log(startCardIndex);
         let previousIndex = startCardIndex - 1;
         if (previousIndex === -1) {
           previousIndex = startColumn1.length;
@@ -141,24 +140,20 @@ const Buttons = ({
           draggedCard[i].isVisible = true;
         }
         finalColumn.set([...finalColumnGet, ...draggedCard]);
-
-        const nextCard = startColumn1[startCardIndex - 1];
-
         const source = columns["startColumn1"].get;
 
         const index = step.cardIndex;
         source.splice(index - 1, 1);
-
         columns["startColumn1"].set(source);
 
-        if (nextCard) setStartColumn2([nextCard]);
-        else setStartColumn2([]);
+        console.log(startCardIndex - 1);
+        const nextCard = startColumn1[startCardIndex - 1];
+        if (nextCard) {
+          nextCard.isVisible = true;
+          setStartColumn2([nextCard]);
+        } else setStartColumn2([]);
 
         setHistoryCount((prev) => prev + 1);
-
-        const card = startColumn1[startCardIndex];
-        if (card) card.isVisible = true;
-        setStartColumn2([card]);
       } else {
         const sourceColumn = columns[step.source].get;
         const sourceColumnLength = sourceColumn.length;
@@ -192,19 +187,24 @@ const Buttons = ({
         onClick={stepBack}
         name="undo"
         className={`${styles.button} ${
-          history.length === 0 ? styles.disabledButton : ""
+          history.length === 0 || historyCount === 0
+            ? styles.disabledButton
+            : ""
         }`}
-        disabled={history.length === 0}
+        disabled={history.length === 0 || historyCount === 0}
         onMouseOver={handleMouseOver}
       >
         <GrUndo />
       </button>
       {analysis ? (
         <button
-          className={styles.button}
           onClick={forwardStep}
           name="restart"
           onMouseOver={handleMouseOver}
+          className={`${styles.button} ${
+            history.length === historyCount ? styles.disabledButton : ""
+          }`}
+          disabled={history.length === historyCount}
         >
           <RiShareForwardFill />
         </button>

@@ -3,7 +3,13 @@ import styles from "./GameView.module.css";
 import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { drop, shuffleCards, numMoves, isGameWin } from "../../utils/card";
+import { FiArrowLeft } from "react-icons/fi";
+import {
+  drop,
+  testCard2 as shuffleCards,
+  numMoves,
+  gameResult,
+} from "../../utils/card";
 import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
@@ -13,7 +19,6 @@ import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
 import { useLocation } from "react-router-dom";
-import Animation from "./game_end_animations/Animation";
 import WinLoseBoard from "./WinLoseBoard";
 
 import socket from "../Mutiplayer/socketConfig";
@@ -23,11 +28,15 @@ function GameView({
   effect,
   volume,
   analysis = false,
+  setGameAnalysis,
   history: initialHistory,
   shuffle: initialShuffle,
+  points: initialPoints,
+  gameTime: initialGameTime,
+  moveNumbers: initialMoveNumbers,
 }) {
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
-  const [shuffle, setShuffle] = useState();
+  const [shuffle, setShuffle] = useState(null);
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [moveNumbers, setMoveNumbers] = useState(0);
@@ -38,7 +47,6 @@ function GameView({
   const [gameTime, setGameTime] = useState(0);
   const [points, setPoints] = useState(0);
   const [playMusic, setPlayMusic] = useState(false);
-  const [gameEndEffect, setGameEndEffect] = useState(null);
 
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
@@ -127,31 +135,42 @@ function GameView({
   const columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
-    let shuffle;
-    if (initialShuffle) {
-      shuffle = initialShuffle;
-    } else {
-      shuffle = { ...shuffleCards() };
-      setShuffle({ ...shuffle });
-    }
-    const copy = { ...shuffle };
-
-    Object.entries(copy).map(([key, item]) => {
-      const newArray = [];
-      for (let i = 0; i < item.length; i++) {
-        newArray.push({ ...item[i] });
+    if (!shuffle) {
+      let firstShuffle;
+      if (initialShuffle) {
+        firstShuffle = initialShuffle;
+      } else {
+        firstShuffle = shuffleCards();
+        setShuffle(firstShuffle);
       }
-      columns[key].set(newArray);
-    });
-    setLoading(false);
-    if (initialHistory) {
-      setHistory(initialHistory);
+
+      Object.entries(firstShuffle).map(([key, item]) => {
+        const newArray = [];
+        for (let i = 0; i < item.length; i++) {
+          newArray.push({ ...item[i] });
+        }
+        columns[key].set(newArray);
+      });
+      setLoading(false);
+      if (analysis) {
+        setHistory(initialHistory);
+        setPoints(initialPoints);
+        setGameTime(initialGameTime);
+        setMoveNumbers(initialMoveNumbers);
+      } else startTimer();
     }
   }, []);
 
+  const startTimer = () => {
+    timer.current = setInterval(() => {
+      setGameTime((prev) => prev + 1);
+    }, 1000);
+  };
+
   const stopTimer = () => {
     clearInterval(timer.current);
-    setPoints((prev) => prev + bonus);
+    const gainedBonus = bonus - gameTime;
+    setPoints((prev) => prev + gainedBonus);
   };
 
   useEffect(() => {
@@ -174,9 +193,9 @@ function GameView({
   useEffect(() => {
     if (gameNumber > 0) {
       const initialShuffle = shuffleCards();
-      setShuffle({ ...shuffle });
-      const copy = { ...initialShuffle };
-      Object.entries(copy).map(([key, item]) => {
+      setShuffle(shuffle);
+
+      Object.entries(initialShuffle).map(([key, item]) => {
         const newArray = [];
         for (let i = 0; i < item.length; i++) {
           newArray.push({ ...item[i] });
@@ -196,13 +215,7 @@ function GameView({
   }, [gameNumber]);
 
   useEffect(() => {
-    if (history) {
-      console.log(shuffle);
-    }
-  }, [history]);
-
-  useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !analysis) {
       const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
         return mainColumns[key].get;
       });
@@ -219,24 +232,19 @@ function GameView({
       if (location.time !== undefined) {
         if (gameTime >= location.time) {
           stopTimer();
-          gameEnd();
+          setGameEnd(true);
           // tablica z graczami, ktorzy do gry weszli jest pod location.players
 
           socket.emit("end-game", { score: points });
         }
       }
 
-      //console.log(possibleMoves);
       if (possibleMoves === 0) {
-        gameEnd();
+        setGameEnd(true);
+        stopTimer();
       } else setPossibleMoveNumbers(possibleMoves);
     }
   }, [moveNumbers, isLoading, gameNumber, gameTime]);
-
-  const gameEnd = () => {
-    const result = isGameWin(finalColumns);
-    setGameEndEffect(result);
-  };
 
   const cardSound = (src) => {
     let beep = new Audio(src);
@@ -267,26 +275,23 @@ function GameView({
   });
   if (isLoading) return <div>loading...</div>;
 
-  if (gameEndEffect) {
-    setTimeout(() => {
-      setGameEnd(true);
-      setGameEndEffect(null);
-    }, 500);
-    // return <Animation action={gameEndEffect} />;
-    return <div>Animation</div>;
-  }
-
   if (isGameEnded) {
+    const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
+      return finalColumns[key].get;
+    });
+
+    const result = gameResult(finalColumnsArr);
     return (
       <WinLoseBoard
         points={points}
         gameTime={gameTime}
-        isFinished
         history={history}
         shuffle={shuffle}
         cardset_id={cardset_id}
         effect={effect}
         volume={volume}
+        gameReuslt={result}
+        moveNumbers={moveNumbers}
       />
     );
   }
@@ -298,8 +303,14 @@ function GameView({
       ) : (
         <></>
       )}
-      <button onClick={() => setGameEndEffect("win")}>End game</button>
-
+      {analysis && (
+        <button
+          onClick={() => setGameAnalysis(false)}
+          className={styles.analysisBackButton}
+        >
+          <FiArrowLeft />
+        </button>
+      )}
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
         <div className={styles.cardTop}>
@@ -318,6 +329,7 @@ function GameView({
             setPoints={setPoints}
             effect={effect}
             revealCardRef={revealCardRef}
+            analysis={analysis}
           />
           <Buttons
             history={history}
@@ -347,6 +359,7 @@ function GameView({
             handleDrop={handleDrop}
             effect={effect}
             revealCardRef={revealCardRef}
+            analysis={analysis}
           />
         </div>
         <MainColumns
@@ -355,12 +368,14 @@ function GameView({
           handleDrop={handleDrop}
           draggingCard={draggingCard}
           effect={effect}
+          analysis={analysis}
         />
         <Statistics
           points={points}
           gameTime={gameTime}
           possiblemoveNumbers={possiblemoveNumbers}
           moveNumbers={moveNumbers}
+          analysis={analysis}
         />
       </div>
     </DndProvider>

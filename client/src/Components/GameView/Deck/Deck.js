@@ -19,10 +19,10 @@ const Deck = ({
   setPoints,
   effect,
   revealCardRef,
+  analysis,
 }) => {
   useImperativeHandle(revealCardRef, () => ({
     revealTheCard(isMoved) {
-      console.log(startCardIndex);
       let cardIndex = startCardIndex;
       if (isMoved) {
         cardIndex -= 1;
@@ -35,7 +35,7 @@ const Deck = ({
         target: "startColumn2",
         draggedCards: [startColumn1[cardIndex]],
       };
-      if (cardIndex + 1 > startColumn1.length) {
+      if (cardIndex + 1 > startColumn1.length && startColumn1.length > 0) {
         const newPoints = points - 50;
         if (newPoints < 0) {
           setPoints(0);
@@ -57,7 +57,9 @@ const Deck = ({
       <div className={styles.deck}>
         <div
           className={styles.cardShadow}
-          onClick={() => revealCardRef.current.revealTheCard()}
+          onClick={() => {
+            if (!analysis) revealCardRef.current.revealTheCard();
+          }}
           onMouseDown={cardSound}
         >
           {startColumn1[startCardIndex] ? (

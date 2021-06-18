@@ -17,6 +17,7 @@ const FinalColumns = ({
   handleDrop,
   effect,
   revealCardRef,
+  analysis,
 }) => {
   const handleReverseDrop = (currentCards, draggingCards) => {
     if (draggingCards.array.length === 0) return;
@@ -123,17 +124,19 @@ const FinalColumns = ({
                 />
               ) : null}
               {card2 && <FinalColumnItem item={card2} />}
-              <Drop
-                onDrop={handleReverseDrop}
-                currentArr={column.get}
-                draggingArr={draggingCard}
-                accept="card"
-                name={key}
-                isDragActive={
-                  draggingCard.array.length > 0 && draggingCard.title !== key
-                }
-                top={0}
-              />
+              {!analysis && (
+                <Drop
+                  onDrop={handleReverseDrop}
+                  currentArr={column.get}
+                  draggingArr={draggingCard}
+                  accept="card"
+                  name={key}
+                  isDragActive={
+                    draggingCard.array.length > 0 && draggingCard.title !== key
+                  }
+                  top={0}
+                />
+              )}
             </div>
           </div>
         );

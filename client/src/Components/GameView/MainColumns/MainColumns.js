@@ -10,6 +10,7 @@ const MainColumns = ({
   handleDrop,
   draggingCard,
   effect,
+  analysis,
 }) => {
   return (
     <div className={styles.cardBottom}>
@@ -42,7 +43,7 @@ const MainColumns = ({
                   />
                 );
               })}
-              {
+              {!analysis && (
                 <Drop
                   onDrop={handleDrop}
                   currentArr={column.get}
@@ -54,7 +55,7 @@ const MainColumns = ({
                   }
                   top={(column.get.length - 1) * 20}
                 />
-              }
+              )}
             </div>
           </div>
         );

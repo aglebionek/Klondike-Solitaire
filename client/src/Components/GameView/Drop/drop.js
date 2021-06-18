@@ -13,10 +13,6 @@ const Drop = ({
 }) => {
   const [collectedProps, drop] = useDrop({
     accept,
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
   });
 
   const activeStyles = {
