@@ -4,12 +4,7 @@ import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FiArrowLeft } from "react-icons/fi";
-import {
-  drop,
-  testCard2 as shuffleCards,
-  numMoves,
-  gameResult,
-} from "../../utils/card";
+import { drop, shuffleCards, numMoves, gameResult } from "../../utils/card";
 import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
