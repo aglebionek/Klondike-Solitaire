@@ -17,7 +17,7 @@
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
   border-radius: 12px;
-  border: solid 1px #102542;
+  border: solid 1px rgba(0, 214, 252, 0.6);
   background: none;
 }
 

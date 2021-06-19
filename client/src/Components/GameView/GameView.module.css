@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   height: 99vh;
-  margin-top: 1vh;
+  padding-top: 1vh;
+  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
 }
 
 .cardTop {
@@ -53,29 +54,13 @@
   border: 1px solid black;
 }
 
-.stats{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stats__h1{
-  text-align: center;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.stats__table{
-  border-collapse: collapse;
-  margin-bottom: 50px;
-}
-
-.stats__cell{
-  width: 150px;
-  border: 1px black solid;
-}
-
-.stats__cell__header{
-  font-weight: 700;
-  border: 1px black solid;
+.analysisBackButton {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  border: 1px solid black;
+  border-radius: 0.3em;
+  padding: 0.5em 1em;
+  background: white;
+  cursor: pointer;
 }

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import styles from "./GameViewCyberpunk.module.css";
+import React, { useState, useEffect, useRef } from "react";
+import styles from "./GameView.module.css";
 import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { isDroppable, shuffleCards, numMoves } from "../../utils/card";
+import { FiArrowLeft } from "react-icons/fi";
+import { drop, shuffleCards, numMoves, gameResult } from "../../utils/card";
 import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
@@ -12,15 +13,27 @@ import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import WinLoseBoard from "./WinLoseBoard";
 
 import socket from '../Mutiplayer/socketConfig';
 import agent from '../../agent/agent';
 
-function GameView({cardset_id, effect, volume }) {
+function GameView({
+  cardset_id,
+  effect,
+  volume,
+  analysis = false,
+  setGameAnalysis,
+  history: initialHistory,
+  shuffle: initialShuffle,
+  points: initialPoints,
+  gameTime: initialGameTime,
+  moveNumbers: initialMoveNumbers,
+}) {
   const location = useLocation();
-
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
+  const [shuffle, setShuffle] = useState(null);
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [moveNumbers, setMoveNumbers] = useState(0);
@@ -113,27 +126,41 @@ function GameView({cardset_id, effect, volume }) {
     },
   };
 
+  let timer = useRef(null);
+  const revealCardRef = useRef(null);
+
   const columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
-    const initialShuffle = shuffleCards();
-    Object.entries(initialShuffle).map(([key, item]) => {
-      columns[key].set(item);
-    });
-    setLoading(false);
-    
-    startTimer();
+    if (!shuffle) {
+      let firstShuffle;
+      if (initialShuffle) {
+        firstShuffle = initialShuffle;
+      } else {
+        firstShuffle = shuffleCards();
+        setShuffle(firstShuffle);
+      }
+
+      Object.entries(firstShuffle).map(([key, item]) => {
+        const newArray = [];
+        for (let i = 0; i < item.length; i++) {
+          newArray.push({ ...item[i] });
+        }
+        columns[key].set(newArray);
+      });
+      setLoading(false);
+      if (analysis) {
+        setHistory(initialHistory);
+        setPoints(initialPoints);
+        setGameTime(initialGameTime);
+        setMoveNumbers(initialMoveNumbers);
+      } else startTimer();
+    }
   }, []);
 
-  let timer;
-
   const startTimer = () => {
-    timer = setInterval(() => {
-      const reducedBonus = bonus - 1;
+    timer.current = setInterval(() => {
       setGameTime((prev) => prev + 1);
-      if (reducedBonus < 0) {
-        setBonus(0);
-      } else setBonus(reducedBonus);
     }, 1000);
   };
 
@@ -145,23 +172,31 @@ function GameView({cardset_id, effect, volume }) {
     });
   
     return () => {
-      socket.off('write-to-end-list');
-    }
+      socket.off("write-to-end-list");
+    };
   }, []);
 
   useEffect(() => {
     if (gameNumber > 0) {
       const initialShuffle = shuffleCards();
+      setShuffle(shuffle);
+
       Object.entries(initialShuffle).map(([key, item]) => {
-        columns[key].set(item);
+        const newArray = [];
+        for (let i = 0; i < item.length; i++) {
+          newArray.push({ ...item[i] });
+        }
+        columns[key].set(newArray);
       });
-      setMoveNumbers(0);
 
       Object.entries(finalColumns).map(([key, column]) => {
         column.set([]);
       });
+      setMoveNumbers(0);
+      setHistory([]);
       setStartCardIndex(0);
       setStartColumn2([]);
+      setGameTime(0);
     }
   }, [gameNumber]);
 
@@ -183,7 +218,7 @@ function GameView({cardset_id, effect, volume }) {
   , [isGameEnded]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !analysis) {
       const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
         return mainColumns[key].get;
       });
@@ -203,14 +238,15 @@ function GameView({cardset_id, effect, volume }) {
 
       if (possibleMoves === 0) {
         setGameEnd(true);
+        stopTimer();
       } else setPossibleMoveNumbers(possibleMoves);
     }
   }, [moveNumbers, isLoading, gameNumber, gameTime]);
 
   const cardSound = (src) => {
     let beep = new Audio(src);
-    beep.volume=(effect/100);
-    beep.play();   
+    beep.volume = effect / 100;
+    beep.play();
   };
 
   const saveScore = (completionTime) => {
@@ -235,136 +271,63 @@ function GameView({cardset_id, effect, volume }) {
   }
 
   const handleDrop = (currentCards, draggingCards) => {
-    const selectedCard = currentCards.array[currentCards.array.length - 1] || null;
-    const dropTarget = draggingCards.array[0];
-    const dragArrayLength = draggingCards.array.length;
-    const carriedArray = columns[draggingCard.title].get;
-    const carriedArrayLength = carriedArray.length;
-    const sliceEnd = carriedArrayLength - dragArrayLength;
-    const carriedTarget = draggingCard.target;
-    setMoveNumbers((prev) => prev + 1);
-    if (isDroppable(selectedCard, dropTarget)) {
-      if (draggingCards.title.includes("finalColumn")) {
-        const newPoints = points - 10;
-        if (newPoints < 0) setPoints(0);
-        else setPoints(newPoints);       
-      }
-      let newHistoryStep;
-      if (draggingCards.title === "startColumn2") {
-        const source = columns["startColumn1"].get;
-        const index = draggingCard.cardIndex;
-        source.splice(index - 1, 1);
-        columns[draggingCard.title].set([]);
-        columns["startColumn1"].set(source);
-        columns[currentCards.title].set([
-          ...currentCards.array,
-          ...draggingCards.array,
-        ]);
-        newHistoryStep = {
-          source: draggingCard.title,
-          target: currentCards.title,
-          draggedCards: draggingCard.array,
-          cardIndex: index,
-        };
-      } else {
-        columns[currentCards.title].set([
-          ...currentCards.array,
-          ...draggingCards.array,
-        ]);
-
-        const reducedColumn = carriedArray.slice(0, sliceEnd);
-        let reversed = null;
-        if (
-          reducedColumn.length > 0 &&
-          !reducedColumn[reducedColumn.length - 1].isVisible
-        ) {
-          reversed = reducedColumn.length - 1;
-        }
-        if (reducedColumn.length > 0)
-          reducedColumn[reducedColumn.length - 1].isVisible = true;
-        columns[draggingCard.title].set(reducedColumn);
-
-        newHistoryStep = {
-          source: draggingCard.title,
-          target: currentCards.title,
-          draggedCards: draggingCard.array,
-          reversed,
-        };
-      }
-      cardSound(cardRight);
-      setHistory([...history, newHistoryStep]);
-    } else {
-      carriedTarget.style.opacity = 1;
-      let sibling = carriedTarget.nextElementSibling;
-      while (sibling !== null) {
-        sibling.style.opacity = 1;
-        sibling = sibling.nextElementSibling;
-      }
-    }
-    setDraggingCard({ title: "", array: [] });
+    drop(
+      currentCards,
+      draggingCards,
+      columns,
+      draggingCard,
+      setMoveNumbers,
+      setPoints,
+      points,
+      revealCardRef,
+      cardSound,
+      setHistory,
+      history,
+      cardRight,
+      setDraggingCard
+    );
   };
-  window.addEventListener("click", function(event) {
+
+  window.addEventListener("click", function (event) {
     setPlayMusic(true);
   });
   if (isLoading) return <div>loading...</div>;
 
-   const compareScore = (a, b) => {
-    if (a.score < b.score) { return -1; }
-    if (a.score > b.score) { return 1; }
-    return 0;
-  }
-  
-  if (isGameEnded) { 
-    playersOnEndGame.sort(compareScore);
-    playersOnEndGame.reverse();
+  if (isGameEnded) {
+    const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
+      return finalColumns[key].get;
+    });
 
-    
-    let completionTime = gameTime;
-   
+    const result = gameResult(finalColumnsArr);
     return (
-      <div className={styles.stats}>
-        <p className={styles.stats__h1}>Gra zakończona</p>
-        <p>Lista wyników</p>
-        <table className={styles.stats__table}>
-          <thead>
-            <tr>
-              <td className={styles.stats__cell__header}>
-                Gracz
-              </td>
-              <td className={styles.stats__cell__header}>
-                Wynik
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              playersOnEndGame.map((player, index) => (
-                <tr key={index}>
-                  <td className={styles.stats__cell}>{player.name}</td>
-                  <td className={styles.stats__cell}>{player.score}</td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-        <Link to="/">
-          <button onClick={() => {
-            saveScore(completionTime);
-
-            localStorage.removeItem("gameInfo");
-          }}>Zakończ grę</button>
-        </Link>
-      </div>
-    )
-  };
+      <WinLoseBoard
+        points={points}
+        gameTime={gameTime}
+        history={history}
+        shuffle={shuffle}
+        cardset_id={cardset_id}
+        effect={effect}
+        volume={volume}
+        gameReuslt={result}
+        moveNumbers={moveNumbers}
+      />
+    );
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
-      {playMusic ? volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>: <></>}
-      {isGameEnded && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>Gra zakończona</div>
-        </div>
+      {playMusic ? (
+        volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id} />
+      ) : (
+        <></>
+      )}
+      {analysis && (
+        <button
+          onClick={() => setGameAnalysis(false)}
+          className={styles.analysisBackButton}
+        >
+          <FiArrowLeft />
+        </button>
       )}
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
@@ -383,6 +346,8 @@ function GameView({cardset_id, effect, volume }) {
             points={points}
             setPoints={setPoints}
             effect={effect}
+            revealCardRef={revealCardRef}
+            analysis={analysis}
           />
           <Buttons
             history={history}
@@ -397,6 +362,8 @@ function GameView({cardset_id, effect, volume }) {
             points={points}
             setPoints={setPoints}
             effect={effect}
+            analysis={analysis}
+            revealCardRef={revealCardRef}
           />
           <FinalColumns
             finalColumns={finalColumns}
@@ -409,6 +376,8 @@ function GameView({cardset_id, effect, volume }) {
             setPoints={setPoints}
             handleDrop={handleDrop}
             effect={effect}
+            revealCardRef={revealCardRef}
+            analysis={analysis}
           />
         </div>
         <MainColumns
@@ -417,12 +386,14 @@ function GameView({cardset_id, effect, volume }) {
           handleDrop={handleDrop}
           draggingCard={draggingCard}
           effect={effect}
+          analysis={analysis}
         />
         <Statistics
           points={points}
           gameTime={gameTime}
           possiblemoveNumbers={possiblemoveNumbers}
           moveNumbers={moveNumbers}
+          analysis={analysis}
         />
       </div>
     </DndProvider>

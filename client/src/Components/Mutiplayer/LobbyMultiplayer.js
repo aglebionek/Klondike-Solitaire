@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./LobbyMultiplayerCyberpunk.css";
+import "./LobbyMultiplayer.css";
 import agent from '../../agent/agent';
 
 // socket client

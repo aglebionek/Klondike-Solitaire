@@ -10,6 +10,6 @@
   height: 5%;
   justify-self: flex-end;
   align-self: flex-end;
-  border-top: 1px solid #102542;
-  color: #102542;
+  border-top: 1px solid rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
 }
