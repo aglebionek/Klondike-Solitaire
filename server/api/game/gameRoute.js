@@ -32,7 +32,7 @@ router.post("/insert-game", async (req, res) => {
 });
 
 router.post("/insert-game-occur", async (req, res) => {
-  const {player_id, game_id, points, completion_time, moves, starting_distribution, is_win, key} = req.body;
+  const {player_id, game_id, points, completion_time, moves, starting_distribution, is_win, is_lose, is_draw, key} = req.body;
   if(key % 317 == 0)
   {
   const query = fs
@@ -40,7 +40,7 @@ router.post("/insert-game-occur", async (req, res) => {
     .toString();
   console.log(query);
 
-  let resp = await mysqlQuery(query, [player_id, game_id, points, completion_time, moves, starting_distribution, is_win]);
+  let resp = await mysqlQuery(query, [player_id, game_id, points, completion_time, moves, starting_distribution, is_win, is_lose, is_draw]);
 
   return res.status(200).json("ok");
   }

@@ -4,7 +4,7 @@ import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FiArrowLeft } from "react-icons/fi";
-import { drop, shuffleCards, numMoves, gameResult } from "../../utils/card";
+import { drop, testCard2 as shuffleCards, numMoves, gameResult } from "../../utils/card";
 import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
@@ -17,7 +17,6 @@ import { useLocation } from "react-router-dom";
 import WinLoseBoard from "./WinLoseBoard";
 
 import socket from '../Mutiplayer/socketConfig';
-import agent from '../../agent/agent';
 
 function GameView({
   cardset_id,
@@ -40,6 +39,7 @@ function GameView({
   const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
   const [gameNumber, setGameNumber] = useState(0);
   const [isGameEnded, setGameEnd] = useState(false);
+  const [isGameLoaded, setGameLoaded] = useState(false);
   const [bonus, setBonus] = useState(1200);
   const [gameTime, setGameTime] = useState(location.handicap);
   const [points, setPoints] = useState(0);
@@ -63,7 +63,6 @@ function GameView({
 
   const [history, setHistory] = useState([]);
   const [playersOnEndGame, setPlayersOnEndGame] = useState([]);
-  const [startTime, setStartTime] = useState(new Date());
 
   const startColumns = {
     startColumn1: {
@@ -158,11 +157,16 @@ function GameView({
     }
   }, []);
 
-  const startTimer = () => {
-    timer.current = setInterval(() => {
+   const startTimer = () => {
+    timer = setInterval(() => {
+      const reducedBonus = bonus - 1;
       setGameTime((prev) => prev + 1);
+      if (reducedBonus < 0) {
+        setBonus(0);
+      } else setBonus(reducedBonus);
     }, 1000);
   };
+
 
   useEffect(() => {
     socket.on('write-to-end-list', ({ player, score }) => {
@@ -209,6 +213,7 @@ function GameView({
           setPlayersOnEndGame(prev => ([
             ...prev, {name: location.players[0].username, score: points + bonus}
           ]));
+
         }
         else{
           socket.emit('end-game', { score: points + bonus });
@@ -232,13 +237,14 @@ function GameView({
         startColumn1
       );
 
-      if(gameTime === location.time){
+      if(gameTime === 5){
         setGameEnd(true);
+        setTimeout(() => setGameLoaded(true), 100);
       }
 
       if (possibleMoves === 0) {
         setGameEnd(true);
-        stopTimer();
+        setTimeout(() => setGameLoaded(true), 100);
       } else setPossibleMoveNumbers(possibleMoves);
     }
   }, [moveNumbers, isLoading, gameNumber, gameTime]);
@@ -248,27 +254,6 @@ function GameView({
     beep.volume = effect / 100;
     beep.play();
   };
-
-  const saveScore = (completionTime) => {
-    if(location.players[0].room !== null){
-      let isWin = playersOnEndGame[0].name === (JSON.parse(localStorage.getItem("user"))).username;
-
-      agent.post("/game/insert-game-occur", {
-        player_id: JSON.parse(localStorage.getItem("user")).id,
-        game_id: location.id, 
-        points: points + bonus, 
-        completion_time: completionTime, 
-        moves: moveNumbers, 
-        starting_distribution: '', 
-        is_win: isWin,
-        key: 317* (Math.floor(Math.random() * 100) + 1),
-      });
-        
-      if(location.time !== Number.MAX_SAFE_INTEGER){
-        socket.emit("lobby-leave");
-      }
-    }
-  }
 
   const handleDrop = (currentCards, draggingCards) => {
     drop(
@@ -293,22 +278,25 @@ function GameView({
   });
   if (isLoading) return <div>loading...</div>;
 
-  if (isGameEnded) {
+  if (isGameLoaded) {
     const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
       return finalColumns[key].get;
     });
 
     const result = gameResult(finalColumnsArr);
+    playersOnEndGame.sort((a, b) => b.score - a.score);
     return (
       <WinLoseBoard
-        points={points}
+        points={points + bonus}
+        gameId={location.id}
         gameTime={gameTime}
         history={history}
+        players={playersOnEndGame}
         shuffle={shuffle}
         cardset_id={cardset_id}
         effect={effect}
         volume={volume}
-        gameReuslt={result}
+        gameResult={result}
         moveNumbers={moveNumbers}
       />
     );

@@ -7,10 +7,10 @@ const mysqlQuery = require("../../database/connection/mysql_query");
 
 router.get("/getStats", async (req, res) => {
   const query = fs
-    .readFileSync(path.join(__dirname, "../../database/queries/get_stats.sql")) //select * from players
+    .readFileSync(path.join(__dirname, "../../database/queries/get_stats.sql"))
     .toString();
 
-  const resp = await mysqlQuery(query); //select * from players
+  let resp = await mysqlQuery(query); 
 
   res.status(200).json(resp);
 });

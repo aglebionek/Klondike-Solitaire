@@ -3,12 +3,16 @@ import "./WinLose.css";
 import GameView from "./GameView";
 import Animation from "./game_end_animations/Animation";
 
+import agent from '../../agent/agent';
+import socket from '../Mutiplayer/socketConfig';
+
 class StatsBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: props.isFinished,
       players: props.players,
+      gameId: props.gameId,
       points: props.points,
       gameTime: props.gameTime,
       history: props.history,
@@ -17,11 +21,27 @@ class StatsBoard extends Component {
       effect: props.effect,
       isAnimation: true,
       volume: props.volume,
-      gameReuslt: props.gameReuslt,
+      gameResult: props.gameResult,
       moveNumbers: props.moveNumbers,
     };
+
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+  }
+
+  saveScore = () => {
+    agent.post("/game/insert-game-occur", {
+      player_id: JSON.parse(localStorage.getItem("user")).id,
+      game_id: this.gameId, 
+      points: this.points, 
+      completion_time: this.gameTime, 
+      moves: this.moveNumbers, 
+      starting_distribution: '', 
+      is_win: this.result === 'win',
+      is_lose: this.result === 'lose',
+      is_draw: !(this.result === 'win' || this.result === 'lose'),
+      key: 317 * (Math.floor(Math.random() * 100) + 1),
+    });
   }
 
   showModal = () => {
@@ -41,13 +61,17 @@ class StatsBoard extends Component {
 
   render() {
     if (this.state.isAnimation)
-      return <Animation action={this.props.gameReuslt} />;
+      return <Animation action={this.props.gameResult} />;
     return (
       <main>
         <Modal
           show={this.state.show}
-          handleClose={this.hideModal}
-          players={this.players}
+          handleClose={() => {
+            this.hideModal();
+            this.saveScore();
+            localStorage.removeItem("gameInfo");
+          }}
+          players={this.state.players}
           points={this.state.points}
           gameTime={this.state.gameTime}
           history={this.state.history}
@@ -56,7 +80,7 @@ class StatsBoard extends Component {
           effect={this.state.effect}
           volume={this.state.volume}
           moveNumbers={this.state.moveNumbers}
-          gameReuslt={this.state.gameReuslt}
+          gameResult={this.state.gameResult}
         ></Modal>
       </main>
     );
@@ -76,34 +100,43 @@ const Modal = ({
   effect,
   volume,
   moveNumbers,
-  gameReuslt,
+  gameResult,
 }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
   const [gameAnalysis, setGameAnalysis] = useState(false);
   const SingleOrMulti = (players) => {
-    if (players > 1) {
+    if (players.length > 1) {
       return (
         <table id="players">
-          <tr>
-            <th>
-              {" "}
-              <button class="button"> player1 </button>{" "}
-            </th>
-            <th>
-              {" "}
-              <button class="button"> player2 </button>
-            </th>
-            <th>
-              {" "}
-              <button class="button"> player3 </button>{" "}
-            </th>
-            <th>
-              {" "}
-              <button class="button"> player4 </button>{" "}
-            </th>
-          </tr>
+          <thead>
+            <tr>
+              <td>
+                Gracz
+              </td>
+              <td>
+                Wynik
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              players.map((player, index) => (
+                <tr key={index}>
+                  <td>{player.name}</td>
+                  <td>{player.score}</td>
+                </tr>
+              ))
+            }
+          </tbody>
         </table>
       );
+    }
+    else{
+      return (
+        <div>
+          <div className="statistics">Punkty: {points}</div>
+        </div>
+      )
     }
   };
   if (gameAnalysis) {
@@ -147,39 +180,33 @@ const Modal = ({
       <section className="modal-main">
         {children}
 
-        {SingleOrMulti(players)}
-
-        <div class="winlose">
-          {gameReuslt === "win"
+        <div className="winlose">
+          {gameResult === "win"
             ? "wygrałes"
-            : gameReuslt === "lose"
+            : gameResult === "lose"
             ? "Przegrałeś"
             : "Remis"}
         </div>
-        <div class="statistics">Punkty: {points}</div>
-        <div class="statistics">
+
+        {SingleOrMulti(players)}
+
+        <div className="statistics">
           Twój czas:{" "}
           {minutes + " " + minutesText + " " + seconds + " " + secondsText}
         </div>
 
-        <table id="options">
-          <tr>
-            <th>
-              <a
-                href="/"
-                class="winloseboard__button-back"
-                onClick={handleClose}
-              >
-                Zamknij
-              </a>
-            </th>
-            <th>
-              <button class="button" onClick={() => setGameAnalysis(true)}>
-                Analiza rozgrywki
-              </button>
-            </th>
-          </tr>
-        </table>
+        <div>
+          <a
+            href="/"
+            className="winloseboard__button-back"
+            onClick={handleClose}
+          >
+            Zamknij
+          </a>
+          <button className="button" onClick={() => setGameAnalysis(true)}>
+            Analiza rozgrywki
+          </button>
+        </div>
       </section>
     </div>
   );

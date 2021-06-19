@@ -31,7 +31,7 @@ function Animation({action}){
     {
        return (
             <div className="animation-background-black">
-                    <div class="animation-container">
+                    <div className="animation-container">
                             <div className="animation-win-box">
                                 <ul>
                                     <li>R</li>
@@ -50,7 +50,7 @@ function Animation({action}){
         return (
             <div className="animation-background-black"> 
             <div className="rain-background"><Rain /></div>
-                    <div class="animation-container">
+                    <div className="animation-container">
                    
                             <div className="animation-win-box">
                                 <ul>

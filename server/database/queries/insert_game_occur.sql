@@ -1,1 +1,1 @@
-INSERT INTO gameoccurrences (player_id, game_id, points, completion_time, moves, starting_distribution, is_win) VALUES (?, ?, ?, ?, ?, ?, ?)
+INSERT INTO gameoccurrences (player_id, game_id, points, completion_time, moves, starting_distribution, is_win, is_lose, is_draw) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)

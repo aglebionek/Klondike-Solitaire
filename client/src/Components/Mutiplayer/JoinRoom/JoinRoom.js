@@ -29,14 +29,14 @@ function JoinRoom () {
     socket.emit('export-users');
 
     socket.on('start', ({ time, id }) => {
-      localStorage.setItem("gameInfo", {
+      localStorage.setItem("gameInfo", JSON.stringify({
         startDate: new Date(),
         timeLeft: time * 60,
         roomName: roomData.name,
         id,
         players: roomData.players,
         handicap: 0
-      });
+      }));
 
       history.push({
         pathname: '/game-view',

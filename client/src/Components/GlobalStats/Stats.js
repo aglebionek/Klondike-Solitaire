@@ -20,17 +20,21 @@ function GlobalStats({effect}) {
     const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
    
-        useEffect(() => {
-            setLoading(true);
-            agent.get("stats/getStats").then((resp) => {
-              const { data } = resp;
-              resp.className = "red"
-              setStatsList(data);
-              setAllStatsList(data);
-              data.className="red";
-              setLoading(false);
-            });
-          }, []);
+    useEffect(() => {
+      setLoading(true);
+
+      agent.get("stats/getStats").then((resp) => {
+        let { data } = resp;
+
+        data.forEach((entry, index) => entry.rank = index + 1)
+
+        resp.className = "red";
+        setStatsList(data);
+        setAllStatsList(data);
+        data.className="red";
+        setLoading(false);
+      });
+    }, []);
   
         
   
@@ -39,7 +43,7 @@ function GlobalStats({effect}) {
     const indexOfFirstPost = indexOfLastPost - postPerPage;
     const currentPosts = statsList.slice(indexOfFirstPost,indexOfLastPost);
 
-    const handleClick = (event) =>{
+    const handleClick = (event) => {
       setCurrentPage(Number(event.target.id));
     }
 
@@ -49,7 +53,7 @@ function GlobalStats({effect}) {
     }
 
     const renderPageNumbers = pages.map((number) => {
-      if(number <maxPageNumberLimit + 1 && number>minPageNumberLimit)
+      if(number < maxPageNumberLimit + 1 && number > minPageNumberLimit)
       {
         return (
           <li key={number} id={number} onClick={handleClick} className={currentPage === number ? "active" : null}>
@@ -94,59 +98,59 @@ function GlobalStats({effect}) {
 
   //sortowanie po nazwie rosnąco
   const sortByName = () => {
-    setStatsList(_.orderBy(statsList, 'Nazwa', 'asc'));
+    setStatsList(_.orderBy(statsList, 'username', 'asc'));
   };
 
   //sortowanie po nazwie malejąco
   const sortByNameDesc = () => {
-    setStatsList(_.orderBy(statsList, 'Nazwa', 'desc'));
+    setStatsList(_.orderBy(statsList, 'username', 'desc'));
   };
 
   //sortowanie po rankingu rosnąco
   const sortByRank = () => {
-    setStatsList(_.orderBy(statsList, 'Ranking', 'asc'));
+    setStatsList(_.orderBy(statsList, 'rank', 'asc'));
   };
 
 
   //sortowanie po rankingu malejąco
   const sortByRankDesc = () => {
-    setStatsList(_.orderBy(statsList, 'Ranking', 'desc'));
+    setStatsList(_.orderBy(statsList, 'rank', 'desc'));
   };
     
 
   //sortowanie po wygranych rosnąco
   const sortByWins = () => {
-    setStatsList(_.orderBy(statsList, 'Wygrane', 'asc'));
+    setStatsList(_.orderBy(statsList, 'wins', 'asc'));
   };
 
 
   //sortowanie po wygranych malejąco
   const sortByWinsDesc = () => {
-    setStatsList(_.orderBy(statsList, 'Wygrane', 'desc'));
+    setStatsList(_.orderBy(statsList, 'wins', 'desc'));
   };
 
 
   //sortowanie po remisie rosnąco
   const sortByDraw = () => {
-    setStatsList(_.orderBy(statsList, 'Remisy', 'asc'));
+    setStatsList(_.orderBy(statsList, 'draws', 'asc'));
   };
 
 
   //sortowanie po remisie malejąco
   const sortByDrawDesc = () => {
-    setStatsList(_.orderBy(statsList, 'Remisy', 'desc'));
+    setStatsList(_.orderBy(statsList, 'draws', 'desc'));
   };
 
 
   //sortowanie po przegranych rosnąco
   const sortByLosers = () => {
-    setStatsList(_.orderBy(statsList, 'Przegrane', 'asc'));
+    setStatsList(_.orderBy(statsList, 'losses', 'asc'));
   };
 
 
   //sortowanie po przegranych malejąco
   const sortByLosersDesc = () => {
-    setStatsList(_.orderBy(statsList, 'Przegrane', 'desc'));
+    setStatsList(_.orderBy(statsList, 'losses', 'desc'));
   };
 
 
@@ -161,19 +165,19 @@ function GlobalStats({effect}) {
   const filterByTop10 = () => {
     setCurrentPage(1);
     const filterList = _.filter(allStatsList, oneStat => {
-      return oneStat.Ranking <= 10;
+      return oneStat.rank <= 10;
     })
 
-    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+    setStatsList(_.orderBy(filterList, 'rank', 'asc'));
   };
     
   //pokaż top 20 najlepszych 
   const filterByTop20 = () => {
     setCurrentPage(1);
     const filterList = _.filter(allStatsList, oneStat => {
-      return oneStat.Ranking <= 20;
+      return oneStat.rank <= 20;
     })
-    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+    setStatsList(_.orderBy(filterList, 'rank', 'asc'));
   };
 
 
@@ -181,9 +185,9 @@ function GlobalStats({effect}) {
   const filterByTop30 = () => {
     setCurrentPage(1);
     const filterList = _.filter(allStatsList, oneStat => {
-      return oneStat.Ranking <= 30;
+      return oneStat.rank <= 30;
     })
-    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+    setStatsList(_.orderBy(filterList, 'rank', 'asc'));
   };
 
 
@@ -191,9 +195,9 @@ function GlobalStats({effect}) {
   const filterByTop50 = () => {
     setCurrentPage(1);
     const filterList = _.filter(allStatsList, oneStat => {
-      return oneStat.Ranking <= 50;
+      return oneStat.rank <= 50;
     })
-    setStatsList(_.orderBy(filterList, 'Ranking', 'asc'));
+    setStatsList(_.orderBy(filterList, 'rank', 'asc'));
   };
 
   const buttonSound = () => {
@@ -206,7 +210,6 @@ const buttonHover = () => {
     beep.volume=(effect/100);
     beep.play();   
 }
-
 
   return (
     <div className="App">
@@ -224,9 +227,9 @@ const buttonHover = () => {
         <a className="buttonfilter"  id={'filter-top-50'} onClick={filterByTop50} onMouseDown={buttonSound} onMouseOver={buttonHover}>Top 50</a>
       </div>
       <div className="stats__title">Statystyki</div>
-       
-		  <table cellSpacing="0" cellPadding="0" border="0" style={{width: "100%"}}>
-		    <thead>
+        
+      <table cellSpacing="0" cellPadding="0" border="0" style={{width: "100%"}}>
+        <thead>
           <div className="stats__header">
             <div className="stats__header-player">
               <div className="stats__header-name">Gracz</div>
@@ -266,7 +269,7 @@ const buttonHover = () => {
       <ul className="pageNumbers">
         <li>
           <button 
-			      id={'previous-page'}
+            id={'previous-page'}
             onClick={handlePrevBtn}
             disabled={currentPage === pages[0] ? true : false}
             onMouseDown={buttonSound}
@@ -280,7 +283,7 @@ const buttonHover = () => {
           {pageIncrementBtn}
         <li>
           <button 
-			      id={'next-page'}
+            id={'next-page'}
             onClick={handleNextBtn}
             disabled={currentPage === pages[pages.length-1] ? true : false}
             onMouseDown={buttonSound}
@@ -291,10 +294,7 @@ const buttonHover = () => {
         </li>
       </ul>
     </div>
-    
-    );	
-		
-    
+  );	
   
 }
 
