@@ -62,7 +62,6 @@ const Buttons = ({
       let lastStep;
       if (analysis) {
         lastStep = history[historyCount - 1];
-        console.log(lastStep);
       } else {
         lastStep = history[history.length - 1];
       }
@@ -78,8 +77,6 @@ const Buttons = ({
         }
 
         const previousCard = startColumn1[cardIndex];
-        console.log(cardIndex);
-        console.log(previousIndex);
         setStartCardIndex(previousIndex);
         if (previousCard) setStartColumn2([previousCard]);
         else setStartColumn2([]);
@@ -146,7 +143,6 @@ const Buttons = ({
         source.splice(index - 1, 1);
         columns["startColumn1"].set(source);
 
-        console.log(startCardIndex - 1);
         const nextCard = startColumn1[startCardIndex - 1];
         if (nextCard) {
           nextCard.isVisible = true;

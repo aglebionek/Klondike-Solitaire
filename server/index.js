@@ -20,7 +20,7 @@ const {
   modifyRoom,
   getAllUsers,
   setUsersInGame,
-  setUsersOutOfGame
+  setUsersOutOfGame,
 } = require("./utils/users");
 require("dotenv").config();
 app.use(cookieParser());
@@ -55,10 +55,11 @@ app.use(function (req, res, next) {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
-
   socket.on("export-users", () => {
-    socket.emit("pass-users", getAllUsers().filter(user => !user.inGame));
+    socket.emit(
+      "pass-users",
+      getAllUsers().filter((user) => !user.inGame)
+    );
   });
 
   socket.on("export-room", () => {
@@ -74,21 +75,21 @@ io.on("connection", (socket) => {
 
   socket.on("game-start", ({ room, time, id }) => {
     setUsersInGame(room);
-    io.to(room).emit('start', { time, id });
+    io.to(room).emit("start", { time, id });
   });
 
   socket.on("send-shuffle", ({ shuffle, time, id }) => {
     const user = getCurrentUser(socket.id);
 
     io.to(user.room).emit("get-shuffle", { shuffle, time, id });
-  })
+  });
 
   socket.on("lobby-modify", ({ room, newName }) => {
     const user = getCurrentUser(socket.id);
-    
+
     modifyRoom(room, newName);
 
-    if(user){
+    if (user) {
       io.to(newName).emit("pass-room", {
         room,
         users: getRoomUsers(newName),
@@ -99,10 +100,9 @@ io.on("connection", (socket) => {
   socket.on("lobby-join", ({ player, room }) => {
     const user = userJoin(socket.id, player, room);
 
-    console.log("a user joined the room");
     socket.join(user.room);
 
-    if(user){
+    if (user) {
       io.to(room).emit("pass-room", {
         room,
         users: getRoomUsers(room),
@@ -115,7 +115,7 @@ io.on("connection", (socket) => {
 
     userLeave(socket.id);
 
-    if(user){
+    if (user) {
       io.to(user.room).emit("pass-room", {
         room: user.room,
         users: getRoomUsers(user.room),
@@ -138,12 +138,11 @@ io.on("connection", (socket) => {
 
     io.to(player.room).emit("write-to-end-list", {
       player: player.username,
-      score: score
+      score: score,
     });
-  })
- 
+  });
+
   socket.on("disconnect", () => {
-    console.log("user disconnected");
     userLeave(socket.id);
     socket.emit("export-room");
   });
@@ -157,7 +156,7 @@ app.use("/settings", settingsRoute);
 app.use("/account", accountRoute);
 app.use("/game", gameRoute);
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });

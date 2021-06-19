@@ -13,8 +13,8 @@ router.get("/verify", (req, res) => {
   const key = process.env.TOKEN_KEY;
 
   try {
-    jwt.verify(token, key);
-    return res.sendStatus(200);
+    const resp = jwt.verify(token, key);
+    return res.status(200).json(resp.id);
   } catch (e) {
     return res.status(401).json("invalid token");
   }
@@ -63,18 +63,15 @@ router.post("/register", async (req, res) => {
   resp = await mysqlQuery(checkIfUserExistsQuery, [email]);
   const { id } = resp[0];
 
-  const insertSettings = fs 
-  .readFileSync(
-    path.join(
-      __dirname,
-      "../../database/queries/settings_insert.sql"
+  const insertSettings = fs
+    .readFileSync(
+      path.join(__dirname, "../../database/queries/settings_insert.sql")
     )
-  )
-  .toString();
+    .toString();
 
   resp = await mysqlQuery(insertSettings, [id]);
   if (!resp) return res.status(500).json("Problem łaczenia z bazą danych");
-  
+
   const key = process.env.TOKEN_KEY;
   const token = jwt.sign(
     {
@@ -93,7 +90,6 @@ router.post("/register", async (req, res) => {
     sameSite: true,
   });
 
- 
   return res.status(200).json(id);
 });
 
@@ -138,7 +134,7 @@ router.post("/login", async (req, res) => {
 
   return res.status(200).json({
     id,
-    username
+    username,
   });
 });
 

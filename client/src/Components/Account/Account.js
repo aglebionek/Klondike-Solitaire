@@ -1,295 +1,355 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Select from 'react-select'
-import ReactCountryFlag from "react-country-flag"
-import dataCountry from './country-list.json';
-import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
+import Select from "react-select";
+import ReactCountryFlag from "react-country-flag";
+import dataCountry from "./country-list.json";
+import buttonClickSound from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
-import agent from '../../agent/agent.js';
+import agent from "../../agent/agent.js";
 import Spinner from "../Spinner/Spinner";
 import accountSelectStyle from "./AccountSelectStyle";
 import accountSelectStyleCyberpunk from "./AccountSelectStyleCyberpunk";
 
-const Account =({effect, userId}) => {
-    const [show, setShow] = useState(false);
-    const [userName, setUserName] = useState('Nazwa użytkownika');
-    const [accountCreation, setAccountCreation] = useState('2020-01-01');
-    const [country, setCountry] = useState('PL');
-    const [avatar, setAvatar] = useState('1');
-    const [temporaryAvatar, setTemporaryAvatar] = useState('avatar1');
-    const [newUsername, setNewUsername] = useState('');
-    const [newCountry, setNewCountry] = useState('');
-    
-    const [currentPassword, setCurrentPassword] = useState('admin');
+const Account = ({ effect, userId }) => {
+  const [show, setShow] = useState(false);
+  const [userName, setUserName] = useState("Nazwa użytkownika");
+  const [accountCreation, setAccountCreation] = useState("2020-01-01");
+  const [country, setCountry] = useState("PL");
+  const [avatar, setAvatar] = useState("1");
+  const [temporaryAvatar, setTemporaryAvatar] = useState("avatar1");
+  const [newUsername, setNewUsername] = useState("");
+  const [newCountry, setNewCountry] = useState("");
 
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [repeatPassword, setRepeatPassword] = useState(''); 
-    
-    const [countryName, setCountryName] = useState('Poland');
-    const [newCountryName, setNewCountryName] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("admin");
 
-    const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
-    const [loading, setLoading] = useState(isLogged);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
 
-    
-    const avatars =["avatar1", "avatar2","avatar3","avatar4","avatar5","avatar6"];
+  const [countryName, setCountryName] = useState("Poland");
+  const [newCountryName, setNewCountryName] = useState("");
 
-    const nextAvatar = () => {
-        let index = avatars.indexOf(temporaryAvatar);
-        if (index === avatars.length - 1) index = 0;
-        else index++;
-        setTemporaryAvatar(avatars[index]);
-      };
-    
-    const previousAvatar = () => {
-        let index = avatars.indexOf(temporaryAvatar);
-        if (index === 0) index = avatars.length - 1;
-        else index--;
-        setTemporaryAvatar(avatars[index]);
-      };
+  const [isLogged, setIsLogged] = useState(
+    JSON.parse(localStorage.getItem("isLogged")) ?? false
+  );
+  const [loading, setLoading] = useState(isLogged);
 
-    const setNewData = () => {
-        const num = temporaryAvatar.match(/\d+/)[0];
-        setAvatar(Number(num));
-        if(newUsername != '') {
-            setUserName(newUsername);
-        } 
-        if(oldPassword===currentPassword && newPassword===repeatPassword){
-            setCurrentPassword(newPassword);
-        }else {
-        }
-        if(newCountry != ''){
-            setCountry(newCountry);
-            setCountryName(newCountryName);
-        }
-        clearSettings();
-        
-      };
+  const avatars = [
+    "avatar1",
+    "avatar2",
+    "avatar3",
+    "avatar4",
+    "avatar5",
+    "avatar6",
+  ];
 
-    const clearSettings = () => {
-        setNewPassword('');
-        setOldPassword('');
-        setRepeatPassword('');
-        document.getElementsByName('editForm')[0].reset();
-        setValue('');
-        setShow(false);
-      }
+  const nextAvatar = () => {
+    let index = avatars.indexOf(temporaryAvatar);
+    if (index === avatars.length - 1) index = 0;
+    else index++;
+    setTemporaryAvatar(avatars[index]);
+  };
 
-    const [value, setValue] = useState('')
-    const options = useMemo(() => dataCountry, [])
+  const previousAvatar = () => {
+    let index = avatars.indexOf(temporaryAvatar);
+    if (index === 0) index = avatars.length - 1;
+    else index--;
+    setTemporaryAvatar(avatars[index]);
+  };
 
-    const changeHandler = value => {
-        setValue(value)
-        setNewCountry(value.value)
-        setNewCountryName(value.label)
-    }      
+  const setNewData = () => {
+    const num = temporaryAvatar.match(/\d+/)[0];
+    setAvatar(Number(num));
+    if (newUsername != "") {
+      setUserName(newUsername);
+    }
+    if (oldPassword === currentPassword && newPassword === repeatPassword) {
+      setCurrentPassword(newPassword);
+    } else {
+    }
+    if (newCountry != "") {
+      setCountry(newCountry);
+      setCountryName(newCountryName);
+    }
+    clearSettings();
+  };
 
-    const buttonSound = () => {
-            let beep = new Audio(buttonClickSound);
-            beep.volume=(effect/100);
-            beep.play();   
-        };
-    
-    const buttonHover = () => {
-        let beep = new Audio(buttonHoverSound);
-        beep.volume = 1;
-        beep.play();
-      };
+  const clearSettings = () => {
+    setNewPassword("");
+    setOldPassword("");
+    setRepeatPassword("");
+    document.getElementsByName("editForm")[0].reset();
+    setValue("");
+    setShow(false);
+  };
 
-    useEffect(() => {
-        if (isLogged) {
-        agent.get(`account/${userId}`).then(({ data }) => {
-          const { username, registration_date, country, icon_id, password} = data;     
+  const [value, setValue] = useState("");
+  const options = useMemo(() => dataCountry, []);
+
+  const changeHandler = (value) => {
+    setValue(value);
+    setNewCountry(value.value);
+    setNewCountryName(value.label);
+  };
+
+  const buttonSound = () => {
+    let beep = new Audio(buttonClickSound);
+    beep.volume = effect / 100;
+    beep.play();
+  };
+
+  const buttonHover = () => {
+    let beep = new Audio(buttonHoverSound);
+    beep.volume = 1;
+    beep.play();
+  };
+
+  useEffect(() => {
+    if (isLogged) {
+      agent
+        .get(`account/${userId}`)
+        .then(({ data }) => {
+          const { username, registration_date, country, icon_id, password } =
+            data;
           setUserName(username);
           setAccountCreation(registration_date);
           setCountry(country);
-          setTemporaryAvatar("avatar"+icon_id);
-          setAvatar(icon_id) ;
+          setTemporaryAvatar("avatar" + icon_id);
+          setAvatar(icon_id);
           setCurrentPassword(password);
-          setCountryName(options.find( ({value}) => value === country).label);
-          setLoading(false);  
+          setCountryName(options.find(({ value }) => value === country).label);
+          setLoading(false);
         })
-        .catch((error) =>{
-            console.log(error.response.data)
+        .catch((error) => {
+          setLoading(false);
         });
-        }  
+    }
+  }, []);
 
-      }, []);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        agent.put(`account/edit/${userId}`, {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    agent
+      .put(`account/edit/${userId}`, {
         icon_id: avatar,
         username: userName,
         password: currentPassword,
         country: country,
-        })
-        .catch((error) =>{
-            console.log(error.response.data)
-        });
-      };   
-      if (loading) return (
-        <Spinner></Spinner>
-      );
+      })
+      .catch((error) => {});
+  };
+  if (loading) return <Spinner></Spinner>;
 
-    var styles = require("./Account.css");
-    var selectStyle = accountSelectStyle;
-    if(isLogged) {
-        if(localStorage.getItem('motiveCss') === "cyberpunk") {
-            styles = require("./AccountCyberpunk.css");
-            selectStyle = accountSelectStyleCyberpunk;
-        }
+  var styles = require("./Account.css");
+  var selectStyle = accountSelectStyle;
+  if (isLogged) {
+    if (localStorage.getItem("motiveCss") === "cyberpunk") {
+      styles = require("./AccountCyberpunk.css");
+      selectStyle = accountSelectStyleCyberpunk;
     }
-    
-    return (<>
-        <div className = "profile-container"> 
-            <div className="profile-menu-button-div">
-            <a className="account__back" href="./.." onMouseDown={buttonSound}
-            onMouseOver={buttonHover}>
-                &#129044;
-            </a>
-            </div>
-            <div className="profile-heading">KONTO</div>
-            <div className="profile-header">
-                <div className="profile-avatar">
-                    <img draggable="false" className="account-avatar" src={`./images/avatar${avatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
-                </div> 
-                <div className="profile-header-info"> 
-                    <div className="profile-username">{userName}</div>
-                    <div className="profile-creation-date">
-                        Profil utworzono: <span className = "profile-header-date">{accountCreation}</span>
-                    </div>
-                    <div className="profile-country-info">
-                        <div className="country-img">
-                            <span>
-                                <ReactCountryFlag
-                                countryCode={country} svg
-                                style={{
-                                    fontSize: '1.5em',
-                                    lineHeight: '1.5em',
-                                }}
-                                className="emojiFlag"
-                                 />
-                             
-                            </span>
-                        </div>
-                        <div className="country-name">
-                            {countryName}
-                        </div>
-                        <div className="edition-text">
-                            <button className='profile-edit-button' onClick={() => setShow(true)}>Edycja</button>
-                        </div>
-                    </div>
-                </div>
-                
-                
-            </div>
-            <div className="profile-main">
-                <div className="profile-statistics"> 
-                    <div className="profile-statistics-inscription">Statystyki</div>
-                    <div className="profile-statistics-number-of-games stats">
-                        <div id="number-of-game-text">Gry</div>
-                        <div id="number-of-game-stats">146</div>
-                    </div>
-                    <div className="profile-statistics-number-of-points stats">
-                        <div id="number-of-points-text">Punkty</div>
-                        <div id="number-of-points-stats">23 590</div>
-                    </div>
-                    <div className="profile-statistics-W-L-D-games stats">
-                        <div id="W-L-D-games-text">W/P/R</div>
-                        <div id="W-L-D-games-stats">42/98/6</div>
-                    </div>
-                    <div className="profile-statistics-total-game-time stats">
-                        <div id="total-game-time-text">Całkowity czas gry</div>
-                        <div id="total-game-time-stats">7,3h</div>
-                    </div>
-                    <div className="profile-statistics-average-game-time stats">
-                        <div id="average-game-time-text">Średni czas gry</div>
-                        <div id="average-game-time-stats">2min 36sec</div>
-                    </div>
-                    <div className="profile-statistics-best-win-streak stats">
-                        <div id="best-win-streak-text">Winstreak</div>
-                        <div id="best-win-streak-stats">5</div>
-                    </div>
-                    <div className="profile-statistics-number-of-abandoned-games stats">
-                        <div id="number-of-abandoned-games-text">Liczba porzuconych gier</div>
-                        <div id="number-of-abandoned-games-stats">11</div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-        <div style={show ? {display: 'flex'} : {display: 'none'}} className="background-modal">
+  }
 
-            <div className="modal-content">
-            <form onSubmit={handleSubmit} name="editForm">
-                <div className="modal-settings">Ustawienia</div>
-                <div className="modal-nick">
-                    <div className="row-one">Nazwa użytkownika</div>
-                        <input 
-                            className="account_modal-nick-input" 
-                            type="text" 
-                            onChange={(event) => {
-                                setNewUsername(event.target.value);
-                        }}
-                        />
-                </div>         
-                <div className="modal-password-old">
-                    <div className="row-one">Stare hasło</div>
-                        <input 
-                            className="account_modal-password-old-input"
-                            type="password"
-                            onChange={(event) => {
-                                setOldPassword(event.target.value);
-                            }}
-                        />
-                    {!(currentPassword===oldPassword || oldPassword==='')&&(<span class="red-star">niepoprawne hasło</span>)}
-                </div>
-                <div className="modal-password-new">
-                    <div className="row-one">Nowe hasło</div>
-                        <input 
-                            className="account_modal-password-input-new"
-                            type="password"
-                            onChange={(event) => {
-                                setNewPassword(event.target.value);
-                            }}
-                        />
-                </div>
-                <div className="modal-password-new-repeat">
-                    <div className="row-one">Powtórz hasło</div>
-                        <input 
-                            className="account_modal-password-input-new-repeat"
-                            type="password"
-                            onChange={(event) => {
-                                setRepeatPassword(event.target.value);
-                            }}
-                        />
-                        {!(repeatPassword===newPassword||repeatPassword==='')&&(<span class="red-star">powtórz hasło</span>)}
-                </div>
-                <div className="modal-country">
-                    <div className="modal-country-text row-one">Kraj</div>
-                    <div className="modal-country-input">
-                        <Select options={options} value={value} styles={selectStyle} onChange={changeHandler} />
-                    </div>
-                </div>
-                <div className="modal-avatar">
-                    <div className="modal-avatar-text"></div>
-                    <div className="arrow modal-left-arrow"  onClick={() => previousAvatar()}>&lt;</div>
-                    <div>
-                        <img className="modal-avatar-image" src={`./images/${temporaryAvatar}.png`} alt="Awatar użytkownika" width="150" height="150" />
-                    </div>
-                    <div className="arrow modal-right-arrow"   onClick={() => nextAvatar()}>&gt;</div>
-                </div>
-                <div className="modal-avatar-current">
-                  
-                    </div>
-                <div className="modal-button">
-                    <button className="modal-button-save" type="submit"  onClick={() => setNewData()} >Ok</button>
-                    <button className="modal-button-cancel" type = "button"  onClick={() => clearSettings()}>Anuluj</button>
-                </div>
-                </form>
-                </div>
-                </div>
-    </>)
-}
+  return (
+    <>
+      <div className="profile-container">
+        <div className="profile-menu-button-div">
+          <a
+            className="account__back"
+            href="./.."
+            onMouseDown={buttonSound}
+            onMouseOver={buttonHover}
+          >
+            &#129044;
+          </a>
+        </div>
+        <div className="profile-heading">KONTO</div>
+        <div className="profile-header">
+          <div className="profile-avatar">
+            <img
+              draggable="false"
+              className="account-avatar"
+              src={`./images/avatar${avatar}.png`}
+              alt="Awatar użytkownika"
+              width="150"
+              height="150"
+            />
+          </div>
+          <div className="profile-header-info">
+            <div className="profile-username">{userName}</div>
+            <div className="profile-creation-date">
+              Profil utworzono:{" "}
+              <span className="profile-header-date">{accountCreation}</span>
+            </div>
+            <div className="profile-country-info">
+              <div className="country-img">
+                <span>
+                  <ReactCountryFlag
+                    countryCode={country}
+                    svg
+                    style={{
+                      fontSize: "1.5em",
+                      lineHeight: "1.5em",
+                    }}
+                    className="emojiFlag"
+                  />
+                </span>
+              </div>
+              <div className="country-name">{countryName}</div>
+              <div className="edition-text">
+                <button
+                  className="profile-edit-button"
+                  onClick={() => setShow(true)}
+                >
+                  Edycja
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="profile-main">
+          <div className="profile-statistics">
+            <div className="profile-statistics-inscription">Statystyki</div>
+            <div className="profile-statistics-number-of-games stats">
+              <div id="number-of-game-text">Gry</div>
+              <div id="number-of-game-stats">146</div>
+            </div>
+            <div className="profile-statistics-number-of-points stats">
+              <div id="number-of-points-text">Punkty</div>
+              <div id="number-of-points-stats">23 590</div>
+            </div>
+            <div className="profile-statistics-W-L-D-games stats">
+              <div id="W-L-D-games-text">W/P/R</div>
+              <div id="W-L-D-games-stats">42/98/6</div>
+            </div>
+            <div className="profile-statistics-total-game-time stats">
+              <div id="total-game-time-text">Całkowity czas gry</div>
+              <div id="total-game-time-stats">7,3h</div>
+            </div>
+            <div className="profile-statistics-average-game-time stats">
+              <div id="average-game-time-text">Średni czas gry</div>
+              <div id="average-game-time-stats">2min 36sec</div>
+            </div>
+            <div className="profile-statistics-best-win-streak stats">
+              <div id="best-win-streak-text">Winstreak</div>
+              <div id="best-win-streak-stats">5</div>
+            </div>
+            <div className="profile-statistics-number-of-abandoned-games stats">
+              <div id="number-of-abandoned-games-text">
+                Liczba porzuconych gier
+              </div>
+              <div id="number-of-abandoned-games-stats">11</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style={show ? { display: "flex" } : { display: "none" }}
+        className="background-modal"
+      >
+        <div className="modal-content">
+          <form onSubmit={handleSubmit} name="editForm">
+            <div className="modal-settings">Ustawienia</div>
+            <div className="modal-nick">
+              <div className="row-one">Nazwa użytkownika</div>
+              <input
+                className="account_modal-nick-input"
+                type="text"
+                onChange={(event) => {
+                  setNewUsername(event.target.value);
+                }}
+              />
+            </div>
+            <div className="modal-password-old">
+              <div className="row-one">Stare hasło</div>
+              <input
+                className="account_modal-password-old-input"
+                type="password"
+                onChange={(event) => {
+                  setOldPassword(event.target.value);
+                }}
+              />
+              {!(currentPassword === oldPassword || oldPassword === "") && (
+                <span class="red-star">niepoprawne hasło</span>
+              )}
+            </div>
+            <div className="modal-password-new">
+              <div className="row-one">Nowe hasło</div>
+              <input
+                className="account_modal-password-input-new"
+                type="password"
+                onChange={(event) => {
+                  setNewPassword(event.target.value);
+                }}
+              />
+            </div>
+            <div className="modal-password-new-repeat">
+              <div className="row-one">Powtórz hasło</div>
+              <input
+                className="account_modal-password-input-new-repeat"
+                type="password"
+                onChange={(event) => {
+                  setRepeatPassword(event.target.value);
+                }}
+              />
+              {!(repeatPassword === newPassword || repeatPassword === "") && (
+                <span class="red-star">powtórz hasło</span>
+              )}
+            </div>
+            <div className="modal-country">
+              <div className="modal-country-text row-one">Kraj</div>
+              <div className="modal-country-input">
+                <Select
+                  options={options}
+                  value={value}
+                  styles={selectStyle}
+                  onChange={changeHandler}
+                />
+              </div>
+            </div>
+            <div className="modal-avatar">
+              <div className="modal-avatar-text"></div>
+              <div
+                className="arrow modal-left-arrow"
+                onClick={() => previousAvatar()}
+              >
+                &lt;
+              </div>
+              <div>
+                <img
+                  className="modal-avatar-image"
+                  src={`./images/${temporaryAvatar}.png`}
+                  alt="Awatar użytkownika"
+                  width="150"
+                  height="150"
+                />
+              </div>
+              <div
+                className="arrow modal-right-arrow"
+                onClick={() => nextAvatar()}
+              >
+                &gt;
+              </div>
+            </div>
+            <div className="modal-avatar-current"></div>
+            <div className="modal-button">
+              <button
+                className="modal-button-save"
+                type="submit"
+                onClick={() => setNewData()}
+              >
+                Ok
+              </button>
+              <button
+                className="modal-button-cancel"
+                type="button"
+                onClick={() => clearSettings()}
+              >
+                Anuluj
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default Account;
