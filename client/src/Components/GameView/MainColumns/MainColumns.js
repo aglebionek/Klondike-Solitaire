@@ -1,7 +1,6 @@
 import React from "react";
 import DraggableCard from "../DraggableCard/DraggableCard";
 import Drop from "../Drop/drop";
-import styles from "./MainColumns.module.css";
 import Card from "../Card/Card";
 
 const MainColumns = ({
@@ -12,6 +11,12 @@ const MainColumns = ({
   effect,
   analysis,
 }) => {
+  var styles = require("./MainColumns.module.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        styles = require("./MainColumnsCyberpunk.module.css");
+    }
+  }
   return (
     <div className={styles.cardBottom}>
       {Object.entries(mainColumns).map(([key, column]) => {

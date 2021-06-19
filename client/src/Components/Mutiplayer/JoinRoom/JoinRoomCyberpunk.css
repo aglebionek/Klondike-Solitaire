@@ -7,6 +7,7 @@
   background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
   user-select: none;
   flex-direction: column;
+  color: rgba(0, 214, 252, 0.9);
 }
 
 .lobby__modal-container{
@@ -60,4 +61,19 @@
 
 .lobby-extra-button-class {
   justify-content: center;
+}
+
+#lobby-leave {
+  background: none;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  margin-top: 40px;
+  display: inline-block;
+  font-size: 16px;
+  width: 200px;
+  text-decoration: none;
+  cursor: default;
 }

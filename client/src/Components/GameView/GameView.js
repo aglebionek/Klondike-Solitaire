@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "./GameView.module.css";
 import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -270,12 +269,19 @@ function GameView({
   });
   if (isLoading) return <div>loading...</div>;
 
-  if (isGameEnded) {
-    const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
-      return finalColumns[key].get;
-    });
+  var styles = require("./GameView.module.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        styles = require("./GameViewCyberpunk.module.css");
+    }
+  }
 
-    const result = gameResult(finalColumnsArr);
+  if (isGameEnded) {
+  const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
+    return finalColumns[key].get;
+  });
+
+  const result = gameResult(finalColumnsArr);
     return (
       <WinLoseBoard
         points={points}

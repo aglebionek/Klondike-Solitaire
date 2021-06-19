@@ -142,6 +142,13 @@ const Modal = ({
     secondsText = "Sekunda";
   }
 
+  var styles = require("./WinLose.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./WinLoseCyberpunk.css");
+    }
+  }
+
   return (
     <div className={showHideClassName}>
       <section className="modal-main">

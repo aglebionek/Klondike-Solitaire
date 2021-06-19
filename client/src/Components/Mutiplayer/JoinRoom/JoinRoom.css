@@ -7,6 +7,7 @@
   background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
   user-select: none;
   flex-direction: column;
+  color: #102542;
 }
 
 .lobby__modal-container{
@@ -55,4 +56,19 @@
 
 .lobby-extra-button-class {
   justify-content: center;
+}
+
+#lobby-leave {
+  background: none;
+  border: solid 1px #102542;
+  color: #102542;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  margin-top: 40px;
+  display: inline-block;
+  font-size: 16px;
+  width: 200px;
+  text-decoration: none;
+  cursor: pointer;
 }
