@@ -40,6 +40,13 @@ const Custom = ({ draggingCard }) => {
       currentOffset: monitor.getSourceClientOffset(),
       isDragging: monitor.isDragging(),
     }));
+
+  var cardStyle = "";
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        cardStyle += "cyberpunk";
+    }
+  }
   return (
     <div style={layerStyles}>
       <div
@@ -55,7 +62,7 @@ const Custom = ({ draggingCard }) => {
               className="game-view__dragging-container__item"
               style={{ top: top + "%" }}
             >
-              <div className={"card " + convertRankToClass + " " + item.shape}>
+              <div className={"card " + convertRankToClass + " " + item.shape + " " + cardStyle}>
                 <span className="card__value"></span>
                 <span className="card__minisuit"></span>
                 <span className="card__mainsuit"></span>
