@@ -14,6 +14,7 @@ const DraggableCard = ({
   startCardIndex,
   effect,
 }) => {
+  // eslint-disable-next-line no-empty-pattern
   const [{}, drag] = useDrag(
     () => ({
       type,

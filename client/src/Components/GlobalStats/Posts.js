@@ -1,8 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import "./Posts.css";
 import Spinner from "../Spinner/Spinner";
 
-var _ = require('lodash')
 
 const Posts = ({statsList, loading, userID}) => {
     if (loading) return (

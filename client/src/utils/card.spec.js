@@ -1,4 +1,4 @@
-import card, {check4Stack, isDroppable, processRank} from './card'
+import {check4Stack, isDroppable, processRank} from './card'
 
 //  Od kierowniczki
 test('It return proper rank to AS', () => {

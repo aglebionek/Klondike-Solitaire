@@ -276,7 +276,6 @@ test('Modification of the room', () => {
 
     fireEvent.click(container.querySelector('#Modify'));
 
-    let StanowoPokoju3 = container.querySelector('h1[class="lobby__headline"]')
     expect(StanowoPokoju.innerHTML).toBe("Tworzenie pokoju");
 
 });

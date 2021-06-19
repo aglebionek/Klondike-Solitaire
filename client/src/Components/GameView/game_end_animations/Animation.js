@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Animation.css";
 import Rain from './rain'
 import Firework from './firework';
 

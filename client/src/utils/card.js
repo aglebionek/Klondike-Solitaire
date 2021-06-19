@@ -1,5 +1,6 @@
 export const processRank = function (rank) {
   if (rank === "K" || rank === "Q" || rank === "J" || rank === "A") {
+    // eslint-disable-next-line default-case
     switch (rank) {
       case "K":
         return 13;
@@ -312,6 +313,7 @@ export const shuffleCards = () => {
     deck.splice(random, 1);
   }
 
+  // eslint-disable-next-line array-callback-return
   Object.entries(mainColumns).map(([key, item], index) => {
     for (let j = 0; j < index + 1; j++) {
       const random = Math.floor(Math.random() * deck.length);

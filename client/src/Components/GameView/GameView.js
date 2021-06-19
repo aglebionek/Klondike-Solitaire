@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./GameView.module.css";
 import CustomDragLayer from "./CustomDrag/Custom";
@@ -38,7 +40,7 @@ function GameView({
   const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
   const [gameNumber, setGameNumber] = useState(0);
   const [isGameEnded, setGameEnd] = useState(false);
-  const [bonus, setBonus] = useState(1200);
+  const [bonus] = useState(1200);
   const [gameTime, setGameTime] = useState(0);
   const [points, setPoints] = useState(0);
   const [playMusic, setPlayMusic] = useState(false);
@@ -127,6 +129,7 @@ function GameView({
   let timer = useRef(null);
   const revealCardRef = useRef(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
@@ -154,7 +157,7 @@ function GameView({
         setMoveNumbers(initialMoveNumbers);
       } else startTimer();
     }
-  }, []);
+  }, [analysis, columns, initialGameTime, initialHistory, initialMoveNumbers, initialPoints, initialShuffle, shuffle]);
 
   const startTimer = () => {
     timer.current = setInterval(() => {
@@ -183,7 +186,7 @@ function GameView({
     return () => {
       socket.off("write-to-end-list");
     };
-  }, []);
+  }, [playersOnEndGame]);
 
   useEffect(() => {
     if (gameNumber > 0) {
@@ -207,7 +210,7 @@ function GameView({
       setStartColumn2([]);
       setGameTime(0);
     }
-  }, [gameNumber]);
+  }, [columns, finalColumns, gameNumber, shuffle]);
 
   useEffect(() => {
     if (!isLoading && !analysis) {
@@ -239,7 +242,7 @@ function GameView({
         stopTimer();
       } else setPossibleMoveNumbers(possibleMoves);
     }
-  }, [moveNumbers, isLoading, gameNumber, gameTime]);
+  }, [moveNumbers, isLoading, gameNumber, gameTime, analysis, mainColumns, finalColumns, startColumn1, location.time, stopTimer, points]);
 
   const cardSound = (src) => {
     let beep = new Audio(src);

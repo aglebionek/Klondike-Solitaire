@@ -1,11 +1,9 @@
 import React from "react";
-import styles from "./firework.css";
 
 
 
 function firework(){
 
-let number = 1;
 let canvas, width, height, ctx;
 let fireworks = [];
 let particles = [];
@@ -112,16 +110,19 @@ function randomCol(){
 	}
 
 	let brightest = 0;
+	// eslint-disable-next-line no-redeclare
 	for(var i=0; i<3; i++){
 		if(brightest<nums[i]) brightest = nums[i];
 	}
 
 	brightest /=255;
+	// eslint-disable-next-line no-redeclare
 	for(var i=0; i<3; i++){
 		nums[i] /= brightest;
 	}
 
 	let color = "#";
+	// eslint-disable-next-line no-redeclare
 	for(var i=0; i<3; i++){
 		color += letter[Math.floor(nums[i]/16)];
 		color += letter[Math.floor(nums[i]%16)];

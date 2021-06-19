@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 //columnList 2d table with lower stacks of cards
 //foundationList 2d table with four upper card places
 //revealedCardStack top left stack with free cards
@@ -45,6 +46,7 @@ export const numMoves = function(columnList, foundationList, revealedCardStack) 
 
 
 export const gameWinable = function(numMoves) {
+    // eslint-disable-next-line eqeqeq
     if (numMoves==0)
     {
         return false;

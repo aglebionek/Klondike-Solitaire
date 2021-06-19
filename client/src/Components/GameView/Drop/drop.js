@@ -11,7 +11,7 @@ const Drop = ({
   name,
   isDragActive,
 }) => {
-  const [collectedProps, drop] = useDrop({
+  const [, drop] = useDrop({
     accept,
   });
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from "react";
 import soundCyber from '../../../soundtrack/Music/Music_Cyberpunk_Klondike.mp3';
 import soundDefault from '../../../soundtrack/Music/Music_Synthwave_Klondike.mp3';
@@ -7,7 +9,7 @@ import soundDefault from '../../../soundtrack/Music/Music_Synthwave_Klondike.mp3
 const AudioPlayer = ({ musicVolume, cardset }) => {
     
     const src = [soundCyber, soundDefault];
-    const [trackIndex, setTrackIndex] = useState(0);
+    const [trackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
   
     const audioRef = useRef(new Audio(src[cardset-1]));
@@ -22,8 +24,8 @@ const AudioPlayer = ({ musicVolume, cardset }) => {
         setIsPlaying(true);
       }
   
-    const startTimer = () => {
-      // Clear any timers already running
+    
+    const startTimer = useCallback(() => {
       clearInterval(intervalRef.current);
       intervalRef.current = setInterval(() => {
         if (audioRef.current.ended) {
@@ -34,7 +36,7 @@ const AudioPlayer = ({ musicVolume, cardset }) => {
               startTimer();
         } 
       }, [1000]);
-    };
+    });
     useEffect(() => {
       if (isPlaying) {
         audioRef.current.play();
@@ -42,7 +44,7 @@ const AudioPlayer = ({ musicVolume, cardset }) => {
       } else {
         audioRef.current.pause();
       }
-    }, [isPlaying]);
+    }, [isPlaying, startTimer]);
   
 
     useEffect(() => {

@@ -4,7 +4,6 @@ import "./Login.css";
 import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from "../../agent/agent.js";
-import { GrWindows } from "react-icons/gr";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -42,7 +41,7 @@ function Login() {
     setPasswordError("");
     let isValid = true;
     const emailRegex =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!email.match(emailRegex)) {
       setEmailError("Email jest niepoprawny");
       isValid = false;

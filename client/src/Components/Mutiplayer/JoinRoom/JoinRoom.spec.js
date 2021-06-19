@@ -71,6 +71,7 @@ test('User can be kicked', () => {
     socket.emit('kicked');
 });//not mine
 
+// eslint-disable-next-line jest/no-identical-title
 test('Export room on start', () => {
     // definuje że socket bedzie mockowany
     jest.mock('./../socketConfig.js');

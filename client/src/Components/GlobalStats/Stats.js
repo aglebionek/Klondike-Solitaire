@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import Posts from "./Posts";
 import "./Stats.css";
@@ -15,7 +17,7 @@ function GlobalStats({effect}) {
 
     const userID = 10;
 
-    const [pageNumberLimit, setPageNumberLimit] = useState(5);
+    const [pageNumberLimit] = useState(5);
     const [maxPageNumberLimit, setPageMaxNumberLimit] = useState(5);
     const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
