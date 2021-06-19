@@ -63,8 +63,13 @@ function Login() {
     beep.volume = 1;
     beep.play();
   };
-
-  if (isLoggedIn) return <Redirect to="/" />;
+  var styles = require("./Login.css");
+  if (isLoggedIn) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./LoginCyberpunk.css");
+    }
+    return <Redirect to="/" />;
+  }
   return (
     <div className="login__container">
       <a href="/" className="login__back" onMouseDown={buttonSound}

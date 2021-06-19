@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./MainMenu.css";
 import Dropdown from "./Dropdown";
 import { useHistory } from "react-router-dom";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
@@ -110,11 +109,16 @@ function MainMenu( {effect, handleButton} ) {
             setLog(false);
           });
     }, []);
+    var styles = require("./MainMenu.css");
+    if(localStorage.getItem('isLogged')) {
+        if(localStorage.getItem('motiveCss') === "cyberpunk") {
+            styles = require("./MainMenuCyberpunk.css");
+        }
+    }
 
     return (<>
         <div className='main-menu'>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-
             <div className='main-menu__top-bar'>
                 <Dropdown eff={effect}/>
                 <div>

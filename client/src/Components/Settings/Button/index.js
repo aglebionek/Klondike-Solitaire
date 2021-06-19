@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Button.module.css";
 import buttonClickSound from '../../../soundtrack/SoundDesign/menu_click.mp3';
 
 const Button = ({ isCardSelectionOpen, setCardSelectionOpen, text, soundEffect }) => {
@@ -7,7 +6,13 @@ const Button = ({ isCardSelectionOpen, setCardSelectionOpen, text, soundEffect }
     let beep = new Audio(buttonClickSound);
     beep.volume=(soundEffect/100);
     beep.play();   
-  }
+  };
+  var styles = require("./Button.module.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./ButtonCyberpunk.module.css");
+    };
+  };
   return (
     <div className={styles.container}>
       <button

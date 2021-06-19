@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./LobbyMultiplayer.css";
 import agent from '../../agent/agent';
 
 // socket client
@@ -55,6 +54,13 @@ function LobbyMultiplayer() {
     }
   });
 
+  var styles = require("./LobbyMultiplayer.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./LobbyMultiplayerCyberpunk.css");
+    }
+  }
+
   return (
     <>
     <div className="multiplayer__container">
@@ -69,7 +75,7 @@ function LobbyMultiplayer() {
       <div className="row">
       <div className="ButtRoom">
           <Link to={`/create-room`}>
-            <button className="button">Stwórz nowy pokój</button>
+            <button id = "create-room-btn" className="button">Stwórz nowy pokój</button>
           </Link>
         </div>
       </div>
@@ -87,7 +93,7 @@ function LobbyMultiplayer() {
             <div className="Ppl1">{room.players}</div>
             <div className="butt">
               <Link to={`/game-lobby`}>
-                <button className="buttonjoin" data-room={room.name} onClick={joinRoom}>Dołącz</button>
+                <button id = "join-btn" className="buttonjoin" data-room={room.name} onClick={joinRoom}>Dołącz</button>
               </Link>
             </div>
           </div>

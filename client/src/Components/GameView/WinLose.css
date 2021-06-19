@@ -4,19 +4,19 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
+  color: #102542;
 }
 
 .modal-main {
   position: fixed;
-  background: white;
+  background: #66bb6a;
   width: 600px;
   height: 400px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border-style: solid;
-  border-color: black;
+  border: 1px solid #102542;
 }
 
 .display-block {
@@ -47,33 +47,29 @@
   width: 100%;
 }
 .button {
-  border-style: solid;
-  border-color: black;
-  color: black;
+  background: none;
+  border: solid 1px #102542;
+  color: #102542;
+  padding-top: 15px;
+  padding-bottom: 15px;
   text-align: center;
-  width: 148px;
   display: inline-block;
   font-size: 16px;
-  background: white;
+  width: 200px;
+  text-decoration: none;
+  cursor: pointer;
 }
 .winloseboard__button-back {
-  border-style: solid;
-  border-color: black;
-  color: black;
+  background: none;
+  border: solid 1px #102542;
+  color: #102542;
+  padding-top: 15px;
+  padding-bottom: 15px;
   text-align: center;
-  width: 148px;
   display: inline-block;
   font-size: 16px;
-  background: white;
+  width: 200px;
   text-decoration: none;
-  font-weight: normal;
-  border-width: 2px;
+  cursor: pointer;
 }
 
-.button:hover {
-  background-color: lightgrey;
-}
-.button:active {
-  background-color: lightgrey;
-  transform: translateY(4px);
-}
