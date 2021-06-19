@@ -45,13 +45,14 @@ function loop(){
     }
 
 
-    const loopa = setInterval(loop, 1/1000);
+    const loopa = setInterval(loop, 1);
 
     function clear(){
         clearInterval(loopa);
     }
 
-    setTimeout(clear,7000);
+    setTimeout(clear,9000);
+	
 class Particle{
 	constructor(x, y, col){
 		this.x = x;

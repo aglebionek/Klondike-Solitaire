@@ -45,7 +45,7 @@
     position: absolute;
     top: 0;
     opacity: 0;
-    animation: appear-animation 7s;
+    animation: appear-animation 9s;
    
 }
 .rain-background {

@@ -13,6 +13,7 @@ import "../CardMotives/CardMotives.css";
 import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
 import { useLocation } from "react-router-dom";
+import Animation from "./game_end_animations/Animation"; 
 
 import socket from '../Mutiplayer/socketConfig';
 
@@ -23,7 +24,7 @@ function GameView({cardset_id, effect, volume }) {
   const [moveNumbers, setMoveNumbers] = useState(0);
   const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
   const [gameNumber, setGameNumber] = useState(0);
-  const [isGameEnded, setGameEnd] = useState(false);
+  const [isGameEnded, setGameEnd] = useState(true);
   const [bonus, setBonus] = useState(1200);
   const [gameTime, setGameTime] = useState(0);
   const [points, setPoints] = useState(0);
@@ -296,6 +297,7 @@ function GameView({cardset_id, effect, volume }) {
    
     return (
       <div>
+        <Animation action = "win"/>
         <p>Gra zakończona</p>
         <p>Lista wyników:</p>
         <ul>
