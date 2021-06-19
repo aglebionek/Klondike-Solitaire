@@ -53,3 +53,14 @@
   height: 200px;
   border: 1px solid black;
 }
+
+.analysisBackButton {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  border: 1px solid black;
+  border-radius: 0.3em;
+  padding: 0.5em 1em;
+  background: white;
+  cursor: pointer;
+}
