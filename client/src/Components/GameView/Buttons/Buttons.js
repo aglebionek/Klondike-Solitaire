@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./Buttons.module.css";
 import { GrUndo } from "react-icons/gr";
 import { RiRestartLine } from "react-icons/ri";
 import buttonUndoSound from "../../../soundtrack/SoundDesign/button_undo.mp3";
@@ -99,6 +98,12 @@ const Buttons = ({
       setHistory(newHistory);
     }
   };
+  var styles = require("./Buttons.module.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        styles = require("./ButtonsCyberpunk.module.css");
+    }
+  }
   return (
     <div className={styles.buttons}>
       <button

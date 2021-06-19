@@ -1,4 +1,3 @@
-
 .main-menu {
     height: 100vh;
     user-select: none;
@@ -14,7 +13,6 @@
     height: 12vh;
     padding: 10px;
 }
-
 .main-menu__top-bar > div > button, .dropdown__button-top {
     font-size: 24px;
     border: solid 1px #102542;

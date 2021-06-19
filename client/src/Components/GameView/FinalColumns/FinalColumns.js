@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./FinalColumns.module.css";
 import { check4Stack } from "../../../utils/card";
 import FinalColumnItem from "../FinalColumnItem/FinalColumnItem";
 import DraggableCard from "../DraggableCard/DraggableCard";
@@ -87,6 +86,12 @@ const FinalColumns = ({
     }
     setDraggingCard({ title: "", array: [] });
   };
+  var styles = require("./FinalColumns.module.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        styles = require("./FinalColumnsCyberpunk.module.css");
+    }
+  }
   return (
     <div className={styles.finalColumnContainer}>
       {Object.entries(finalColumns).map(([key, column]) => {

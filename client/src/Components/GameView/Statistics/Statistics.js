@@ -1,11 +1,16 @@
 import React from "react";
-import styles from "./Statistics.module.css";
 
 const Statistics = ({ points, gameTime, possiblemoveNumbers, moveNumbers }) => {
   const minutes = Math.floor(gameTime / 60);
   let seconds = gameTime - 60 * minutes;
   if (seconds < 10) {
     seconds = "0" + seconds;
+  }
+  var styles = require("./Statistics.module.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        styles = require("./StatisticsCyberpunk.module.css");
+    }
   }
   return (
     <div className={styles.statistics}>

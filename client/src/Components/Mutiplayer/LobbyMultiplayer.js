@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./LobbyMultiplayer.css";
 import agent from '../../agent/agent';
 
 // socket client
 import socket from './socketConfig';
-
-
 
 
 function LobbyMultiplayer({userId}) {
@@ -58,6 +55,13 @@ function LobbyMultiplayer({userId}) {
       });
     }
   });
+
+  var styles = require("./LobbyMultiplayer.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./LobbyMultiplayerCyberpunk.css");
+    }
+  }
 
   return (
     <>

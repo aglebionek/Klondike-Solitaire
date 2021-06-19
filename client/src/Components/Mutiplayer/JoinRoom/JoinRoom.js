@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import './JoinRoom.css';
 
 import socket from './../socketConfig.js';
 
@@ -40,6 +39,13 @@ function JoinRoom () {
       socket.off('pass-room');
     }
   });
+
+  var styles = require("./JoinRoom.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./JoinRoomCyberpunk.css");
+    }
+  }
 
   return (
     <section className="joined-room">

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Settings.module.css";
 import Button from "./Button";
 import AudioSlider from "./AudioSlider";
 import buttonClickSound from '../../soundtrack/SoundDesign/menu_click.mp3';
@@ -18,12 +17,14 @@ const Settings = ({ID}) => {
   const userId = ID;
 
   const cards = ["vA hearts cyberpunk","vA hearts"];
+  const motives = ["cyberpunk", "default"];
   
   const nextCard = () => {
     let index = cards.indexOf(temporaryCard);
     if (index === cards.length - 1) index = 0;
     else index++;
     setTemporaryCard(cards[index]);
+    localStorage.setItem('motiveCss', motives[index]);
   };
 
   const previousCard = () => {
@@ -31,6 +32,7 @@ const Settings = ({ID}) => {
     if (index === 0) index = cards.length - 1;
     else index--;
     setTemporaryCard(cards[index]);
+    localStorage.setItem('motiveCss', motives[index]);
   };
 
   const setNewCard = () => {
@@ -69,6 +71,14 @@ const Settings = ({ID}) => {
       localStorage.setItem('guestEffect', effectVolume);
     }
   };
+  
+  var styles = require("./Settings.module.css")
+  if(isLogged) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./SettingsCyberpunk.module.css")
+    }
+  }
+
   if (loading) return (
     <Spinner></Spinner>
   );
