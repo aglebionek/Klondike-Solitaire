@@ -63,6 +63,13 @@ const DraggableCard = ({
     cardSound(cardPick)
   };
   const convertRankToClass = "v" + item.rank;
+  var cardStyle = "";
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        cardStyle += "cyberpunk";
+    }
+  }
+
 
   const handleDragEnd = (e) => {
     setDraggingCard({ title: "", array: [] });
@@ -96,7 +103,7 @@ const DraggableCard = ({
       onDragEnd={handleDragEnd}     
       style={{ top: top + "%", zIndex: index + 1 }}
     >
-      <div className={"card " + convertRankToClass + " " + item.shape}>
+      <div className={"card " + convertRankToClass + " " + item.shape + " " + cardStyle}>
         <span className="card__value"></span>
         <span className="card__minisuit"></span>
         <span className="card__mainsuit"></span>
