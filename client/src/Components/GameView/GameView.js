@@ -281,9 +281,16 @@ function GameView({
     );
   };
 
-  window.addEventListener("click", function (event) {
+  const playMusicFunc = () => {
     setPlayMusic(true);
-  });
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", playMusicFunc);
+    return () => {
+      window.removeEventListener("click", playMusic);
+    };
+  }, []);
 
   if (isLoading) return <div>loading...</div>;
 
