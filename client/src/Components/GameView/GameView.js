@@ -291,15 +291,19 @@ function GameView({
   window.addEventListener("click", function (event) {
     setPlayMusic(true);
   });
+
+  
   if (isLoading) return <div>loading...</div>;
 
-
-  }
-    }
-      styles = require("./GameViewCyberpunk.module.css");
-    if (localStorage.getItem("motiveCss") === "cyberpunk") {
-  if (localStorage.getItem("isLogged")) {
   var styles = require("./GameView.module.css");
+
+  if (localStorage.getItem("isLogged")) {
+    if (localStorage.getItem("motiveCss") === "cyberpunk") {
+      styles = require("./GameViewCyberpunk.module.css");
+    }
+  }
+  
+  
   if (isGameLoaded) {
     const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
       return finalColumns[key].get;
