@@ -19,7 +19,7 @@ const Buttons = ({
   effect,
   analysis,
   revealCardRef,
-  isMulti
+  isMulti,
 }) => {
   const [soundUndoButton, setSoundUndoButton] = useState(true);
   const [soundRestartButton, setSoundRestartButton] = useState(true);
@@ -53,7 +53,7 @@ const Buttons = ({
 
   const stepBack = () => {
     if ((analysis && historyCount > 0) || (!analysis && history.length > 0)) {
-      setMoveNumbers((prev) => prev + 1);
+      if (!analysis) setMoveNumbers((prev) => prev + 1);
       buttonUndo();
 
       const newPoints = points - 20;
@@ -182,9 +182,9 @@ const Buttons = ({
   };
 
   var styles = require("./Buttons.module.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        styles = require("./ButtonsCyberpunk.module.css");
+  if (localStorage.getItem("isLogged")) {
+    if (localStorage.getItem("motiveCss") === "cyberpunk") {
+      styles = require("./ButtonsCyberpunk.module.css");
     }
   }
   return (
@@ -218,8 +218,8 @@ const Buttons = ({
         <button
           className={styles.button}
           onClick={() => {
-            if(!isMulti){
-              setGameNumber((prev) => prev + 1)
+            if (!isMulti) {
+              setGameNumber((prev) => prev + 1);
             }
           }}
           name="restart"

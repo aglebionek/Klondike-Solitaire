@@ -29,7 +29,7 @@ const FinalColumns = ({
     const sliceEnd = carriedArrayLength - dragArrayLength;
     const carriedTarget = draggingCard.target;
 
-    setMoveNumbers((prev) => prev + 1);
+    if (!analysis) setMoveNumbers((prev) => prev + 1);
 
     if (
       check4Stack(selectedCard, dropTarget) &&

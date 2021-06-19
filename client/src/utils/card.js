@@ -416,7 +416,8 @@ export const drop = (
   setHistory,
   history,
   cardRight,
-  setDraggingCard
+  setDraggingCard,
+  analysis
 ) => {
   const selectedCard =
     currentCards.array[currentCards.array.length - 1] || null;
@@ -426,7 +427,7 @@ export const drop = (
   const carriedArrayLength = carriedArray.length;
   const sliceEnd = carriedArrayLength - dragArrayLength;
   const carriedTarget = draggingCard.target;
-  setMoveNumbers((prev) => prev + 1);
+  if (!analysis) setMoveNumbers((prev) => prev + 1);
   if (isDroppable(selectedCard, dropTarget)) {
     if (draggingCards.title.includes("finalColumn")) {
       const newPoints = points - 10;
