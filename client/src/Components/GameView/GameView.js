@@ -15,7 +15,7 @@ import Statistics from "./Statistics/Statistics";
 import { useLocation } from "react-router-dom";
 import WinLoseBoard from "./WinLoseBoard";
 
-import socket from '../Mutiplayer/socketConfig';
+import socket from "../Mutiplayer/socketConfig";
 
 function GameView({
   cardset_id,
@@ -34,9 +34,7 @@ function GameView({
   const [shuffle, setShuffle] = useState(() => {
     const initialStorage = localStorage.getItem("shuffle");
 
-    return initialStorage !== null
-      ? JSON.parse(initialStorage)
-      : null
+    return initialStorage !== null ? JSON.parse(initialStorage) : null;
   });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -136,16 +134,13 @@ function GameView({
   const columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
-    
     let firstShuffle;
 
     if (initialShuffle) {
       firstShuffle = initialShuffle;
-    } 
-    else if(shuffle){
+    } else if (shuffle) {
       firstShuffle = shuffle;
-    }
-    else{
+    } else {
       firstShuffle = shuffleCards();
       setShuffle(firstShuffle);
     }
@@ -165,14 +160,17 @@ function GameView({
       setMoveNumbers(initialMoveNumbers);
     } else startTimer();
 
-    if(location.isOwner){
-      socket.emit('send-shuffle', { shuffle: firstShuffle, time: location.time, id: location.id });
+    if (location.isOwner) {
+      socket.emit("send-shuffle", {
+        shuffle: firstShuffle,
+        time: location.time,
+        id: location.id,
+      });
       localStorage.setItem("shuffle", JSON.stringify(firstShuffle));
     }
-    
   }, []);
 
-   const startTimer = () => {
+  const startTimer = () => {
     timer = setInterval(() => {
       const reducedBonus = bonus - 1;
       setGameTime((prev) => prev + 1);
@@ -182,14 +180,11 @@ function GameView({
     }, 1000);
   };
 
-
   useEffect(() => {
-    socket.on('write-to-end-list', ({ player, score }) => {
-      setPlayersOnEndGame(prev => ([
-        ...prev, {name: player, score: score}
-      ]));
+    socket.on("write-to-end-list", ({ player, score }) => {
+      setPlayersOnEndGame((prev) => [...prev, { name: player, score: score }]);
     });
-  
+
     return () => {
       socket.off("write-to-end-list");
     };
@@ -219,23 +214,20 @@ function GameView({
     }
   }, [gameNumber]);
 
-  useEffect(
-    () => {
-      if(isGameEnded){
-        clearInterval(timer);
+  useEffect(() => {
+    if (isGameEnded) {
+      clearInterval(timer);
 
-        if(location.time === Number.MAX_SAFE_INTEGER){
-          setPlayersOnEndGame(prev => ([
-            ...prev, {name: location.players[0].username, score: points + bonus}
-          ]));
-
-        }
-        else{
-          socket.emit('end-game', { score: points + bonus });
-        }
+      if (location.time === Number.MAX_SAFE_INTEGER) {
+        setPlayersOnEndGame((prev) => [
+          ...prev,
+          { name: location.players[0].username, score: points + bonus },
+        ]);
+      } else {
+        socket.emit("end-game", { score: points + bonus });
       }
     }
-  , [isGameEnded]);
+  }, [isGameEnded]);
 
   useEffect(() => {
     if (!isLoading && !analysis) {
@@ -252,7 +244,7 @@ function GameView({
         startColumn1
       );
 
-      if(gameTime === location.time){
+      if (gameTime === location.time) {
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       }
@@ -284,7 +276,8 @@ function GameView({
       setHistory,
       history,
       cardRight,
-      setDraggingCard
+      setDraggingCard,
+      analysis
     );
   };
 
@@ -292,7 +285,6 @@ function GameView({
     setPlayMusic(true);
   });
 
-  
   if (isLoading) return <div>loading...</div>;
 
   var styles = require("./GameView.module.css");
@@ -302,8 +294,7 @@ function GameView({
       styles = require("./GameViewCyberpunk.module.css");
     }
   }
-  
-  
+
   if (isGameLoaded) {
     const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
       return finalColumns[key].get;
