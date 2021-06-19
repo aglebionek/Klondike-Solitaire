@@ -270,18 +270,18 @@ function GameView({
   if (isLoading) return <div>loading...</div>;
 
   var styles = require("./GameView.module.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        styles = require("./GameViewCyberpunk.module.css");
+  if (localStorage.getItem("isLogged")) {
+    if (localStorage.getItem("motiveCss") === "cyberpunk") {
+      styles = require("./GameViewCyberpunk.module.css");
     }
   }
 
   if (isGameEnded) {
-  const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
-    return finalColumns[key].get;
-  });
+    const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
+      return finalColumns[key].get;
+    });
 
-  const result = gameResult(finalColumnsArr);
+    const result = gameResult(finalColumnsArr);
     return (
       <WinLoseBoard
         points={points}

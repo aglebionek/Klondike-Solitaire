@@ -31,7 +31,10 @@ const FinalColumns = ({
 
     setMoveNumbers((prev) => prev + 1);
 
-    if (check4Stack(selectedCard, dropTarget)) {
+    if (
+      check4Stack(selectedCard, dropTarget) &&
+      draggingCards.array.length === 1
+    ) {
       let newHistoryStep;
       if (draggingCards.title === "startColumn2") {
         const source = columns["startColumn1"].get;
@@ -90,9 +93,9 @@ const FinalColumns = ({
     setDraggingCard({ title: "", array: [] });
   };
   var styles = require("./FinalColumns.module.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        styles = require("./FinalColumnsCyberpunk.module.css");
+  if (localStorage.getItem("isLogged")) {
+    if (localStorage.getItem("motiveCss") === "cyberpunk") {
+      styles = require("./FinalColumnsCyberpunk.module.css");
     }
   }
   return (
