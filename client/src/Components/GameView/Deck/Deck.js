@@ -1,5 +1,4 @@
 import React, { useImperativeHandle } from "react";
-import styles from "./Deck.module.css";
 import Card from "../Card/Card";
 import DraggableCard from "../DraggableCard/DraggableCard";
 import cardDraw from "../../../soundtrack/SoundDesign/card_draw.mp3";
@@ -48,10 +47,19 @@ const Deck = ({
   }));
 
   const cardSound = () => {
+
     let beep = new Audio(cardDraw);
     beep.volume = effect / 100;
     beep.play();
   };
+
+  var styles = require("./Deck.module.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        styles = require("./DeckCyberpunk.module.css");
+    }
+  }
+
   return (
     <div className={styles.deckContainer}>
       <div className={styles.deck}>

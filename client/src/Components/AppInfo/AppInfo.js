@@ -1,7 +1,12 @@
 import React from 'react';
-import './AppInfo.css';
 
 function AppInfo() {
+  var styles = require("./AppInfo.css");
+  if(localStorage.getItem('isLogged')) {
+      if(localStorage.getItem('motiveCss') === "cyberpunk") {
+          styles = require("./AppInfoCyberpunk.css");
+      }
+  }
   return (
     <div className="appinfo__container">
       <a className="appinfo__back" href="./..">

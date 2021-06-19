@@ -1,7 +1,12 @@
 import React from 'react';
-import "./passwordReset.css"
 
 function PasswordReset (){
+  var styles = require("./PasswordReset.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./PasswordResetCyberpunk.css");
+    }
+  }
     return (
     <div className="password__reset__container">
       <a href="/" className="password__reset__back">

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Posts from "./Posts";
-import "./Stats.css";
 import _ from 'lodash';
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
@@ -207,7 +206,12 @@ const buttonHover = () => {
     beep.play();   
 }
 
-
+var styles = require("./Stats.css");
+if (localStorage.getItem('isLogged')) {
+  if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./StatsCyberpunk.css");
+  }
+}
   return (
     <div className="App">
       <div className="stats__back-div">
