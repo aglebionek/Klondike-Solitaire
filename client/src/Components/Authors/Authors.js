@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import list from './AuthorList.json';
 
-import './AuthorsCyberpunk.css';
+import './Authors.css';
 
 function Authors() {
 

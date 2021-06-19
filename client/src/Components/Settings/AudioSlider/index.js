@@ -11,9 +11,7 @@ const Index = ({ volume, setVolume }) => {
         className={styles.slider}
         value={volume}
         onChange={(e) => setVolume(e.target.value)}
-        style={{
-          boxShadow: `0px 0px 10px rgba(0, 214, 252, ${volume/100}), 0px 0px 10px rgba(0, 214, 252, ${volume/100})`,
-        }}
+        
       />
       <p className={styles.label}>{volume}%</p>
     </div>

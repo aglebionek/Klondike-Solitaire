@@ -1,14 +1,16 @@
-.finalColumnContainer {
+.cardBottom {
   display: flex;
-  width: 56%;
+  margin-top: 3%;
+  height: 60%;
+  width: 100%;
 }
 
-.finalColumn {
+.mainColumn {
   position: relative;
   display: flex;
   justify-content: center;
   height: 110px;
-  width: 25%;
+  width: 14%;
 }
 
 .cardShadow {
@@ -18,5 +20,5 @@
   align-items: center;
   width: calc(4.8em - 2px);
   height: calc(6.675em - 2px);
-  border: solid 2px #102542;
+  border: solid 1px rgba(0, 214, 252, 0.6);
 }
