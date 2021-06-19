@@ -4,19 +4,20 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
-  color: #102542;
+  background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+  color: rgba(0, 214, 252, 0.9);
 }
 
 .modal-main {
   position: fixed;
-  background: #66bb6a;
+  background: black;
   width: 600px;
   height: 400px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid #102542;
+  border: 1px solid rgba(0, 214, 252, 0.6);
+  box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
 }
 
 .display-block {
@@ -48,8 +49,8 @@
 }
 .button {
   background: none;
-  border: solid 1px #102542;
-  color: #102542;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
   padding-top: 15px;
   padding-bottom: 15px;
   text-align: center;
@@ -57,12 +58,12 @@
   font-size: 16px;
   width: 200px;
   text-decoration: none;
-  cursor: pointer;
+  cursor: default;
 }
 .winloseboard__button-back {
   background: none;
-  border: solid 1px #102542;
-  color: #102542;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
   padding-top: 15px;
   padding-bottom: 15px;
   text-align: center;
@@ -70,6 +71,10 @@
   font-size: 16px;
   width: 200px;
   text-decoration: none;
-  cursor: pointer;
+  cursor: default;
 }
 
+.winloseboard__button-back:hover, .button:hover  {
+  box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+  text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
+}

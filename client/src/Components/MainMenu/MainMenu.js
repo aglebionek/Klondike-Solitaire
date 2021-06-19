@@ -47,7 +47,7 @@ function MainMenu( {effect, handleButton} ) {
           });
     }, []);
     var styles = require("./MainMenu.css");
-    if(isLogged) {
+    if(localStorage.getItem('isLogged')) {
         if(localStorage.getItem('motiveCss') === "cyberpunk") {
             styles = require("./MainMenuCyberpunk.css");
         }
