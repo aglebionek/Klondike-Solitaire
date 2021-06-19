@@ -18,12 +18,12 @@ import agent from './agent/agent.js';
 
 function App() {  
   const [eff, setEffect] = useState(JSON.parse(localStorage.getItem('guestEffect')) ?? 20);
-  const [vol, setVolume] = useState(JSON.parse(localStorage.getItem('guestMusic')) ?? 20);
-  const [cardset, setCardSet] = useState(2); 
+  const [, setVolume] = useState(JSON.parse(localStorage.getItem('guestMusic')) ?? 20);
+  const [, setCardSet] = useState(2); 
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
   useEffect(() => {
     setUserId(localStorage.getItem('userId'));
-    if(userId != 0){
+    if(userId !== 0){
       agent.get(`settings/${userId}`).then(({ data }) => {
         const { cardset_id, volume, effect } = data;
         setCardSet(cardset_id);
@@ -39,7 +39,7 @@ function App() {
         localStorage.setItem('isLogged', false);
         localStorage.setItem('userId', 0);
       });
-    }, []);
+    }, [userId], );
   
  
   
@@ -69,7 +69,7 @@ function GameViewRoute({ component: Component, ...rest }) {
   const [userId, setUserId] = useState(JSON.parse(localStorage.getItem('userId')) ?? 0);
   useEffect(() => {
     setUserId(localStorage.getItem('userId'));
-    if(userId != 0){
+    if(userId !== 0){
       agent.get(`settings/${userId}`).then(({ data }) => {
         const { cardset_id, volume, effect } = data;
         setCardSet(cardset_id);
@@ -84,7 +84,7 @@ function GameViewRoute({ component: Component, ...rest }) {
       .catch(() => {
         setLoading(false);
       });
-  }, []);
+  }, [userId], );
   if (isLoading) return (
     <Spinner></Spinner>
   );

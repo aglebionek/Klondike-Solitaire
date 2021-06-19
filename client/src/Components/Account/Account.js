@@ -27,7 +27,7 @@ const Account =({effect, userId}) => {
     const [countryName, setCountryName] = useState('Poland');
     const [newCountryName, setNewCountryName] = useState('');
 
-    const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
+    const [isLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
     const [loading, setLoading] = useState(isLogged);
 
     
@@ -50,14 +50,14 @@ const Account =({effect, userId}) => {
     const setNewData = () => {
         const num = temporaryAvatar.match(/\d+/)[0];
         setAvatar(Number(num));
-        if(newUsername != '') {
+        if(newUsername !== '') {
             setUserName(newUsername);
         } 
         if(oldPassword===currentPassword && newPassword===repeatPassword){
             setCurrentPassword(newPassword);
         }else {
         }
-        if(newCountry != ''){
+        if(newCountry !== ''){
             setCountry(newCountry);
             setCountryName(newCountryName);
         }
@@ -105,6 +105,7 @@ const Account =({effect, userId}) => {
                 width: '203px', 
                 background: 'none', 
                 border: 'solid 1px rgba(0, 214, 252, 0.6)',
+                // eslint-disable-next-line no-dupe-keys
                 border: state.isFocused ? 'solid 1px rgba(0, 214, 252, 0.6)' : 'solid 1px rgba(0, 214, 252, 0.6)',
                 boxShadow: state.isFocused ? '0px 0px 10px rgba(0, 214, 252, 1)' : 'none',
                 "&:hover": {
@@ -157,7 +158,7 @@ const Account =({effect, userId}) => {
         });
         }  
 
-      }, []);
+      }, [isLogged, options, userId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

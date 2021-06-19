@@ -60,6 +60,7 @@ function GameView({cardset_id, effect, volume }) {
     },
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const mainColumns = {
     mainColumn1: {
       set: setMainColumn1,
@@ -91,6 +92,7 @@ function GameView({cardset_id, effect, volume }) {
     },
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const finalColumns = {
     finalColumn1: {
       set: setFinalColumn1,
@@ -110,19 +112,23 @@ function GameView({cardset_id, effect, volume }) {
     },
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
     const initialShuffle = shuffleCards();
+    // eslint-disable-next-line array-callback-return
     Object.entries(initialShuffle).map(([key, item]) => {
       columns[key].set(item);
     });
     setLoading(false);
     startTimer();
-  }, []);
+  // eslint-disable-next-line no-use-before-define
+  }, [columns, startTimer]);
 
   let timer;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const startTimer = () => {
     timer = setInterval(() => {
       const reducedBonus = bonus - 1;
@@ -133,6 +139,7 @@ function GameView({cardset_id, effect, volume }) {
     }, 1000);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const stopTimer = () => {
     clearInterval(timer);
     setPoints((prev) => prev + bonus);
@@ -153,23 +160,25 @@ function GameView({cardset_id, effect, volume }) {
     return () => {
       socket.off('write-to-end-list');
     }
-  }, []);
+  }, [playersOnEndGame]);
 
   useEffect(() => {
     if (gameNumber > 0) {
       const initialShuffle = shuffleCards();
+      // eslint-disable-next-line array-callback-return
       Object.entries(initialShuffle).map(([key, item]) => {
         columns[key].set(item);
       });
       setMoveNumbers(0);
 
+      // eslint-disable-next-line array-callback-return
       Object.entries(finalColumns).map(([key, column]) => {
         column.set([]);
       });
       setStartCardIndex(0);
       setStartColumn2([]);
     }
-  }, [gameNumber]);
+  }, [columns, finalColumns, gameNumber]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -201,7 +210,7 @@ function GameView({cardset_id, effect, volume }) {
         setGameEnd(true);
       } else setPossibleMoveNumbers(possibleMoves);
     }
-  }, [moveNumbers, isLoading, gameNumber, gameTime]);
+  }, [moveNumbers, isLoading, gameNumber, gameTime, mainColumns, finalColumns, startColumn1, location.time, stopTimer, points]);
 
   const cardSound = (src) => {
     let beep = new Audio(src);

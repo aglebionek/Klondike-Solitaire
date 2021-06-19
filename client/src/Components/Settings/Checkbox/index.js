@@ -16,6 +16,7 @@ const Checkbox = ({ name, status, setStatus, soundEffect }) => {
         id={name}
         className={styles.checkboxInput}
         defaultChecked={status}
+        // eslint-disable-next-line no-sequences
         onChange={() => setStatus((prev) => !prev), buttonSound}
       />
       <label htmlFor={name} className={styles.status}>

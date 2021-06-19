@@ -343,10 +343,10 @@ test('Sorting up by name works properly', async () => {
     let personalinfo3 = listItems[3].querySelector('td:first-child');
 
     expect(listItems).not.toBeNull();
-    expect(personalinfo0.innerHTML).toBe(`${mock[0].ID} <img src=\"https:avatar0.jpg\" width=\"50\" height=\"50\"> ${mock[0].Nazwa} `);
-    expect(personalinfo1.innerHTML).toBe(`${mock[2].ID} <img src=\"https:avatar1.jpg\" width=\"50\" height=\"50\"> ${mock[2].Nazwa} `);
-    expect(personalinfo2.innerHTML).toBe(`${mock[1].ID} <img src=\"https:avatar2.jpg\" width=\"50\" height=\"50\"> ${mock[1].Nazwa} `);
-    expect(personalinfo3.innerHTML).toBe(`${mock[3].ID} <img src=\"https:avatar3.jpg\" width=\"50\" height=\"50\"> ${mock[3].Nazwa} `);
+    expect(personalinfo0.innerHTML).toBe(`${mock[0].ID} <img src="https:avatar0.jpg" width="50" height="50"> ${mock[0].Nazwa} `);
+    expect(personalinfo1.innerHTML).toBe(`${mock[2].ID} <img src="https:avatar1.jpg" width="50" height="50"> ${mock[2].Nazwa} `);
+    expect(personalinfo2.innerHTML).toBe(`${mock[1].ID} <img src="https:avatar2.jpg" width="50" height="50"> ${mock[1].Nazwa} `);
+    expect(personalinfo3.innerHTML).toBe(`${mock[3].ID} <img src="https:avatar3.jpg" width="50" height="50"> ${mock[3].Nazwa} `);
 });
 
 // test sprawdza sortowanie po nazwie malejąco
@@ -399,10 +399,10 @@ test('Sorting down by name works properly', async () => {
     let personalinfo3 = listItems[3].querySelector('td:first-child');
 
     expect(listItems).not.toBeNull();
-    expect(personalinfo0.innerHTML).toBe(`${mock[3].ID} <img src=\"https:avatar3.jpg\" width=\"50\" height=\"50\"> ${mock[3].Nazwa} `);
-    expect(personalinfo1.innerHTML).toBe(`${mock[1].ID} <img src=\"https:avatar2.jpg\" width=\"50\" height=\"50\"> ${mock[1].Nazwa} `);
-    expect(personalinfo2.innerHTML).toBe(`${mock[2].ID} <img src=\"https:avatar1.jpg\" width=\"50\" height=\"50\"> ${mock[2].Nazwa} `);
-    expect(personalinfo3.innerHTML).toBe(`${mock[0].ID} <img src=\"https:avatar0.jpg\" width=\"50\" height=\"50\"> ${mock[0].Nazwa} `);
+    expect(personalinfo0.innerHTML).toBe(`${mock[3].ID} <img src="https:avatar3.jpg" width="50" height="50"> ${mock[3].Nazwa} `);
+    expect(personalinfo1.innerHTML).toBe(`${mock[1].ID} <img src="https:avatar2.jpg" width="50" height="50"> ${mock[1].Nazwa} `);
+    expect(personalinfo2.innerHTML).toBe(`${mock[2].ID} <img src="https:avatar1.jpg" width="50" height="50"> ${mock[2].Nazwa} `);
+    expect(personalinfo3.innerHTML).toBe(`${mock[0].ID} <img src="https:avatar0.jpg" width="50" height="50"> ${mock[0].Nazwa} `);
 });
 
 // test sprawdza sortowanie po rankingu rosnąco
@@ -1012,9 +1012,9 @@ test('You can filter top 30 users, sort them up by win games and then sort them 
     personalinfo2 = listItems[2].querySelector('td:first-child');
 
     expect(listItems).not.toBeNull();
-    expect(personalinfo0.innerHTML).toBe(`${mock[4].ID} <img width=\"50\" height=\"50\"> ${mock[4].Nazwa} `);
-    expect(personalinfo1.innerHTML).toBe(`${mock[1].ID} <img width=\"50\" height=\"50\"> ${mock[1].Nazwa} `);
-    expect(personalinfo2.innerHTML).toBe(`${mock[2].ID} <img width=\"50\" height=\"50\"> ${mock[2].Nazwa} `);
+    expect(personalinfo0.innerHTML).toBe(`${mock[4].ID} <img width="50" height="50"> ${mock[4].Nazwa} `);
+    expect(personalinfo1.innerHTML).toBe(`${mock[1].ID} <img width="50" height="50"> ${mock[1].Nazwa} `);
+    expect(personalinfo2.innerHTML).toBe(`${mock[2].ID} <img width="50" height="50"> ${mock[2].Nazwa} `);
 });
 
 // test sprawdza czy złożenie kliku akcji działa: filtrowanie top 30, potem filtrowanie top 50
@@ -1087,7 +1087,6 @@ test('You can filter top 30 users, then filter top 50 users', async () => {
 
     fireEvent.click(container.querySelector('#filter-top-50'));
 
-    let list2 = container.querySelector('#stats-table'); //cała tablica (już posortowana)
     let listItems2 = list.querySelectorAll('tr'); //wybieram wszystkie wiersze
     
     expect(listItems2).not.toBeNull();
@@ -1179,10 +1178,10 @@ test('You can filter top 30 users, sort them up by win games, then filter top 50
     let personalinfo3 = listItems[3].querySelector('td:first-child');
 
     expect(listItems).not.toBeNull();
-    expect(personalinfo0.innerHTML).toBe(`${mock[4].ID} <img width=\"50\" height=\"50\"> ${mock[4].Nazwa} `);
-    expect(personalinfo1.innerHTML).toBe(`${mock[0].ID} <img width=\"50\" height=\"50\"> ${mock[0].Nazwa} `);
-    expect(personalinfo2.innerHTML).toBe(`${mock[1].ID} <img width=\"50\" height=\"50\"> ${mock[1].Nazwa} `);
-    expect(personalinfo3.innerHTML).toBe(`${mock[2].ID} <img width=\"50\" height=\"50\"> ${mock[2].Nazwa} `);
+    expect(personalinfo0.innerHTML).toBe(`${mock[4].ID} <img width="50" height="50"> ${mock[4].Nazwa} `);
+    expect(personalinfo1.innerHTML).toBe(`${mock[0].ID} <img width="50" height="50"> ${mock[0].Nazwa} `);
+    expect(personalinfo2.innerHTML).toBe(`${mock[1].ID} <img width="50" height="50"> ${mock[1].Nazwa} `);
+    expect(personalinfo3.innerHTML).toBe(`${mock[2].ID} <img width="50" height="50"> ${mock[2].Nazwa} `);
 });
 
 //jest 10 postów na stronie, tak jak zadeklarowano w Stats.js
@@ -1249,7 +1248,7 @@ test('number of posts per page is the same as defined', async () => {
 });
 
 //można przejść do następnej strony
-it('it is possible to go to the next page', async () => {
+it('is possible to go to the next page', async () => {
     jest.mock("axios");
     axios.get = jest.fn();
 
@@ -1314,7 +1313,7 @@ it('it is possible to go to the next page', async () => {
 });
 
 //można przejść do następnej a potem do poprzedniej strony
-it('it is possible to go to the next page and then go to the previous one', async () => {
+it('is possible to go to the next page and then go to the previous one', async () => {
     jest.mock("axios");
     axios.get = jest.fn();
 
@@ -1380,7 +1379,7 @@ it('it is possible to go to the next page and then go to the previous one', asyn
 });
 
 //nie da się przejść do wcześniejszej niż pierwsza strona
-it('it is not possible to go to the previous page if you are on the first page', async () => {
+it('is not possible to go to the previous page if you are on the first page', async () => {
     jest.mock("axios");
     axios.get = jest.fn();
 
@@ -1445,7 +1444,7 @@ it('it is not possible to go to the previous page if you are on the first page',
 });
 
 //nie da się przejść do dalszej strony niż ostatnia
-it('it is not possible to go to the next page if you are on the last page', async () => {
+it('is not possible to go to the next page if you are on the last page', async () => {
     jest.mock("axios");
     axios.get = jest.fn();
 
@@ -1511,7 +1510,7 @@ it('it is not possible to go to the next page if you are on the last page', asyn
 });
 
 //testowanie złożenia kilku akcji
-it('it is possible to filter top 50 users, sort them up by ranking position and go to the next page after sorting', async () => {
+it('is possible to filter top 50 users, sort them up by ranking position and go to the next page after sorting', async () => {
     jest.mock("axios");
     axios.get = jest.fn();
 

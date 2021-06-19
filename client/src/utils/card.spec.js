@@ -1,4 +1,8 @@
-import card, {check4Stack, isDroppable, numMoves, processRank, shuffleCards} from './card'
+/* eslint-disable no-sequences */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-lone-blocks */
+/* eslint-disable no-loop-func */
+import {check4Stack, isDroppable, numMoves, processRank, shuffleCards} from './card'
 
 // karty do wykorzystania w testach dla wygody i przejrzystości
 {

@@ -1,11 +1,10 @@
+/* eslint-disable no-redeclare */
 import React from "react";
-import styles from "./firework.css";
 
 
 
 function firework(){
 
-let number = 1;
 let canvas, width, height, ctx;
 let fireworks = [];
 let particles = [];

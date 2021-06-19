@@ -32,7 +32,7 @@ function getItemStyles(initialOffset, currentOffset, isSnapToGrid) {
   };
 }
 const Custom = ({ draggingCard }) => {
-  const { itemType, isDragging, item, initialOffset, currentOffset } =
+  const { initialOffset, currentOffset } =
     useDragLayer((monitor) => ({
       item: monitor.getItem(),
       itemType: monitor.getItemType(),

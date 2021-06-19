@@ -13,10 +13,11 @@ const Settings = ({ID}) => {
   const [temporaryCard, setTemporaryCard] = useState("vA hearts");
   const [musicVolume, setMusicVolume] = useState(JSON.parse(localStorage.getItem('guestMusic')) ?? 20);
   const [effectVolume, setEffectVolume] = useState(JSON.parse(localStorage.getItem('guestEffect')) ?? 20);
-  const [isLogged, setIsLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
+  const [isLogged] = useState(JSON.parse(localStorage.getItem('isLogged')) ?? false);
   const [loading, setLoading] = useState(isLogged);
   const userId = ID;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const cards = ["vA hearts cyberpunk","vA hearts"];
   
   const nextCard = () => {
@@ -54,7 +55,7 @@ const Settings = ({ID}) => {
         setLoading(false);
       }).catch(error =>console.log(error.response));
     }
-  }, []);
+  }, [cards, isLogged, userId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

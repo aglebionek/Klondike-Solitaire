@@ -114,6 +114,7 @@ function CreateRoom({userId}) {
         width: '203px', 
         background: 'none', 
         border: 'solid 1px rgba(0, 214, 252, 0.6)',
+        // eslint-disable-next-line no-dupe-keys
         border: state.isFocused ? 'solid 1px rgba(0, 214, 252, 0.6)' : 'solid 1px rgba(0, 214, 252, 0.6)',
         boxShadow: state.isFocused ? '0px 0px 10px rgba(0, 214, 252, 1)' : 'none',
         "&:hover": {

@@ -6,8 +6,9 @@ import soundDefault from '../../../soundtrack/Music/Music_Synthwave_Klondike.mp3
 
 const AudioPlayer = ({ musicVolume, cardset }) => {
     
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const src = [soundCyber, soundDefault];
-    const [trackIndex, setTrackIndex] = useState(0);
+    const [trackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
   
     const audioRef = useRef(new Audio(src[cardset-1]));
@@ -22,6 +23,7 @@ const AudioPlayer = ({ musicVolume, cardset }) => {
         setIsPlaying(true);
       }
   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const startTimer = () => {
       // Clear any timers already running
       clearInterval(intervalRef.current);
@@ -42,7 +44,7 @@ const AudioPlayer = ({ musicVolume, cardset }) => {
       } else {
         audioRef.current.pause();
       }
-    }, [isPlaying]);
+    }, [isPlaying, startTimer]);
   
 
     useEffect(() => {
@@ -57,7 +59,7 @@ const AudioPlayer = ({ musicVolume, cardset }) => {
       } else {
         isReady.current = true;
       }
-    }, [trackIndex]);
+    }, [cardset, src, startTimer, trackIndex]);
   
     useEffect(() => {
       return () => {

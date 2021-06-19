@@ -1,5 +1,4 @@
 import React from 'react';
-import style from './rain.css';
 
 
 function rain (){
