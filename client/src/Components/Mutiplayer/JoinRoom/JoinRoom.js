@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import socket from './../socketConfig.js';
+import agent from '../../../agent/agent';
 
 function JoinRoom () {
   const history = useHistory();
   const initialData = {
     name: 'test',
-    players: []
+    players: [],
   }
   const [roomData, updateRoomData] = useState(initialData);
 
@@ -15,7 +16,7 @@ function JoinRoom () {
     socket.on('pass-room', ({ room, users }) => {
       updateRoomData({
         name: room,
-        players: users
+        players: users,
       });
     });
 
@@ -26,16 +27,31 @@ function JoinRoom () {
     socket.emit('export-room');
     socket.emit('export-users');
 
-    socket.on('start', ({ time }) => {
+    socket.on('get-shuffle', ({ shuffle, time, id }) => {
+      localStorage.setItem("gameInfo", JSON.stringify({
+        startDate: new Date(),
+        timeLeft: time * 60,
+        roomName: roomData.name,
+        id,
+        players: roomData.players,
+        handicap: 0,
+      }));
+
+      localStorage.setItem("shuffle", JSON.stringify(shuffle));
+      
       history.push({
         pathname: '/game-view',
         time,
-        players: roomData.players
+        players: roomData.players,
+        id: id,
+        handicap: 0,
+        isOwner: false,
+        isMulti: true
       });
     });
 
     return () => {
-      socket.off('start');
+      socket.off('get-shuffle');
       socket.off('pass-room');
     }
   });
@@ -77,7 +93,7 @@ function JoinRoom () {
           </div>
           <div className="lobby__created-data__btns lobby-extra-button-class">
             <Link to="/multiplayer">
-              <button id = "lobby-leave" onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
+              <button id="lobby-leave" onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
             </Link>
           </div>
         </div>

@@ -7,26 +7,20 @@ import agent from '../../../agent/agent';
 import createRoomSelectStyle from "./CreateRoomSelectStyle.js";
 import createRoomSelectStyleCyberpunk from "./CreateRoomSelectStyleCyberpunk.js";
 
-function CreateRoom({userId}) {
+function CreateRoom() {
   const history = useHistory();
-  let player = 'player';
 
   const SECONDS_IN_MINUTE = 60;
   
-  agent.get(`/account/${userId}`).then(({ data }) => {
-    player = data.username;
-  })
-    .catch((error) =>{
-      console.log(error.response.data)
-  });
   const initialRoomData = {
     isCreated: false,
     isBeingModified: false,
     name: "Nowy pokój",
     minutes: 5,
-    players: []
+    players: [],
+    id: 0,
   };
-  console.log(initialRoomData)
+
   const [roomData, updateRoomData] = useState(() => {
     const storageValue = localStorage.getItem('roomData');
 
@@ -34,7 +28,9 @@ function CreateRoom({userId}) {
       ? JSON.parse(storageValue)
       : initialRoomData;
   });
+
   const [roomNameBuffer, updateRoomBuffer] = useState(roomData.name);
+  const [player, setPlayer] = useState(() => (JSON.parse(localStorage.getItem("user"))).username);
 
   const handleNameChange = (evt) => {
     updateRoomData((prevData) => ({
@@ -53,6 +49,11 @@ function CreateRoom({userId}) {
   const handleRoomCreateButton = (evt) => {
     evt.preventDefault();
 
+    setTimeout(() => {
+      socket.emit('export-room');
+      socket.emit('export-users');
+    }, 10);
+
     updateRoomData((prevData) => ({
       ...prevData,
       isCreated: true,
@@ -68,7 +69,7 @@ function CreateRoom({userId}) {
     else{
       socket.emit('lobby-join', { 
         player, 
-        room: roomData.name 
+        room: roomData.name,
       });
     }
 
@@ -85,10 +86,36 @@ function CreateRoom({userId}) {
   };
 
   const handleGameBegin = () => {
-    socket.emit('game-start', {
-      room: roomData.name,
-      time: roomData.minutes * SECONDS_IN_MINUTE
-    });
+    const start = new Date();
+    const now = start.toISOString().slice(0, 19).replace('T', ' ');
+    let then = new Date();
+
+    then.setMinutes(start.getMinutes() + roomData.minutes);
+    then = then.toISOString().slice(0, 19).replace('T', ' ');
+
+    agent.post("/game/insert-game", {
+      start: now,
+      end: then
+    })
+
+    agent
+      .post("/game/get-last-id")
+      .then(res => res.data)
+      .then(data => {
+        localStorage.setItem("gameInfo", JSON.stringify({
+          startDate: new Date(),
+          time: roomData.minutes * SECONDS_IN_MINUTE,
+          roomName: roomData.name,
+          gameId: data,
+          players: roomData.players,
+        }));
+    
+        socket.emit('game-start', {
+          room: roomData.name,
+          time: roomData.minutes * SECONDS_IN_MINUTE,
+          id: data
+        });
+      })
   }
 
   useEffect(() => {
@@ -96,17 +123,21 @@ function CreateRoom({userId}) {
       updateRoomData((prevData) => ({
         ...prevData,
         name: room,
-        players: users
+        players: users,
       }));
 
       localStorage.setItem('roomData', JSON.stringify(roomData));
     });
 
-    socket.on('start', ({ time }) => {
+    socket.on('start', ({ time, id }) => {
       history.push({
         pathname: '/game-view',
         time,
-        players: roomData.players
+        players: roomData.players,
+        id: id,
+        handicap: 0,
+        isOwner: true,
+        isMulti: true
       });
     });
 
@@ -210,14 +241,7 @@ function CreateRoom({userId}) {
                 required
               />
             </div>
-            <button className='lobby__create-room-button'
-              onClick={() => setTimeout(() => {
-                  socket.emit('export-room');
-                  socket.emit('export-users');
-                } 
-                , 10
-              )} // async loading hack
-            >
+            <button>
               {roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}
             </button>
           </form>

@@ -8,6 +8,19 @@ import agent from '../../agent/agent.js';
 function MainMenu( {effect, handleButton} ) {
     const history = useHistory();
     const [isLogged, setLog] = useState(false);
+    const [user, updateUser] = useState(() => {
+        const storageValue = localStorage.getItem('user');
+    
+        return storageValue !== null
+          ? {
+              id: (JSON.parse(storageValue)).id,
+              name: (JSON.parse(storageValue)).username,
+          }
+          : {
+              id: 0,
+              name: "Gość"
+          };
+    });
 
     const buttonSound = () => {
             let beep = new Audio(buttonMenuClick);
@@ -28,7 +41,7 @@ function MainMenu( {effect, handleButton} ) {
                 .then(() => {
                     setLog(false);
                     localStorage.setItem('isLogged', false);
-                    localStorage.setItem('userId',0);
+                    localStorage.removeItem('user');
                 })
                 
             return;
@@ -36,6 +49,56 @@ function MainMenu( {effect, handleButton} ) {
 
         history.push('login');
     }
+
+    const startSingleGame = () => {
+        if(user.name !== "Gość"){
+            agent.post("/game/insert-game", {
+                start: new Date(),
+                time: 600 // incorrect value for tests
+            });
+
+            agent
+                .post("/game/get-last-id")
+                .then(res => res.data)
+                .then(data => {
+                    history.push({
+                        pathname: '/game-view', 
+                        time: Number.MAX_SAFE_INTEGER, 
+                        players: [
+                            {
+                                id: user.id,
+                                username: user.name,
+                                room: null,
+                                inGame: true
+                            }
+                        ], 
+                        id: data,
+                        handicap: 0,
+                        isMulti: false
+                    });
+                });
+        }
+
+        else{
+            history.push({
+                pathname: '/game-view', 
+                time: Number.MAX_SAFE_INTEGER, 
+                players: [
+                    {
+                        id: user.id,
+                        username: user.name,
+                        room: null,
+                        inGame: true
+                    }
+                ], 
+                id: undefined,
+                handicap: 0,
+                isMulti: false
+                
+            });
+        }
+    }
+    
 
     useEffect(() => {
           agent.get("auth/verify")
@@ -70,14 +133,7 @@ function MainMenu( {effect, handleButton} ) {
                     <h1>Pasjans Klondike</h1>
                 </div>
                 <div className='main-elements__buttons'>
-                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push({pathname: '/game-view', time: Number.MAX_SAFE_INTEGER, players: [
-                        {
-                            id: 0,
-                            username: 'Guest',
-                            room: null,
-                            inGame: true
-                        }
-                    ]})}>JEDNOOSOBOWA</button>
+                    <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={startSingleGame}>JEDNOOSOBOWA</button>
                     <button onMouseOver={buttonHover} onMouseDown={buttonSound} onClick={() => history.push('multiplayer')}>WIELOOSOBOWA</button>
                 </div>
             </div>   

@@ -26,7 +26,7 @@ function Login() {
         .then((resp) => {
           if (resp.status === 200) {
             localStorage.setItem('isLogged', true);
-            localStorage.setItem('userId', resp.data);
+            localStorage.setItem('user', JSON.stringify(resp.data));
             setLoggedIn(true);
             window.location.href = '/';
           }

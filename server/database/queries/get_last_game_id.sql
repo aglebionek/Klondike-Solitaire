@@ -1,0 +1,1 @@
+SELECT MAX(id) as id FROM `pasjans-db`.games
