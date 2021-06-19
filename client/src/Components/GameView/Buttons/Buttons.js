@@ -20,6 +20,7 @@ const Buttons = ({
   effect,
   analysis,
   revealCardRef,
+  isMulti
 }) => {
   const [soundUndoButton, setSoundUndoButton] = useState(true);
   const [soundRestartButton, setSoundRestartButton] = useState(true);
@@ -211,9 +212,14 @@ const Buttons = ({
       ) : (
         <button
           className={styles.button}
-          onClick={() => setGameNumber((prev) => prev + 1)}
+          onClick={() => {
+            if(!isMulti){
+              setGameNumber((prev) => prev + 1)
+            }
+          }}
           name="restart"
           onMouseOver={handleMouseOver}
+          disabled={isMulti}
         >
           <RiRestartLine />
         </button>

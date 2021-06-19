@@ -4,7 +4,6 @@ import GameView from "./GameView";
 import Animation from "./game_end_animations/Animation";
 
 import agent from '../../agent/agent';
-import socket from '../Mutiplayer/socketConfig';
 
 class StatsBoard extends Component {
   constructor(props) {

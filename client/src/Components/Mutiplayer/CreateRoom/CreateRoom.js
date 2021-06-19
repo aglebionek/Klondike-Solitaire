@@ -85,8 +85,6 @@ function CreateRoom() {
   };
 
   const handleGameBegin = () => {
-    let id;
-
     const start = new Date();
     const now = start.toISOString().slice(0, 19).replace('T', ' ');
     let then = new Date();
@@ -214,7 +212,9 @@ function CreateRoom() {
         time,
         players: roomData.players,
         id: id,
-        handicap: 0
+        handicap: 0,
+        isOwner: true,
+        isMulti: true
       });
     });
 

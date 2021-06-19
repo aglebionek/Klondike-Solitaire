@@ -77,6 +77,12 @@ io.on("connection", (socket) => {
     io.to(room).emit('start', { time, id });
   });
 
+  socket.on("send-shuffle", ({ shuffle, time, id }) => {
+    const user = getCurrentUser(socket.id);
+
+    io.to(user.room).emit("get-shuffle", { shuffle, time, id });
+  })
+
   socket.on("lobby-modify", ({ room, newName }) => {
     const user = getCurrentUser(socket.id);
     

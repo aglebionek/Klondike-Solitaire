@@ -4,7 +4,7 @@ import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FiArrowLeft } from "react-icons/fi";
-import { drop, testCard2 as shuffleCards, numMoves, gameResult } from "../../utils/card";
+import { drop, shuffleCards, numMoves, gameResult } from "../../utils/card";
 import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
@@ -32,7 +32,13 @@ function GameView({
 }) {
   const location = useLocation();
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
-  const [shuffle, setShuffle] = useState(null);
+  const [shuffle, setShuffle] = useState(() => {
+    const initialStorage = localStorage.getItem("shuffle");
+
+    return initialStorage !== null
+      ? JSON.parse(initialStorage)
+      : null
+  });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [moveNumbers, setMoveNumbers] = useState(0);
@@ -131,30 +137,42 @@ function GameView({
   const columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
-    if (!shuffle) {
-      let firstShuffle;
-      if (initialShuffle) {
-        firstShuffle = initialShuffle;
-      } else {
-        firstShuffle = shuffleCards();
-        setShuffle(firstShuffle);
-      }
+    
+    let firstShuffle;
 
-      Object.entries(firstShuffle).map(([key, item]) => {
-        const newArray = [];
-        for (let i = 0; i < item.length; i++) {
-          newArray.push({ ...item[i] });
-        }
-        columns[key].set(newArray);
-      });
-      setLoading(false);
-      if (analysis) {
-        setHistory(initialHistory);
-        setPoints(initialPoints);
-        setGameTime(initialGameTime);
-        setMoveNumbers(initialMoveNumbers);
-      } else startTimer();
+    if (initialShuffle) {
+      firstShuffle = initialShuffle;
+    } 
+    else if(shuffle){
+      firstShuffle = shuffle;
     }
+    else{
+      firstShuffle = shuffleCards();
+      setShuffle(firstShuffle);
+    }
+
+    Object.entries(firstShuffle).map(([key, item]) => {
+      const newArray = [];
+      for (let i = 0; i < item.length; i++) {
+        newArray.push({ ...item[i] });
+      }
+      columns[key].set(newArray);
+    });
+    setLoading(false);
+    if (analysis) {
+      setHistory(initialHistory);
+      setPoints(initialPoints);
+      setGameTime(initialGameTime);
+      setMoveNumbers(initialMoveNumbers);
+    } else startTimer();
+
+    console.log(location.isOwner)
+
+    if(location.isOwner){
+      socket.emit('send-shuffle', { shuffle: firstShuffle, time: location.time, id: location.id });
+      localStorage.setItem("shuffle", JSON.stringify(firstShuffle));
+    }
+    
   }, []);
 
    const startTimer = () => {
@@ -237,7 +255,7 @@ function GameView({
         startColumn1
       );
 
-      if(gameTime === 5){
+      if(gameTime === location.time){
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       }
@@ -282,6 +300,8 @@ function GameView({
     const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
       return finalColumns[key].get;
     });
+
+    localStorage.removeItem("shuffle");
 
     const result = gameResult(finalColumnsArr);
     playersOnEndGame.sort((a, b) => b.score - a.score);
@@ -352,6 +372,7 @@ function GameView({
             effect={effect}
             analysis={analysis}
             revealCardRef={revealCardRef}
+            isMulti={location.isMulti}
           />
           <FinalColumns
             finalColumns={finalColumns}

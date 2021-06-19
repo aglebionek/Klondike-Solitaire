@@ -28,27 +28,33 @@ function JoinRoom () {
     socket.emit('export-room');
     socket.emit('export-users');
 
-    socket.on('start', ({ time, id }) => {
+    socket.on('get-shuffle', ({ shuffle, time, id }) => {
       localStorage.setItem("gameInfo", JSON.stringify({
         startDate: new Date(),
         timeLeft: time * 60,
         roomName: roomData.name,
         id,
         players: roomData.players,
-        handicap: 0
+        handicap: 0,
       }));
+
+      localStorage.setItem("shuffle", JSON.stringify(shuffle));
+
+      console.log(time);
 
       history.push({
         pathname: '/game-view',
         time,
         players: roomData.players,
         id: id,
-        handicap: 0
+        handicap: 0,
+        isOwner: false,
+        isMulti: true
       });
     });
 
     return () => {
-      socket.off('start');
+      socket.off('get-shuffle');
       socket.off('pass-room');
     }
   });

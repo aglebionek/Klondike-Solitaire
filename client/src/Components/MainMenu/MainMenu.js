@@ -74,7 +74,8 @@ function MainMenu( {effect, handleButton} ) {
                             }
                         ], 
                         id: data,
-                        handicap: 0
+                        handicap: 0,
+                        isMulti: false
                     });
                 });
         }
@@ -92,7 +93,9 @@ function MainMenu( {effect, handleButton} ) {
                     }
                 ], 
                 id: undefined,
-                handicap: 0
+                handicap: 0,
+                isMulti: false
+                
             });
         }
     }
