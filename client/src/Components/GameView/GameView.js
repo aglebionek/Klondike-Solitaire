@@ -166,8 +166,6 @@ function GameView({
       setMoveNumbers(initialMoveNumbers);
     } else startTimer();
 
-    console.log(location.isOwner)
-
     if(location.isOwner){
       socket.emit('send-shuffle', { shuffle: firstShuffle, time: location.time, id: location.id });
       localStorage.setItem("shuffle", JSON.stringify(firstShuffle));

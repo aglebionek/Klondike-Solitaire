@@ -55,6 +55,10 @@ function AppInfo() {
       <p>
         Technicznie rzecz biorąc, tryb multiplayer jest rozszerzeniem trybu jednoosobowego. Gra wieloosobowa polega na tym, że kilku graczy zgromadzonych w pokoju układa to samo rozdanie pasjansa. Po grze zbierane są te same statystyki, co w grze jednoosobowej. Na tej podstawie liczone są przydziały punktów dla każdego z graczy. Po grze aplikacja daje możliwość analizy ruchów przeciwników.
       </p>
+      <h3>
+        Link do dokumentacji developerskiej
+      </h3>
+      <p><a href="https://klondikedocs.netlify.app/#/">https://klondikedocs.netlify.app/#/</a></p>
     </div>
   )
 }

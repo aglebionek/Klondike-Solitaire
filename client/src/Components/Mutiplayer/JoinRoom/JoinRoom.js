@@ -39,9 +39,7 @@ function JoinRoom () {
       }));
 
       localStorage.setItem("shuffle", JSON.stringify(shuffle));
-
-      console.log(time);
-
+      
       history.push({
         pathname: '/game-view',
         time,
