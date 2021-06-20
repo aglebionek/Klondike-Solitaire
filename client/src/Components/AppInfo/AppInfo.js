@@ -1,12 +1,7 @@
 import React from 'react';
+import ThemeSelector from '../ThemeSelector/ThemeSelector';
 
 function AppInfo() {
-  var styles = require("./AppInfo.css");
-  if(localStorage.getItem('isLogged')) {
-      if(localStorage.getItem('motiveCss') === "cyberpunk") {
-          styles = require("./AppInfoCyberpunk.css");
-      }
-  }
   return (
     <div className="appinfo__container">
       <a className="appinfo__back" href="./..">
@@ -68,4 +63,4 @@ function AppInfo() {
   )
 }
 
-export default AppInfo;
+export default ThemeSelector(AppInfo);

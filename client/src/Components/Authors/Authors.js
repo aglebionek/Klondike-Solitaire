@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 import list from "./AuthorList.json";
-import ThemeSelector from "./Theme/ThemeSelector";
 
 function Authors() {
   return (
