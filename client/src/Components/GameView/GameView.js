@@ -44,7 +44,21 @@ function GameView({
   const [isGameEnded, setGameEnd] = useState(false);
   const [isGameLoaded, setGameLoaded] = useState(false);
   const [bonus, setBonus] = useState(1200);
-  const [gameTime, setGameTime] = useState(location.handicap);
+  const [gameTime, setGameTime] = useState(() => {
+    const item = localStorage.getItem("gameInfo");
+
+    if(location.handicap){
+      return location.handicap;
+    }
+
+    if(item !== null){
+      const gameInfoDate = JSON.parse(item).startDate;
+
+      return Math.floor((new Date() - new Date(gameInfoDate)) / 1000);
+    }
+
+    return 0;
+  });
   const [points, setPoints] = useState(0);
   const [playMusic, setPlayMusic] = useState(false);
 
@@ -244,7 +258,9 @@ function GameView({
         startColumn1
       );
 
-      if (gameTime === location.time) {
+      console.log(possibleMoves)
+
+      if (gameTime === 10) {
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       }
@@ -310,8 +326,6 @@ function GameView({
     localStorage.removeItem("shuffle");
 
     const result = gameResult(finalColumnsArr);
-
-    console.log(result);
 
     playersOnEndGame.sort((a, b) => b.score - a.score);
     return (
