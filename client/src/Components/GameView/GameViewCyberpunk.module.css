@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 99vh;
+  padding-top: 1vh;
+  background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+}
+
+.cardTop {
+  display: flex;
+  width: 100%;
+  height: max-content;
+}
+
+.cardShadow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(4.8em - 2px);
+  height: calc(6.675em - 2px);
+  border: 1px solid grey;
+}
+
+.statistics {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 5%;
+  justify-self: flex-end;
+  align-self: flex-end;
+  border-top: 1px solid grey;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+}
+
+.stats{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats__h1{
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.stats__table{
+  border-collapse: collapse;
+  margin-bottom: 50px;
+}
+
+.stats__cell{
+  width: 150px;
+  border: 1px black solid;
+}
+
+.stats__cell__header{
+  font-weight: 700;
+  border: 1px black solid;
+}

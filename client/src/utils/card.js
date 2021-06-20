@@ -120,6 +120,169 @@ const cards = [
   { rank: "A", color: "black", shape: "clubs" },
 ];
 
+export const testCards = () => {
+  const startColumn1 = [
+    { rank: "A", color: "black", shape: "clubs", isVisible: false },
+    { rank: "7", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "Q", color: "black", shape: "clubs", isVisible: false },
+    { rank: "K", color: "black", shape: "clubs", isVisible: false },
+    { rank: "5", color: "black", shape: "spades", isVisible: false },
+    { rank: "A", color: "black", shape: "spades", isVisible: false },
+    { rank: "10", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "K", color: "black", shape: "spades", isVisible: false },
+    { rank: "4", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "Q", color: "black", shape: "spades", isVisible: false },
+    { rank: "9", color: "black", shape: "clubs", isVisible: false },
+    { rank: "9", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "3", color: "red", shape: "hearts", isVisible: false },
+    { rank: "J", color: "black", shape: "spades", isVisible: false },
+    { rank: "10", color: "red", shape: "hearts", isVisible: false },
+    { rank: "10", color: "black", shape: "spades", isVisible: false },
+    { rank: "2", color: "red", shape: "hearts", isVisible: false },
+    { rank: "3", color: "black", shape: "spades", isVisible: false },
+    { rank: "9", color: "black", shape: "spades", isVisible: false },
+    { rank: "9", color: "red", shape: "hearts", isVisible: false },
+    { rank: "2", color: "black", shape: "spades", isVisible: false },
+    { rank: "6", color: "red", shape: "hearts", isVisible: false },
+    { rank: "5", color: "red", shape: "hearts", isVisible: false },
+    { rank: "3", color: "red", shape: "diamonds", isVisible: false },
+  ];
+  const mainColumn1 = [
+    { rank: "8", color: "black", shape: "clubs", isVisible: true },
+  ];
+  const mainColumn2 = [
+    { rank: "Q", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "K", color: "red", shape: "hearts", isVisible: true },
+  ];
+  const mainColumn3 = [
+    { rank: "7", color: "red", shape: "hearts", isVisible: false },
+    { rank: "J", color: "red", shape: "hearts", isVisible: false },
+    { rank: "A", color: "red", shape: "diamonds", isVisible: true },
+  ];
+  const mainColumn4 = [
+    { rank: "8", color: "black", shape: "spades", isVisible: false },
+    { rank: "5", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "J", color: "black", shape: "clubs", isVisible: false },
+    { rank: "2", color: "red", shape: "diamonds", isVisible: true },
+  ];
+  const mainColumn5 = [
+    { rank: "5", color: "black", shape: "clubs", isVisible: false },
+    { rank: "J", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "A", color: "red", shape: "hearts", isVisible: false },
+    { rank: "7", color: "black", shape: "spades", isVisible: false },
+    { rank: "6", color: "red", shape: "diamonds", isVisible: true },
+  ];
+
+  const mainColumn6 = [
+    { rank: "4", color: "black", shape: "clubs", isVisible: false },
+    { rank: "4", color: "black", shape: "spades", isVisible: false },
+    { rank: "Q", color: "red", shape: "hearts", isVisible: false },
+    { rank: "3", color: "black", shape: "clubs", isVisible: false },
+    { rank: "10", color: "black", shape: "clubs", isVisible: false },
+    { rank: "7", color: "black", shape: "clubs", isVisible: true },
+  ];
+  const mainColumn7 = [
+    { rank: "6", color: "black", shape: "spades", isVisible: false },
+    { rank: "8", color: "red", shape: "hearts", isVisible: false },
+    { rank: "2", color: "black", shape: "clubs", isVisible: false },
+    { rank: "4", color: "red", shape: "hearts", isVisible: false },
+    { rank: "K", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "6", color: "black", shape: "clubs", isVisible: false },
+    { rank: "8", color: "red", shape: "diamonds", isVisible: true },
+  ];
+  return {
+    startColumn1,
+    mainColumn1,
+    mainColumn2,
+    mainColumn3,
+    mainColumn4,
+    mainColumn5,
+    mainColumn6,
+    mainColumn7,
+  };
+};
+
+export const testCard2 = () => {
+  const startColumn1 = [
+    { rank: "3", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "4", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "5", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "6", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "7", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "8", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "9", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "10", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "J", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "Q", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "K", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "A", color: "red", shape: "hearts", isVisible: false },
+    { rank: "2", color: "red", shape: "hearts", isVisible: false },
+    { rank: "3", color: "red", shape: "hearts", isVisible: false },
+    { rank: "4", color: "red", shape: "hearts", isVisible: false },
+    { rank: "5", color: "red", shape: "hearts", isVisible: false },
+    { rank: "6", color: "red", shape: "hearts", isVisible: false },
+    { rank: "7", color: "red", shape: "hearts", isVisible: false },
+    { rank: "8", color: "red", shape: "hearts", isVisible: false },
+    { rank: "9", color: "red", shape: "hearts", isVisible: false },
+    { rank: "10", color: "red", shape: "hearts", isVisible: false },
+    { rank: "J", color: "red", shape: "hearts", isVisible: false },
+    { rank: "Q", color: "red", shape: "hearts", isVisible: false },
+    { rank: "K", color: "red", shape: "hearts", isVisible: false },
+  ];
+  const mainColumn1 = [
+    { rank: "2", color: "red", shape: "diamonds", isVisible: true },
+  ];
+  const mainColumn2 = [
+    { rank: "A", color: "red", shape: "diamonds", isVisible: false },
+    { rank: "K", color: "black", shape: "spades", isVisible: true },
+  ];
+  const mainColumn3 = [
+    { rank: "Q", color: "black", shape: "spades", isVisible: false },
+    { rank: "J", color: "black", shape: "spades", isVisible: false },
+    { rank: "10", color: "black", shape: "spades", isVisible: true },
+  ];
+  const mainColumn4 = [
+    { rank: "9", color: "black", shape: "spades", isVisible: false },
+    { rank: "8", color: "black", shape: "spades", isVisible: false },
+    { rank: "7", color: "black", shape: "spades", isVisible: false },
+    { rank: "6", color: "black", shape: "spades", isVisible: true },
+  ];
+  const mainColumn5 = [
+    { rank: "5", color: "black", shape: "spades", isVisible: false },
+    { rank: "4", color: "black", shape: "spades", isVisible: false },
+    { rank: "3", color: "black", shape: "spades", isVisible: false },
+    { rank: "2", color: "black", shape: "spades", isVisible: false },
+    { rank: "A", color: "black", shape: "spades", isVisible: true },
+  ];
+  const mainColumn6 = [
+    { rank: "K", color: "black", shape: "clubs", isVisible: false },
+    { rank: "Q", color: "black", shape: "clubs", isVisible: false },
+    { rank: "J", color: "black", shape: "clubs", isVisible: false },
+    { rank: "10", color: "black", shape: "clubs", isVisible: false },
+    { rank: "9", color: "black", shape: "clubs", isVisible: false },
+    { rank: "8", color: "black", shape: "clubs", isVisible: true },
+  ];
+  const mainColumn7 = [
+    { rank: "7", color: "black", shape: "clubs", isVisible: false },
+    { rank: "6", color: "black", shape: "clubs", isVisible: false },
+    { rank: "5", color: "black", shape: "clubs", isVisible: false },
+    { rank: "4", color: "black", shape: "clubs", isVisible: false },
+    { rank: "3", color: "black", shape: "clubs", isVisible: false },
+    { rank: "2", color: "black", shape: "clubs", isVisible: false },
+    { rank: "A", color: "black", shape: "clubs", isVisible: true },
+  ];
+  return {
+    startColumn1,
+    mainColumn1,
+    mainColumn2,
+    mainColumn3,
+    mainColumn4,
+    mainColumn5,
+    mainColumn6,
+    mainColumn7,
+  };
+};
+
 export const shuffleCards = () => {
   const deck = cards.slice();
   const startColumn1 = [];
@@ -143,16 +306,16 @@ export const shuffleCards = () => {
 
   for (let i = 0; i < 24; i++) {
     const random = Math.floor(Math.random() * deck.length);
-    const card = deck[random];
+    const card = { ...deck[random] };
     card.isVisible = false;
-    startColumn1.push(deck[random]);
+    startColumn1.push(card);
     deck.splice(random, 1);
   }
 
   Object.entries(mainColumns).map(([key, item], index) => {
     for (let j = 0; j < index + 1; j++) {
       const random = Math.floor(Math.random() * deck.length);
-      const card = deck[random];
+      const card = { ...deck[random] };
       if (j === index) {
         card.isVisible = true;
       } else card.isVisible = false;
@@ -160,8 +323,7 @@ export const shuffleCards = () => {
       deck.splice(random, 1);
     }
   });
-
-  return { startColumn1, ...mainColumns };
+  return { startColumn1: [...startColumn1], ...mainColumns };
 };
 
 export const numMoves = function (
@@ -170,6 +332,8 @@ export const numMoves = function (
   revealedCardStack
 ) {
   var nummov = 0;
+  let i = 0;
+  let j = 0;
   for (const column of columnList) {
     if (column.length !== 0) {
       for (const revealedCard of revealedCardStack) {
@@ -180,13 +344,21 @@ export const numMoves = function (
     }
     for (const column1 of columnList) {
       if (column.length !== 0 && column1.length !== 0) {
-        if (
-          isDroppable(column1[column1.length - 1], column[column.length - 1])
-        ) {
-          nummov += 1;
+        if (i !== j) {
+          for (const card of column1) {
+            if (
+              card.isVisible &&
+              isDroppable(column[column.length - 1], card)
+            ) {
+              nummov += 1;
+            }
+          }
         }
       }
+      j += 1;
     }
+    j = 0;
+    i += 1;
   }
   for (const column of columnList) {
     for (const foundation of foundationList) {
@@ -207,5 +379,131 @@ export const numMoves = function (
       }
     }
   }
+
+  for (const foundation of foundationList) {
+    if (foundation.length > 0 && foundation.length < 13) {
+      const lastFoundationCard = foundation[foundation.length - 1] || null;
+      for (const column of columnList) {
+        if (column.length !== 0) {
+          const lastColumnCard = column[column.length - 1];
+          if (isDroppable(lastColumnCard, lastFoundationCard)) {
+            nummov += 1;
+          }
+        }
+      }
+    }
+  }
   return nummov;
+};
+
+export const gameResult = (finalColumns, activePlayer, playersArr, isMulti) => {
+  if(!isMulti){
+    for (const column of finalColumns) {
+      if (column.length < 13) return "lose";
+    }
+    return "win";
+  }
+  else{
+    const index = playersArr.findIndex((element) => {
+      return element.name === activePlayer;
+    });
+
+    if(index === 0){
+      return "win";
+    }
+    else if(index === playersArr.length - 1){
+      return "lose";
+    }
+    else{
+      return "draw";
+    }
+  }
+};
+
+export const drop = (
+  currentCards,
+  draggingCards,
+  columns,
+  draggingCard,
+  setMoveNumbers,
+  setPoints,
+  points,
+  revealCardRef,
+  cardSound,
+  setHistory,
+  history,
+  cardRight,
+  setDraggingCard,
+  analysis
+) => {
+  const selectedCard =
+    currentCards.array[currentCards.array.length - 1] || null;
+  const dropTarget = draggingCards.array[0];
+  const dragArrayLength = draggingCards.array.length;
+  const carriedArray = columns[draggingCard.title].get;
+  const carriedArrayLength = carriedArray.length;
+  const sliceEnd = carriedArrayLength - dragArrayLength;
+  const carriedTarget = draggingCard.target;
+  if (!analysis) setMoveNumbers((prev) => prev + 1);
+  if (isDroppable(selectedCard, dropTarget)) {
+    if (draggingCards.title.includes("finalColumn")) {
+      const newPoints = points - 10;
+      if (newPoints < 0) setPoints(0);
+      else setPoints(newPoints);
+    }
+    let newHistoryStep;
+    if (draggingCards.title === "startColumn2") {
+      const source = columns["startColumn1"].get;
+      const index = draggingCard.cardIndex;
+      source.splice(index - 1, 1);
+      columns[draggingCard.title].set([]);
+      columns["startColumn1"].set(source);
+      columns[currentCards.title].set([
+        ...currentCards.array,
+        ...draggingCards.array,
+      ]);
+      newHistoryStep = {
+        source: draggingCard.title,
+        target: currentCards.title,
+        draggedCards: draggingCard.array,
+        cardIndex: index,
+      };
+      //index-1
+      revealCardRef.current.revealTheCard(true);
+    } else {
+      columns[currentCards.title].set([
+        ...currentCards.array,
+        ...draggingCards.array,
+      ]);
+
+      const reducedColumn = carriedArray.slice(0, sliceEnd);
+      let reversed = null;
+      if (
+        reducedColumn.length > 0 &&
+        !reducedColumn[reducedColumn.length - 1].isVisible
+      ) {
+        reversed = reducedColumn.length - 1;
+      }
+      if (reducedColumn.length > 0)
+        reducedColumn[reducedColumn.length - 1].isVisible = true;
+      columns[draggingCard.title].set(reducedColumn);
+
+      newHistoryStep = {
+        source: draggingCard.title,
+        target: currentCards.title,
+        draggedCards: draggingCard.array,
+        reversed,
+      };
+    }
+    cardSound(cardRight);
+    setHistory([...history, newHistoryStep]);
+  } else {
+    carriedTarget.style.opacity = 1;
+    let sibling = carriedTarget.nextElementSibling;
+    while (sibling !== null) {
+      sibling.style.opacity = 1;
+      sibling = sibling.nextElementSibling;
+    }
+  }
+  setDraggingCard({ title: "", array: [] });
 };

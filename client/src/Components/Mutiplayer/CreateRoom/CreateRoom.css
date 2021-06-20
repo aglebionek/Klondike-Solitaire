@@ -1,14 +1,15 @@
 .lobby__container{
   width: 100vw;
-  height: 90vh;
-
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
+  user-select: none;
+  flex-direction: column;
 }
 
-.multiplayer__back{
+.lobby__back{
   position: absolute;
   top: 0;
   left: 0;
@@ -16,18 +17,74 @@
   text-decoration: none;
   font-size: 2rem;
   padding: 10px;
-  color: black;
+  color: #102542;
+  cursor: default;
 }
 
 .lobby__inner-container{
-  width: 360px;
-  overflow-x: hidden;
+  width: 700px;
+  color: #102542;
+
+  padding-bottom: 10px;
 }
 
 .lobby__inner-container input{
-  width: 100%;
-  height: 20px;
-  padding: 10px;
+  padding: 1em 1em;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 10px;
+  width: 650px;
+  background: none;
+  color: #102542;
+
+  border: solid 1px #102542;
+  border-radius: 3px;
+  font-size: 20px;
+}
+
+.lobby__inner-container input:focus {
+  border: solid 1px #102542;
+  outline: none;
+}
+
+.lobby__headline {
+  margin-bottom: 1em;
+  text-align: center;
+  font-size: 40px;
+  color: #102542;
+  letter-spacing: 1.8px;
+}
+
+.lobby__label {
+  color: #102542;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+#game-time {
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+}
+
+
+.lobby__create-room-button {
+  background: none;
+  border: solid 1px #102542;
+  color: #102542;
+
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  font-size: 16px;
+  width: 200px;
+  text-decoration: none;
+  cursor: pointer;
+  align-self: center;
 }
 
 /* BEFORE CREATION PART */
@@ -44,7 +101,7 @@
   margin: 15px 0;
 }
 
-/* AFTER CREATION PART */ 
+/* AFTER CREATION PART */
 .lobby__created-data{
   display: flex;
   align-self: flex-start;
@@ -65,11 +122,25 @@
 
 .lobby__created-data__btns{
   display: flex;
-  margin-top: 20px;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .lobby__created-data__btns button{
-  margin-right: 10px;
+  background: none;
+  border: solid 1px #102542;
+  color: #102542;
+
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  margin-top: 40px;
+  display: inline-block;
+  font-size: 16px;
+  width: 200px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .player-row p{

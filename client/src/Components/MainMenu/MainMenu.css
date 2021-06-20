@@ -1,70 +1,78 @@
+.main-menu {
+    height: 100vh;
+    user-select: none;
+    background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
+}
+
+
+
 .main-menu__top-bar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     height: 12vh;
-    padding: 5px;
+    padding: 10px;
+}
+.main-menu__top-bar > div > button, .dropdown__button-top {
+    font-size: 24px;
+    border: solid 1px #102542;
+    background: none;
+    color: #102542;
+    letter-spacing: 1.8px;
+    cursor: pointer;
 }
 
-.main-menu__top-bar > div > button {
-    font-size: 24px;
+
+.dropdown__button, .dropdown__button-hidden {
+    color: #102542;
+    background: none;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    border-bottom: solid 1px #102542;
+}
+
+.dropdown__button-hidden {
+    opacity: 0%;
+    visibility: hidden;
 }
 
 .dropdown__content {
-    display: none;
-}
-
-.top-bar__dropdown:hover > .dropdown__content {
     display: flex;
     flex-direction: column;
 }
-
-
 
 .main-menu__main-elements {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-}
-.road {
-    width: 100%;
-    height: 40em;
-    overflow: hidden;
-    background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0) 0px,
-        rgba(236, 11, 11, 0.5) 0%,
-        rgba(236, 11, 11, 0.5) 3px,
-        rgba(0, 0, 0, 0) 0px
-      ),
-      linear-gradient(
-        90deg,
-        rgba(0, 0, 0, 0) 0px,
-        rgba(236, 11, 11, 0.5) 0%,
-        rgba(236, 11, 11, 0.5) 3px,
-        rgba(0, 0, 0, 0) 0px
-      );
-    background-size: 2em 1em, 2em 1em;
-    background-color: black;
-    margin-top: 20em;
-    transform: perspective(100px) rotateX(45deg) scale(2);
 }
 
 .main-elements__title > h1 {
     font-size: 50px;
     margin-bottom: 15vh;
+    color: #102542;
+    letter-spacing: 1.8px;
 }
 
 .main-elements__buttons {
     display: flex;
     flex-direction: column;
+    padding-bottom: 2px;
+    padding-top: 2px;
 }
 
 .main-elements__buttons > button {
-    margin-top: 1.5vh;
     margin-bottom: 1.5vh;
+    margin-top: 1.5vh;
     padding: 4px;
     font-size: 30px;
     width: 70vw;
+    border: solid 1px #102542;
+    background: none;
+    color: #102542;
+    outline: none;
+    position: relative;
+    letter-spacing: 1.8px;
+    cursor: pointer;
 }

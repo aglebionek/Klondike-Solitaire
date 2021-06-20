@@ -1,12 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import list from './AuthorList.json';
-
-import './AuthorsCyberpunk.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import list from "./AuthorList.json";
 
 function Authors() {
-
-  console.log(list.people);
+  var styles = require("./Authors.css");
+  if (localStorage.getItem("isLogged")) {
+    if (localStorage.getItem("motiveCss") === "cyberpunk") {
+      styles = require("./AuthorsCyberpunk.css");
+    }
+  }
 
   return (
     <section className="authors__container">
@@ -23,8 +25,7 @@ function Authors() {
         ))}
       </article>
     </section>
-  )
+  );
 }
 
 export default Authors;
-

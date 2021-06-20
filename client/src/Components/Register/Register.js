@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import "./RegisterCyberpunk.css";
 import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from "../../agent/agent.js";
@@ -70,6 +69,7 @@ function Register() {
         .then((resp) => {
           if (resp.status === 200) {
             localStorage.setItem('isLogged', true);
+            localStorage.setItem('userId', resp.data);
             setLoggedIn(true);
           }
         })
@@ -93,7 +93,14 @@ function Register() {
     beep.play();
   };
 
-  if (isLoggedIn) return <Redirect to="/" />;
+  var styles = require("./Register.css");
+
+  if (isLoggedIn) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./RegisterCyberpunk.css");
+    }
+    return <Redirect to="/" />;
+  } 
   return (
     <div className="register__container">
       <div className="register__back">

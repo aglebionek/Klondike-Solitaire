@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import './JoinRoom.css';
 
 import socket from './../socketConfig.js';
+import agent from '../../../agent/agent';
 
 function JoinRoom () {
   const history = useHistory();
   const initialData = {
     name: 'test',
-    players: []
+    players: [],
   }
   const [roomData, updateRoomData] = useState(initialData);
 
@@ -16,7 +16,7 @@ function JoinRoom () {
     socket.on('pass-room', ({ room, users }) => {
       updateRoomData({
         name: room,
-        players: users
+        players: users,
       });
     });
 
@@ -27,35 +27,57 @@ function JoinRoom () {
     socket.emit('export-room');
     socket.emit('export-users');
 
-    socket.on('start', () => {
-      history.push('/game-view');
+    socket.on('get-shuffle', ({ shuffle, time, id }) => {
+      localStorage.setItem("gameInfo", JSON.stringify({
+        startDate: new Date(),
+        timeLeft: time,
+        roomName: roomData.name,
+        id,
+        players: roomData.players,
+        handicap: 0,
+      }));
+
+      localStorage.setItem("shuffle", JSON.stringify(shuffle));
+      
+      history.push({
+        pathname: '/game-view',
+        time,
+        players: roomData.players,
+        id: id,
+        handicap: 0,
+        isOwner: false,
+        isMulti: true
+      });
     });
 
     return () => {
-      socket.off('start', () => {
-        history.push('/game-view');
-      });
-      
+      socket.off('get-shuffle');
       socket.off('pass-room');
     }
+  });
 
-  }, []);
+  var styles = require("./JoinRoom.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./JoinRoomCyberpunk.css");
+    }
+  }
 
   return (
     <section className="joined-room">
       <div className="lobby__modal-container">
-        <div className="lobby__modal">
+        <div id = "lobby_modal" className="lobby__modal">
           <p>Wyrzucono cię z pokoju</p>
-          <button onClick={() => { history.push('/multiplayer') }}>Potwierdź</button>
+          <button id = "accept-multiplayer-game" onClick={() => { history.push('/multiplayer') }}>Potwierdź</button>
         </div>
       </div>
       <div className="lobby__inner-container">
-          <h1 className="lobby__headline">Widok lobby</h1>
+          <div className="lobby__headline">Widok lobby</div>
           <div className="lobby__created-data">
             <p>Nazwa:</p>
             <p>{roomData.name}</p>
           </div>
-          <div className="lobby__created-data">
+          <div id = {"lobby__created-data_players"} className="lobby__created-data">
             <p>Gracze:</p>
             <ul>
               {
@@ -69,9 +91,9 @@ function JoinRoom () {
               }
             </ul>
           </div>
-          <div className="lobby__created-data__btns">
+          <div className="lobby__created-data__btns lobby-extra-button-class">
             <Link to="/multiplayer">
-              <button onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
+              <button id="lobby-leave" onClick={() => socket.emit('lobby-leave')}>Wyjdź</button>
             </Link>
           </div>
         </div>

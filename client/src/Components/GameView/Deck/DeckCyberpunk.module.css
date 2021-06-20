@@ -1,0 +1,22 @@
+.deckContainer {
+  display: flex;
+  width: 28%;
+  flex-shrink: 0;
+}
+
+.deckContainer > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.cardShadow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(4.8em - 2px);
+  height: calc(6.675em - 2px);
+  border: solid 1px rgba(0, 214, 252, 0.6);
+}

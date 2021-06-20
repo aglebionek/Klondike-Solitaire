@@ -4,6 +4,7 @@
   height: 60%;
   width: 100%;
 }
+
 .mainColumn {
   position: relative;
   display: flex;
@@ -19,5 +20,5 @@
   align-items: center;
   width: calc(4.8em - 2px);
   height: calc(6.675em - 2px);
-  border: 1px solid grey;
+  border: solid 1px #102542;
 }

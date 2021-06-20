@@ -1,6 +1,8 @@
 import React from "react";
 import { useDrag } from "react-dnd";
 import styles from "./Item.module.css";
+import cardPick from "../../../soundtrack/SoundDesign/card_pick.mp3";
+import cardWrong from "../../../soundtrack/SoundDesign/card_wrong.mp3";
 
 const DraggableCard = ({
   name,
@@ -10,6 +12,7 @@ const DraggableCard = ({
   setDraggingCard,
   item,
   startCardIndex,
+  effect,
 }) => {
   const [{}, drag] = useDrag(
     () => ({
@@ -47,7 +50,7 @@ const DraggableCard = ({
       isVisible = sibling.attributes.getNamedItem("data-visible").value;
 
       arr.push({ rank, color, shape, isVisible });
-
+      
       sibling.style.opacity = 0;
       sibling = sibling.nextElementSibling;
     }
@@ -57,21 +60,35 @@ const DraggableCard = ({
       target: el,
       cardIndex: cardIndex,
     });
+    cardSound(cardPick)
   };
   const convertRankToClass = "v" + item.rank;
+  var cardStyle = "";
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+        cardStyle += "cyberpunk";
+    }
+  }
+
 
   const handleDragEnd = (e) => {
     setDraggingCard({ title: "", array: [] });
     let el = e.target;
     if (!e.target.classList.contains("card-parent")) {
-      el = e.target.closest(".card-parent");
+      el = e.target.closest(".card-parent"); 
     }
     el.style.opacity = 1;
     let sibling = el.nextElementSibling;
     while (sibling !== null) {
       sibling.style.opacity = 1;
-      sibling = sibling.nextElementSibling;
+      sibling = sibling.nextElementSibling;    
     }
+    cardSound(cardWrong)
+  };
+  const cardSound = (src) => {
+    let beep = new Audio(src);
+    beep.volume=(effect/100);
+    beep.play();   
   };
   return (
     <div
@@ -83,10 +100,10 @@ const DraggableCard = ({
       data-index={startCardIndex}
       ref={drag}
       onDragStart={handleDrag}
-      onDragEnd={handleDragEnd}
+      onDragEnd={handleDragEnd}     
       style={{ top: top + "%", zIndex: index + 1 }}
     >
-      <div className={"card " + convertRankToClass + " " + item.shape}>
+      <div className={"card " + convertRankToClass + " " + item.shape + " " + cardStyle}>
         <span className="card__value"></span>
         <span className="card__minisuit"></span>
         <span className="card__mainsuit"></span>

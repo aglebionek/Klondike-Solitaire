@@ -38,6 +38,7 @@ h1.authors__headline, .authors__list{
   padding: 10px;
   color: rgba(0, 214, 252, 0.8);
   cursor: default;
+  user-select: none;
 }
 
 .authors__back:hover {

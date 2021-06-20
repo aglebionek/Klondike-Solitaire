@@ -6,12 +6,15 @@
   text-decoration: none;
   font-size: 2rem;
   padding: 10px;
-  color: black;
+  color: #102542;
+  cursor: pointer;
+  user-select: none;
 }
 
 .appinfo__container{
   padding: 50px 20px;
-  max-width: 1200px;
+  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
+  min-height: 100vh;
 }
 
 .appinfo__container p,
@@ -19,8 +22,14 @@
 .appinfo__container h2,
 .appinfo__container h3{
   padding-left: 10px;
+  color: #102542;
+}
+
+.appinfo__container > h1 {
+  color: #102542;
 }
 
 .appinfo__container ul{
   margin-left: 10px;
+  color: #102542;
 }

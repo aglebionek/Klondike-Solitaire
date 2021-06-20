@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   height: 99vh;
-  margin-top: 1vh;
+  padding-top: 1vh;
+  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
 }
 
 .cardTop {
@@ -34,4 +35,32 @@
   justify-self: flex-end;
   align-self: flex-end;
   border-top: 1px solid grey;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+}
+
+.analysisBackButton {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  border: 1px solid black;
+  border-radius: 0.3em;
+  padding: 0.5em 1em;
+  background: white;
+  cursor: pointer;
 }

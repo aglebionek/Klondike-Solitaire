@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import "./LoginCyberpunk.css";
+import "./Login.css";
 import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from "../../agent/agent.js";
+import { GrWindows } from "react-icons/gr";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,9 @@ function Login() {
         .then((resp) => {
           if (resp.status === 200) {
             localStorage.setItem('isLogged', true);
+            localStorage.setItem('user', JSON.stringify(resp.data));
             setLoggedIn(true);
+            window.location.href = '/';
           }
         })
         .catch((err) => {
@@ -60,8 +63,13 @@ function Login() {
     beep.volume = 1;
     beep.play();
   };
-
-  if (isLoggedIn) return <Redirect to="/" />;
+  var styles = require("./Login.css");
+  if (isLoggedIn) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./LoginCyberpunk.css");
+    }
+    return <Redirect to="/" />;
+  }
   return (
     <div className="login__container">
       <a href="/" className="login__back" onMouseDown={buttonSound}

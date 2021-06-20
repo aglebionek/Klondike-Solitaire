@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./LobbyMultiplayer.css";
 import agent from '../../agent/agent';
 
 // socket client
 import socket from './socketConfig';
 
-// cóż, to jedyny dostępny user przy logowaniu także no... xD
-let player = 'player';
-const userId = 10;
-
-agent.get(`/account/${userId}`).then(({ data }) => {
-  player = data.username;
-});
-
 function LobbyMultiplayer() {
-
+  
   const [users, setUsers] = useState([]);
+  const [player, setPlayer] = useState('');
 
   const joinRoom = (evt) => {
     const room = evt.target.getAttribute('data-room');
@@ -50,25 +42,40 @@ function LobbyMultiplayer() {
       setUsers(usersArr);
     });
 
+    setPlayer(JSON.parse(localStorage.getItem("user")).username);
+
     socket.emit('export-users');
+    localStorage.removeItem("roomData");
 
     return () => {
       socket.off('pass-users', (usersArr) => {
         setUsers(usersArr);
       });
     }
-  }, []);
+  });
+
+  var styles = require("./LobbyMultiplayer.css");
+  if(localStorage.getItem('isLogged')) {
+    if(localStorage.getItem('motiveCss') === "cyberpunk") {
+      styles = require("./LobbyMultiplayerCyberpunk.css");
+    }
+  }
 
   return (
     <>
-      <a className="multiplayer__back" href="./..">
-         &#129044;
-      </a>
+    <div className="multiplayer__container">
+      <div className="multiplayer__back-div">
+        <a className="multiplayer__back" href="./..">
+          &#129044;
+        </a>
+      </div>
       <div className="row">
         <div className="Multi">Tryb Wieloosobowy</div>
-        <div className="ButtRoom">
+      </div>
+      <div className="row">
+      <div className="ButtRoom">
           <Link to={`/create-room`}>
-            <button className="button">Stwórz nowy pokój</button>
+            <button id = "create-room-btn" className="button-lobby">Stwórz nowy pokój</button>
           </Link>
         </div>
       </div>
@@ -86,12 +93,13 @@ function LobbyMultiplayer() {
             <div className="Ppl1">{room.players}</div>
             <div className="butt">
               <Link to={`/game-lobby`}>
-                <button className="buttonjoin" data-room={room.name} onClick={joinRoom}>Dołącz</button>
+                <button id = "join-btn" className="buttonjoin" data-room={room.name} onClick={joinRoom}>Dołącz</button>
               </Link>
             </div>
           </div>
         ))}
         <div className="Line"></div>
+      </div>
       </div>
     </>
   );

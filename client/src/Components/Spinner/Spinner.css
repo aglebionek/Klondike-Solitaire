@@ -6,6 +6,11 @@
     transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(360deg);
   }
 }
+.waiting-spinner-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
+}
 
 .waiting-spinner{
   display: block;
@@ -18,9 +23,9 @@
   left: 0;
 
   border-radius: 50%;
-  border-left: 10px grey solid;
-  border-top: 10px grey solid;
-  border-bottom: 10px grey solid;
+  border-left: 10px #102542 solid;
+  border-top: 10px #102542 solid;
+  border-bottom: 10px #102542 solid;
   border-right: 10px transparent solid;
 
   transform: translateX(calc(50vw - 25px)) translateY(calc(50vh - 75px)) rotate(0deg);

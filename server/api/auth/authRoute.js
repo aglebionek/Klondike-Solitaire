@@ -13,8 +13,8 @@ router.get("/verify", (req, res) => {
   const key = process.env.TOKEN_KEY;
 
   try {
-    jwt.verify(token, key);
-    return res.sendStatus(200);
+    const resp = jwt.verify(token, key);
+    return res.status(200).json(resp.id);
   } catch (e) {
     return res.status(401).json("invalid token");
   }
@@ -48,6 +48,7 @@ router.post("/register", async (req, res) => {
     .toString();
 
   let resp = await mysqlQuery(checkIfUserExistsQuery, [email]);
+  let user;
   if (resp.length > 0)
     return res.status(403).json({ email: "Email jest zajęty" });
 
@@ -57,14 +58,24 @@ router.post("/register", async (req, res) => {
     .readFileSync(path.join(__dirname, "../../database/queries/register.sql"))
     .toString();
 
-  resp = await mysqlQuery(query, [username, email, hashedPassword]);
+  user = await mysqlQuery(query, [username, email, hashedPassword]);
 
   if (!resp) return res.status(500).json("Problem łaczenia z bazą danych");
+  resp = await mysqlQuery(checkIfUserExistsQuery, [email]);
+  const { id } = resp[0];
 
+  const insertSettings = fs
+    .readFileSync(
+      path.join(__dirname, "../../database/queries/settings_insert.sql")
+    )
+    .toString();
+
+  resp = await mysqlQuery(insertSettings, [id]);
+  if (!resp) return res.status(500).json("Problem łaczenia z bazą danych");
   const key = process.env.TOKEN_KEY;
   const token = jwt.sign(
     {
-      id: resp.insertId,
+      id: user.insertId,
       username,
       email,
     },
@@ -79,7 +90,7 @@ router.post("/register", async (req, res) => {
     sameSite: true,
   });
 
-  return res.status(200).json("user created successfully");
+  return res.status(200).json(id);
 });
 
 router.post("/login", async (req, res) => {
@@ -103,7 +114,6 @@ router.post("/login", async (req, res) => {
   const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
   if (!isPasswordCorrect)
     return res.status(401).json("Email lub hasło jest niepoprawne");
-
   const key = process.env.TOKEN_KEY;
   const token = jwt.sign(
     {
@@ -122,7 +132,10 @@ router.post("/login", async (req, res) => {
     sameSite: true,
   });
 
-  return res.status(200).json("ok");
+  return res.status(200).json({
+    id,
+    username,
+  });
 });
 
 module.exports = router;

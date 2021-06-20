@@ -6,6 +6,7 @@ const settingsRoute = require("./api/settings/settingsRoute");
 const statsRoute = require("./api/stats/statsRoute");
 const authRoute = require("./api/auth/authRoute");
 const accountRoute = require("./api/account/accountRoute");
+const gameRoute = require("./api/game/gameRoute");
 const path = require("path");
 
 const PORT = process.env.PORT || 3001;
@@ -18,7 +19,8 @@ const {
   getRoomUsers,
   modifyRoom,
   getAllUsers,
-  setUsersInGame
+  setUsersInGame,
+  setUsersOutOfGame,
 } = require("./utils/users");
 require("dotenv").config();
 app.use(cookieParser());
@@ -53,10 +55,11 @@ app.use(function (req, res, next) {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
-
   socket.on("export-users", () => {
-    socket.emit("pass-users", getAllUsers().filter(user => !user.inGame));
+    socket.emit(
+      "pass-users",
+      getAllUsers().filter((user) => !user.inGame)
+    );
   });
 
   socket.on("export-room", () => {
@@ -70,19 +73,23 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("game-start", ({ room }) => {
+  socket.on("game-start", ({ room, time, id }) => {
     setUsersInGame(room);
-    io.to(room).emit('start');
+    io.to(room).emit("start", { time, id });
+  });
 
-    // po wyjściu z gry, userzy dalej są w grze - na aktualnym stadium nierozwiązywalne, ale po dodaniu integracji z planszą - TODO
+  socket.on("send-shuffle", ({ shuffle, time, id }) => {
+    const user = getCurrentUser(socket.id);
+
+    io.to(user.room).emit("get-shuffle", { shuffle, time, id });
   });
 
   socket.on("lobby-modify", ({ room, newName }) => {
     const user = getCurrentUser(socket.id);
-    
+
     modifyRoom(room, newName);
 
-    if(user){
+    if (user) {
       io.to(newName).emit("pass-room", {
         room,
         users: getRoomUsers(newName),
@@ -93,10 +100,9 @@ io.on("connection", (socket) => {
   socket.on("lobby-join", ({ player, room }) => {
     const user = userJoin(socket.id, player, room);
 
-    console.log("a user joined the room");
     socket.join(user.room);
 
-    if(user){
+    if (user) {
       io.to(room).emit("pass-room", {
         room,
         users: getRoomUsers(room),
@@ -109,10 +115,12 @@ io.on("connection", (socket) => {
 
     userLeave(socket.id);
 
-    io.to(user.room).emit("pass-room", {
-      room: user.room,
-      users: getRoomUsers(user.room),
-    });
+    if (user) {
+      io.to(user.room).emit("pass-room", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    }
   });
 
   socket.on("kick", ({ player }) => {
@@ -125,8 +133,19 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("end-game", ({ player, room, score }) => {
+    if(getCurrentUser(socket.id) === undefined){
+      socket.emit('lobby-join', {player, room});
+      socket.join(room);
+    }
+
+    io.to(room).emit("write-to-end-list", {
+      player: player,
+      score: score,
+    });
+  });
+
   socket.on("disconnect", () => {
-    console.log("user disconnected");
     userLeave(socket.id);
     socket.emit("export-room");
   });
@@ -138,8 +157,9 @@ app.use("/auth", authRoute);
 app.use("/stats", statsRoute);
 app.use("/settings", settingsRoute);
 app.use("/account", accountRoute);
+app.use("/game", gameRoute);
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });

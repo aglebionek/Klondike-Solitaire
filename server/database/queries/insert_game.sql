@@ -1,0 +1,1 @@
+INSERT INTO games (date_started, date_ended) VALUES (?, ?)

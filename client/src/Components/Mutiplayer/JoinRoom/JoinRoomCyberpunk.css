@@ -1,0 +1,79 @@
+.joined-room{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(50,0,0,1) 0%, rgba(20,0,0,1) 60%, rgba(0,0,0,1) 100%);
+  user-select: none;
+  flex-direction: column;
+  color: rgba(0, 214, 252, 0.9);
+}
+
+.lobby__modal-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+}
+
+.lobby__modal-container.active{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lobby__modal{
+  padding: 80px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: black;
+}
+
+.lobby__modal button{
+  background: none;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  margin-top: 40px;
+  display: inline-block;
+  font-size: 16px;
+  width: 200px;
+  text-decoration: none;
+  cursor: default;
+}
+
+.lobby__modal button:hover {
+  box-shadow: 0px 0px 10px rgba(0, 214, 252, 1);
+  text-shadow: 0 0 3px rgba(0, 214, 252, 0.9);
+}
+
+.lobby-extra-button-class {
+  justify-content: center;
+}
+
+#lobby-leave {
+  background: none;
+  border: solid 1px rgba(0, 214, 252, 0.6);
+  color: rgba(0, 214, 252, 0.9);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  margin-top: 40px;
+  display: inline-block;
+  font-size: 16px;
+  width: 200px;
+  text-decoration: none;
+  cursor: default;
+}

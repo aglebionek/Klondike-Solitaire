@@ -1,27 +1,109 @@
-import React, { useState, useEffect } from "react";
-import styles from "./GameView.module.css";
+import React, { useState, useEffect, useRef } from "react";
 import CustomDragLayer from "./CustomDrag/Custom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { isDroppable, shuffleCards, numMoves } from "../../utils/card";
+import { FiArrowLeft } from "react-icons/fi";
+import { drop, shuffleCards, numMoves, gameResult } from "../../utils/card";
 import Deck from "./Deck/Deck";
 import Buttons from "./Buttons/Buttons";
 import FinalColumns from "./FinalColumns/FinalColumns";
 import MainColumns from "./MainColumns/MainColumns";
-import GameMusic from "./GameMusicKlondike";
+import GameMusic from "./Music/Audio";
 import "../CardMotives/CardMotives.css";
+import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
+import Statistics from "./Statistics/Statistics";
+import { useLocation } from "react-router-dom";
+import WinLoseBoard from "./WinLoseBoard";
 
-function GameView({cardset_id, effect, volume }) {
+import socket from "../Mutiplayer/socketConfig";
+
+function GameView({
+  cardset_id,
+  effect,
+  volume,
+  analysis = false,
+  setGameAnalysis,
+  history: initialHistory,
+  shuffle: initialShuffle,
+  points: initialPoints,
+  gameTime: initialGameTime,
+  moveNumbers: initialMoveNumbers,
+}) {
+  const location = useLocation();
   const [draggingCard, setDraggingCard] = useState({ title: "", array: [] });
+  const [shuffle, setShuffle] = useState(() => {
+    const initialStorage = localStorage.getItem("shuffle");
+
+    return initialStorage !== null ? JSON.parse(initialStorage) : null;
+  });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [moveNumbers, setMoveNumbers] = useState(0);
+  const [moveNumbers, setMoveNumbers] = useState(() => {
+    const localMoves = localStorage.getItem("moveNumbers");
+
+    return localMoves !== null
+      ? JSON.parse(localMoves)
+      : 0 
+  });
+  const [gameId, setGameId] = useState(() => {
+    if(location.id !== undefined){
+      localStorage.setItem("gameId", JSON.stringify(location.id));
+      return location.id;
+    }
+    else{
+      return JSON.parse(localStorage.getItem("gameId"));
+    }
+  });
   const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
   const [gameNumber, setGameNumber] = useState(0);
   const [isGameEnded, setGameEnd] = useState(false);
+  const [isGameLoaded, setGameLoaded] = useState(false);
   const [bonus, setBonus] = useState(1200);
-  const [gameTime, setGameTime] = useState(0);
-  const [points, setPoints] = useState(0);
+  const [gameTime, setGameTime] = useState(() => {
+    const item = localStorage.getItem("gameInfo");
+
+    if(location.handicap){
+      return location.handicap;
+    }
+
+    if(item !== null){
+      const gameInfoDate = JSON.parse(item).startDate;
+
+      return Math.floor((new Date() - new Date(gameInfoDate)) / 1000);
+    }
+
+    return 0;
+  });
+  const [points, setPoints] = useState(() => {
+    const localPoints = localStorage.getItem("points");
+
+    return localPoints !== null
+      ? parseInt(JSON.parse(localPoints))
+      : 0
+  });
+  
+  const [playMusic, setPlayMusic] = useState(false);
+  const [isMulti, setMulti] = useState(() => {
+    if(location.isMulti !== undefined){
+      localStorage.setItem("isMulti", JSON.stringify(location.isMulti));
+      return location.isMulti;
+    }
+    else{
+      return JSON.parse(localStorage.getItem("isMulti"));
+    }
+  });
+
+  const [endTime, setEndTime] = useState(() => {
+    if(isMulti){
+      return location.time !== undefined
+        ? location.time
+        : JSON.parse(localStorage.getItem("gameInfo")).time
+    }
+    else{
+      return Number.MAX_SAFE_INTEGER
+    }
+    
+  });
 
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
@@ -40,6 +122,7 @@ function GameView({cardset_id, effect, volume }) {
   const [startColumn2, setStartColumn2] = useState([]);
 
   const [history, setHistory] = useState([]);
+  const [playersOnEndGame, setPlayersOnEndGame] = useState([]);
 
   const startColumns = {
     startColumn1: {
@@ -102,18 +185,63 @@ function GameView({cardset_id, effect, volume }) {
     },
   };
 
-  const columns = { ...finalColumns, ...mainColumns, ...startColumns };
+  let timer = useRef(null);
+  const revealCardRef = useRef(null);
+
+  let columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
-    const initialShuffle = shuffleCards();
-    Object.entries(initialShuffle).map(([key, item]) => {
-      columns[key].set(item);
-    });
-    setLoading(false);
-    // startTimer();
-  }, []);
+    let firstShuffle;
+    let localColumns = localStorage.getItem("columns");
 
-  let timer;
+    if(localColumns !== null){
+      for(const [key, item] of Object.entries(JSON.parse(localColumns))){
+        const newArray = [];
+        for (let i = 0; i < item.get.length; i++) {
+          newArray.push({ ...item.get[i] });
+        }
+        columns[key].set(newArray);
+      }
+
+      setLoading(false);
+    }
+    else{
+      if (initialShuffle) {
+        firstShuffle = initialShuffle;
+      } else if (shuffle) {
+        firstShuffle = shuffle;
+      } else {
+        firstShuffle = shuffleCards();
+        setShuffle(firstShuffle);
+      }
+  
+      Object.entries(firstShuffle).map(([key, item]) => {
+        const newArray = [];
+        for (let i = 0; i < item.length; i++) {
+          newArray.push({ ...item[i] });
+        }
+        columns[key].set(newArray);
+      });
+
+      setLoading(false);
+    }
+    
+    if (analysis) {
+      setHistory(initialHistory);
+      setPoints(initialPoints);
+      setGameTime(initialGameTime);
+      setMoveNumbers(initialMoveNumbers);
+    } else startTimer();
+
+    if (location.isOwner) {
+      socket.emit("send-shuffle", {
+        shuffle: firstShuffle,
+        time: location.time,
+        id: location.id,
+      });
+      localStorage.setItem("shuffle", JSON.stringify(firstShuffle));
+    }
+  }, []);
 
   const startTimer = () => {
     timer = setInterval(() => {
@@ -125,30 +253,72 @@ function GameView({cardset_id, effect, volume }) {
     }, 1000);
   };
 
-  const stopTimer = () => {
-    clearInterval(timer);
-    setPoints((prev) => prev + bonus);
-  };
+  useEffect(() => {
+    socket.on("write-to-end-list", ({ player, score }) => {
+      setPlayersOnEndGame((prev) => [...prev, { name: player, score: score }]);
+    });
+
+    return () => {
+      socket.off("write-to-end-list");
+    };
+  }, []);
 
   useEffect(() => {
     if (gameNumber > 0) {
       const initialShuffle = shuffleCards();
+      setShuffle(shuffle);
+
       Object.entries(initialShuffle).map(([key, item]) => {
-        columns[key].set(item);
+        const newArray = [];
+        for (let i = 0; i < item.length; i++) {
+          newArray.push({ ...item[i] });
+        }
+        columns[key].set(newArray);
       });
-      setMoveNumbers(0);
 
       Object.entries(finalColumns).map(([key, column]) => {
         column.set([]);
       });
+      setMoveNumbers(0);
+      setHistory([]);
       setStartCardIndex(0);
       setStartColumn2([]);
+      setGameTime(0);
     }
   }, [gameNumber]);
 
   useEffect(() => {
-    if (!isLoading) {
-      console.log("odświeżam");
+    if (isGameEnded) {
+      clearInterval(timer);
+
+      if (endTime === Number.MAX_SAFE_INTEGER) {
+        if(localStorage.getItem("user") === null){
+          setPlayersOnEndGame((prev) => [
+            ...prev,
+            { name: "Gość", score: points + bonus },
+          ]);
+        }
+        else{
+          setPlayersOnEndGame((prev) => [
+            ...prev,
+            { name: JSON.parse(localStorage.getItem("user")).username, score: points + bonus },
+          ]);
+        }
+      } else {
+
+        if(localStorage.getItem("gameInfo") !== null){
+          socket.emit("end-game", { 
+            room: JSON.parse(localStorage.getItem("gameInfo")).roomName,
+            player: JSON.parse(localStorage.getItem("user")).username,
+            score: points + bonus 
+          });
+        }
+      }
+    }
+  }, [isGameEnded]);
+
+  useEffect(() => {
+    if (!isLoading && !analysis) {
       const mainColumnsArr = Object.keys(mainColumns).map(function (key) {
         return mainColumns[key].get;
       });
@@ -161,88 +331,125 @@ function GameView({cardset_id, effect, volume }) {
         finalColumnsArr,
         startColumn1
       );
-      console.log(possibleMoves);
+
+      localStorage.setItem("columns", JSON.stringify(columns));
+      localStorage.setItem("points", JSON.stringify(points));
+      localStorage.setItem("moveNumbers", JSON.stringify(moveNumbers));
+
+      if (gameTime === endTime) {
+        setGameEnd(true);
+        setTimeout(() => setGameLoaded(true), 100);
+      }
+
       if (possibleMoves === 0) {
         setGameEnd(true);
+        setTimeout(() => setGameLoaded(true), 100);
       } else setPossibleMoveNumbers(possibleMoves);
     }
-  }, [moveNumbers, isLoading, gameNumber]);
+  }, [moveNumbers, isLoading, gameNumber, gameTime]);
+
+  const cardSound = (src) => {
+    let beep = new Audio(src);
+    beep.volume = effect / 100;
+    beep.play();
+  };
 
   const handleDrop = (currentCards, draggingCards) => {
-    const selectedCard =
-      currentCards.array[currentCards.array.length - 1] || null;
-    const dropTarget = draggingCards.array[0];
-    const dragArrayLength = draggingCards.array.length;
-    const carriedArray = columns[draggingCard.title].get;
-    const carriedArrayLength = carriedArray.length;
-    const sliceEnd = carriedArrayLength - dragArrayLength;
-    const carriedTarget = draggingCard.target;
-    setMoveNumbers((prev) => prev + 1);
-    if (isDroppable(selectedCard, dropTarget)) {
-      if (draggingCards.title.includes("finalColumn")) {
-        const newPoints = points - 10;
-        if (newPoints < 0) setPoints(0);
-        else setPoints(newPoints);
-      }
-      let newHistoryStep;
-      if (draggingCards.title === "startColumn2") {
-        const source = columns["startColumn1"].get;
-        const index = draggingCard.cardIndex;
-        source.splice(index - 1, 1);
-        columns[draggingCard.title].set([]);
-        columns["startColumn1"].set(source);
-        columns[currentCards.title].set([
-          ...currentCards.array,
-          ...draggingCards.array,
-        ]);
-        newHistoryStep = {
-          source: draggingCard.title,
-          target: currentCards.title,
-          draggedCards: draggingCard.array,
-          cardIndex: index,
-        };
-      } else {
-        columns[currentCards.title].set([
-          ...currentCards.array,
-          ...draggingCards.array,
-        ]);
-
-        const reducedColumn = carriedArray.slice(0, sliceEnd);
-        let reversed = null;
-        if (
-          reducedColumn.length > 0 &&
-          !reducedColumn[reducedColumn.length - 1].isVisible
-        ) {
-          reversed = reducedColumn.length - 1;
-        }
-        if (reducedColumn.length > 0)
-          reducedColumn[reducedColumn.length - 1].isVisible = true;
-        columns[draggingCard.title].set(reducedColumn);
-
-        newHistoryStep = {
-          source: draggingCard.title,
-          target: currentCards.title,
-          draggedCards: draggingCard.array,
-          reversed,
-        };
-      }
-
-      setHistory([...history, newHistoryStep]);
-    } else {
-      carriedTarget.style.opacity = 1;
-      let sibling = carriedTarget.nextElementSibling;
-      while (sibling !== null) {
-        sibling.style.opacity = 1;
-        sibling = sibling.nextElementSibling;
-      }
-    }
-    setDraggingCard({ title: "", array: [] });
+    drop(
+      currentCards,
+      draggingCards,
+      columns,
+      draggingCard,
+      setMoveNumbers,
+      setPoints,
+      points,
+      revealCardRef,
+      cardSound,
+      setHistory,
+      history,
+      cardRight,
+      setDraggingCard,
+      analysis
+    );
   };
+
+  const playMusicFunc = () => {
+    setPlayMusic(true);
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", playMusicFunc);
+    return () => {
+      window.removeEventListener("click", playMusicFunc);
+    };
+  }, []);
+
   if (isLoading) return <div>loading...</div>;
-  if (isGameEnded) return <div>Gra zakończona</div>;
+
+  var styles = require("./GameView.module.css");
+
+  if (localStorage.getItem("isLogged")) {
+    if (localStorage.getItem("motiveCss") === "cyberpunk") {
+      styles = require("./GameViewCyberpunk.module.css");
+    }
+  }
+
+  if (isGameLoaded) {
+    const finalColumnsArr = Object.keys(finalColumns).map(function (key) {
+      return finalColumns[key].get;
+    });
+
+    localStorage.removeItem("shuffle");
+    localStorage.removeItem("columns");
+    localStorage.removeItem("points");
+    localStorage.removeItem("moveNumbers");
+    localStorage.removeItem("isMulti");
+    localStorage.removeItem("gameId");
+
+    let player;
+
+    if(localStorage.getItem("user") !== null){
+      player = JSON.parse(localStorage.getItem("user")).username;
+    }
+    else{
+      player = "Gość";
+    }
+
+    playersOnEndGame.sort((a, b) => b.score - a.score);
+
+    const result = gameResult(finalColumnsArr, player, playersOnEndGame, isMulti);
+    return (
+      <WinLoseBoard
+        points={points + bonus}
+        gameId={gameId}
+        gameTime={gameTime}
+        history={history}
+        players={playersOnEndGame}
+        shuffle={shuffle}
+        cardset_id={cardset_id}
+        effect={effect}
+        volume={volume}
+        gameResult={result}
+        moveNumbers={moveNumbers}
+      />
+    );
+  }
+
   return (
     <DndProvider backend={HTML5Backend}>
-      {volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id}/>}
+      {playMusic ? (
+        volume > 0 && <GameMusic musicVolume={volume} cardset={cardset_id} />
+      ) : (
+        <></>
+      )}
+      {analysis && (
+        <button
+          onClick={() => setGameAnalysis(false)}
+          className={styles.analysisBackButton}
+        >
+          <FiArrowLeft />
+        </button>
+      )}
       <CustomDragLayer draggingCard={draggingCard} />
       <div className={styles.container}>
         <div className={styles.cardTop}>
@@ -259,6 +466,9 @@ function GameView({cardset_id, effect, volume }) {
             history={history}
             points={points}
             setPoints={setPoints}
+            effect={effect}
+            revealCardRef={revealCardRef}
+            analysis={analysis}
           />
           <Buttons
             history={history}
@@ -273,6 +483,9 @@ function GameView({cardset_id, effect, volume }) {
             points={points}
             setPoints={setPoints}
             effect={effect}
+            analysis={analysis}
+            revealCardRef={revealCardRef}
+            isMulti={isMulti}
           />
           <FinalColumns
             finalColumns={finalColumns}
@@ -284,6 +497,9 @@ function GameView({cardset_id, effect, volume }) {
             setMoveNumbers={setMoveNumbers}
             setPoints={setPoints}
             handleDrop={handleDrop}
+            effect={effect}
+            revealCardRef={revealCardRef}
+            analysis={analysis}
           />
         </div>
         <MainColumns
@@ -291,13 +507,16 @@ function GameView({cardset_id, effect, volume }) {
           setDraggingCard={setDraggingCard}
           handleDrop={handleDrop}
           draggingCard={draggingCard}
+          effect={effect}
+          analysis={analysis}
         />
-        <div className={styles.statistics}>
-          <div>Punkty: {points}</div>
-          <div>Czas: {gameTime}</div>
-          <p>Ilość możliwych ruchów: {possiblemoveNumbers}</p>
-          <p>Wykonane ruchy: {moveNumbers}</p>
-        </div>
+        <Statistics
+          points={points}
+          gameTime={gameTime}
+          possiblemoveNumbers={possiblemoveNumbers}
+          moveNumbers={moveNumbers}
+          analysis={analysis}
+        />
       </div>
     </DndProvider>
   );
