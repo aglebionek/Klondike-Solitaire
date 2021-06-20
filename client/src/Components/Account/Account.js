@@ -20,13 +20,20 @@ const Account = ({ effect, userId }) => {
   const [newCountry, setNewCountry] = useState("");
 
   const [currentPassword, setCurrentPassword] = useState("admin");
-
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
   const [countryName, setCountryName] = useState("Poland");
   const [newCountryName, setNewCountryName] = useState("");
+
+  const [winGames, setWinGames] = useState(0);
+  const [loseGames, setLoseGames] = useState(0);
+  const [drawGames, setDrawGames] = useState(0);
+  const [totalGames, setTotalGames] = useState(0);
+  const [totalCompletionTime, setTotalCompletionTime] = useState(0);
+  const [totalGamePoints, setTotalGamePoints] = useState(0);
+  const [statsError, setStatsError] = useState(false);
 
   const [isLogged, setIsLogged] = useState(
     JSON.parse(localStorage.getItem("isLogged")) ?? false
@@ -117,11 +124,30 @@ const Account = ({ effect, userId }) => {
           setAvatar(icon_id);
           setCurrentPassword(password);
           setCountryName(options.find(({ value }) => value === country).label);
-          setLoading(false);
+          setLoading(false);          
         })
         .catch((error) => {
           setLoading(false);
         });
+
+        agent
+        .get(`account/stats/${userId}`)
+        .then(({ data }) => {
+          const { wins, losses, draws, totalPoints, totalTime } =
+            data;
+            console.log(data)
+          setWinGames(wins);
+          setDrawGames(draws);
+          setLoseGames(losses);
+          setTotalCompletionTime(totalTime);
+          setTotalGamePoints(totalPoints);
+          setTotalGames(wins+draws+losses);
+
+        })
+        .catch((error) => {
+          setStatsError(true);
+        });
+
     }
   }, []);
 
@@ -206,38 +232,31 @@ const Account = ({ effect, userId }) => {
         </div>
         <div className="profile-main">
           <div className="profile-statistics">
+            
             <div className="profile-statistics-inscription">Statystyki</div>
             <div className="profile-statistics-number-of-games stats">
               <div id="number-of-game-text">Gry</div>
-              <div id="number-of-game-stats">146</div>
+              <div id="number-of-game-stats">{totalGames}</div>
             </div>
             <div className="profile-statistics-number-of-points stats">
               <div id="number-of-points-text">Punkty</div>
-              <div id="number-of-points-stats">23 590</div>
+              <div id="number-of-points-stats">{totalGamePoints}</div>
             </div>
             <div className="profile-statistics-W-L-D-games stats">
               <div id="W-L-D-games-text">W/P/R</div>
-              <div id="W-L-D-games-stats">42/98/6</div>
+              <div id="W-L-D-games-stats">{winGames}/{loseGames}/{drawGames}</div>
             </div>
             <div className="profile-statistics-total-game-time stats">
               <div id="total-game-time-text">Całkowity czas gry</div>
-              <div id="total-game-time-stats">7,3h</div>
+              <div id="total-game-time-stats">{totalCompletionTime}</div>
             </div>
             <div className="profile-statistics-average-game-time stats">
               <div id="average-game-time-text">Średni czas gry</div>
-              <div id="average-game-time-stats">2min 36sec</div>
+              <div id="average-game-time-stats">{totalGames === 0 ? 0 : Math.round(totalCompletionTime/totalGames)}</div>
             </div>
-            <div className="profile-statistics-best-win-streak stats">
-              <div id="best-win-streak-text">Winstreak</div>
-              <div id="best-win-streak-stats">5</div>
-            </div>
-            <div className="profile-statistics-number-of-abandoned-games stats">
-              <div id="number-of-abandoned-games-text">
-                Liczba porzuconych gier
-              </div>
-              <div id="number-of-abandoned-games-stats">11</div>
-            </div>
+           
           </div>
+        
         </div>
       </div>
       <div
