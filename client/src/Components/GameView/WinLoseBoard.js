@@ -31,14 +31,14 @@ class StatsBoard extends Component {
   saveScore = () => {
     agent.post("/game/insert-game-occur", {
       player_id: JSON.parse(localStorage.getItem("user")).id,
-      game_id: this.gameId, 
-      points: this.points, 
-      completion_time: this.gameTime, 
-      moves: this.moveNumbers, 
+      game_id: this.state.gameId, 
+      points: this.state.points, 
+      completion_time: this.state.gameTime, 
+      moves: this.state.moveNumbers, 
       starting_distribution: '', 
-      is_win: this.result === 'win',
-      is_lose: this.result === 'lose',
-      is_draw: !(this.result === 'win' || this.result === 'lose'),
+      is_win: this.state.gameResult === 'win',
+      is_lose: this.state.gameResult === 'lose',
+      is_draw: !(this.state.gameResult === 'win' || this.state.gameResult === 'lose'),
       key: 317 * (Math.floor(Math.random() * 100) + 1),
     });
   }
