@@ -75,7 +75,7 @@ function LobbyMultiplayer() {
       <div className="row">
       <div className="ButtRoom">
           <Link to={`/create-room`}>
-            <button id = "create-room-btn" className="button">Stwórz nowy pokój</button>
+            <button id = "create-room-btn" className="button-lobby">Stwórz nowy pokój</button>
           </Link>
         </div>
       </div>
