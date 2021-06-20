@@ -328,16 +328,12 @@ function GameView({
       localStorage.setItem("points", JSON.stringify(points));
       localStorage.setItem("moveNumbers", JSON.stringify(moveNumbers));
 
-      console.log([gameTime, endTime]);
-
       if (gameTime === endTime) {
-        console.log("if1");
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       }
 
       if (possibleMoves === 0) {
-        console.log("if2");
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       } else setPossibleMoveNumbers(possibleMoves);
