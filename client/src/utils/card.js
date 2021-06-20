@@ -396,11 +396,30 @@ export const numMoves = function (
   return nummov;
 };
 
-export const gameResult = (finalColumns) => {
-  for (const column of finalColumns) {
-    if (column.length < 13) return "lose";
+export const gameResult = (finalColumns, activePlayer, playersArr, isMulti) => {
+  console.log(playersArr);
+
+  if(!isMulti){
+    for (const column of finalColumns) {
+      if (column.length < 13) return "lose";
+    }
+    return "win";
   }
-  return "win";
+  else{
+    const index = playersArr.findIndex((element) => {
+      return element.name === activePlayer;
+    });
+
+    if(index === 0){
+      return "win";
+    }
+    else if(index === playersArr.length - 1){
+      return "lose";
+    }
+    else{
+      return "draw";
+    }
+  }
 };
 
 export const drop = (

@@ -30,7 +30,7 @@ function JoinRoom () {
     socket.on('get-shuffle', ({ shuffle, time, id }) => {
       localStorage.setItem("gameInfo", JSON.stringify({
         startDate: new Date(),
-        timeLeft: time * 60,
+        timeLeft: time,
         roomName: roomData.name,
         id,
         players: roomData.players,

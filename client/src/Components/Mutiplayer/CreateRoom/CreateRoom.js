@@ -198,7 +198,7 @@ function CreateRoom() {
                 </button>
             </Link>
             <button onClick={handleRoomModifyButton} id={'Modify'}>Modyfikuj</button>
-            <button onClick={handleGameBegin} disabled={roomData.players.length > 1}>Rozpocznij grę</button>
+            <button onClick={handleGameBegin}>Rozpocznij grę</button>
           </div>
         </div>
       </section>
