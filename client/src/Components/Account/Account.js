@@ -18,19 +18,16 @@ const Account = ({ effect, userId }) => {
   const [temporaryAvatar, setTemporaryAvatar] = useState("avatar1");
   const [newUsername, setNewUsername] = useState("");
   const [newCountry, setNewCountry] = useState("");
-
   const [currentPassword, setCurrentPassword] = useState("admin");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-
   const [countryName, setCountryName] = useState("Poland");
   const [newCountryName, setNewCountryName] = useState("");
 
   const [winGames, setWinGames] = useState(0);
   const [loseGames, setLoseGames] = useState(0);
   const [drawGames, setDrawGames] = useState(0);
-  const [totalGames, setTotalGames] = useState(0);
   const [totalCompletionTime, setTotalCompletionTime] = useState(0);
   const [totalGamePoints, setTotalGamePoints] = useState(0);
   const [statsError, setStatsError] = useState(false);
@@ -135,14 +132,21 @@ const Account = ({ effect, userId }) => {
         .then(({ data }) => {
           const { wins, losses, draws, totalPoints, totalTime } =
             data;
-            console.log(data)
-          setWinGames(wins);
+          if(wins != null){
+            setWinGames(wins);
+          };
+          if(draws != null){
           setDrawGames(draws);
+          }
+          if(losses != null){
           setLoseGames(losses);
+          }
+          if(totalTime != null){
           setTotalCompletionTime(totalTime);
+          }
+          if(totalPoints != null){
           setTotalGamePoints(totalPoints);
-          setTotalGames(wins+draws+losses);
-
+          }
         })
         .catch((error) => {
           setStatsError(true);
@@ -236,7 +240,7 @@ const Account = ({ effect, userId }) => {
             <div className="profile-statistics-inscription">Statystyki</div>
             <div className="profile-statistics-number-of-games stats">
               <div id="number-of-game-text">Gry</div>
-              <div id="number-of-game-stats">{totalGames}</div>
+              <div id="number-of-game-stats">{parseInt(winGames)+parseInt(drawGames)+parseInt(loseGames)}</div>
             </div>
             <div className="profile-statistics-number-of-points stats">
               <div id="number-of-points-text">Punkty</div>
@@ -248,11 +252,11 @@ const Account = ({ effect, userId }) => {
             </div>
             <div className="profile-statistics-total-game-time stats">
               <div id="total-game-time-text">Całkowity czas gry</div>
-              <div id="total-game-time-stats">{totalCompletionTime}</div>
+              <div id="total-game-time-stats">{totalCompletionTime + ' s'}</div>
             </div>
             <div className="profile-statistics-average-game-time stats">
               <div id="average-game-time-text">Średni czas gry</div>
-              <div id="average-game-time-stats">{totalGames === 0 ? 0 : Math.round(totalCompletionTime/totalGames)}</div>
+              <div id="average-game-time-stats">{(parseInt(winGames)+parseInt(drawGames)+parseInt(loseGames)) === 0 ? '0 s' : Math.round(totalCompletionTime/(parseInt(winGames)+parseInt(drawGames)+parseInt(loseGames))) + ' s'}</div>
             </div>
            
           </div>
