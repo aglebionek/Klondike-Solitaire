@@ -193,7 +193,7 @@ const Buttons = ({
             ? styles.disabledButton
             : ""
         }`}
-        disabled={history.length === 0 || historyCount === 0}
+        disabled={history.length === 0 || (historyCount === 0 && analysis)}
         onMouseOver={handleMouseOver}
       >
         <GrUndo />

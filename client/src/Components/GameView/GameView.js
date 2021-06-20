@@ -288,7 +288,7 @@ function GameView({
   useEffect(() => {
     window.addEventListener("click", playMusicFunc);
     return () => {
-      window.removeEventListener("click", playMusic);
+      window.removeEventListener("click", playMusicFunc);
     };
   }, []);
 
