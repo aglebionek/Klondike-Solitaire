@@ -86,6 +86,10 @@ function CreateRoom() {
   };
 
   const handleGameBegin = () => {
+    /*if(roomData.players.length <= 1){
+      return;
+    }*/
+
     const start = new Date();
     const now = start.toISOString().slice(0, 19).replace('T', ' ');
     let then = new Date();
