@@ -241,7 +241,7 @@ function CreateRoom() {
                 required
               />
             </div>
-            <button>
+            <button className="lobby__create-room-button">
               {roomData.isBeingModified ? "Zatwierdź modyfikację" : "Utwórz"}
             </button>
           </form>
