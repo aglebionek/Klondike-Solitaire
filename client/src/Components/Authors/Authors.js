@@ -1,15 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import list from "./AuthorList.json";
+import ThemeSelector from "./Theme/ThemeSelector";
 
 function Authors() {
-  var styles = require("./Authors.css");
-  if (localStorage.getItem("isLogged")) {
-    if (localStorage.getItem("motiveCss") === "cyberpunk") {
-      styles = require("./AuthorsCyberpunk.css");
-    }
-  }
-
   return (
     <section className="authors__container">
       <a className="authors__back" href="./..">
@@ -28,4 +22,4 @@ function Authors() {
   );
 }
 
-export default Authors;
+export default ThemeSelector(Authors);
