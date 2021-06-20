@@ -185,8 +185,7 @@ function GameView({
         }
         columns[key].set(newArray);
       }
-
-      console.log(columns);
+      
       setLoading(false);
     }
     else{
@@ -450,7 +449,7 @@ function GameView({
             effect={effect}
             analysis={analysis}
             revealCardRef={revealCardRef}
-            isMulti={location.isMulti}
+            isMulti={isMulti}
           />
           <FinalColumns
             finalColumns={finalColumns}

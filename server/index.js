@@ -136,6 +136,7 @@ io.on("connection", (socket) => {
   socket.on("end-game", ({ player, room, score }) => {
     if(getCurrentUser(socket.id) === undefined){
       socket.emit('lobby-join', {player, room});
+      socket.join(room);
     }
 
     io.to(room).emit("write-to-end-list", {
