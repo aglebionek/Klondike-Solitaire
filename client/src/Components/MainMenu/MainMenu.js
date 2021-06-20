@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import buttonMenuClick from '../../soundtrack/SoundDesign/menu_click.mp3';
 import buttonHoverSound from '../../soundtrack/SoundDesign/menu_hover.mp3';
 import agent from '../../agent/agent.js';
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 
 function MainMenu( {effect, handleButton} ) {
     const history = useHistory();
@@ -109,12 +110,6 @@ function MainMenu( {effect, handleButton} ) {
             setLog(false);
           });
     }, []);
-    var styles = "";
-    if(isLogged) {
-        if(localStorage.getItem('motiveCss') === "cyberpunk") {
-            styles = require("./MainMenuCyberpunk.css")
-        }
-    } else if (!isLogged || localStorage.getItem('motiveCss') === "default") styles = require("./MainMenu.css");
 
     return (<>
         <div className='main-menu'>
@@ -141,4 +136,4 @@ function MainMenu( {effect, handleButton} ) {
    </>);
 }
 
-export default MainMenu;
+export default ThemeSelector(MainMenu);
