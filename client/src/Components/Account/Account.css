@@ -1,230 +1,247 @@
-::after, ::before{
-    margin:0;
-    padding: 0;
+::after,
+::before {
+  margin: 0;
+  padding: 0;
 }
 
-.profile-container{
-    width: 100vw;
-    min-height: 100vh;
-    min-width: 500px;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
-    user-select: none;
-    align-items: center;
+.profile-container {
+  width: 100vw;
+  min-height: 100vh;
+  min-width: 500px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #66bb6ae1 0%, #90b594 100%);
+  user-select: none;
+  align-items: center;
 }
 
 .profile-menu-button-div {
-    display: flex;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
-  
-.account__back{
-    text-decoration: none;
-    font-size: 2rem;
-    padding: 10px;
-    color: #102542;
-    cursor: pointer;
+
+.account__back {
+  text-decoration: none;
+  font-size: 2rem;
+  padding: 10px;
+  color: #102542;
+  cursor: pointer;
 }
 
 /* PROFILE HEADING*/
-.profile-heading{
-    width: 100%;
-    text-align: center;
-    font-size: 40px;
-    color: #102542;
-    letter-spacing: 1.8px;
+.profile-heading {
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  color: #102542;
+  letter-spacing: 1.8px;
 }
 /* PROFILE HEADER */
-.profile-header{
-    padding: 20px;
-    height: 150px;
-    margin-top: 20px;
-    display: flex;
-    color: #102542;
-    align-items: center;
+.profile-header {
+  padding: 20px;
+  height: 150px;
+  margin-top: 20px;
+  display: flex;
+  color: #102542;
+  align-items: center;
 }
 
-.profile-avatar{
-    width: 150px;
+.profile-avatar {
+  width: 150px;
 }
 
-.profile-header-info{
-    display: flex;
-    flex-direction: column;
-    margin:0;
-    padding-left: 10px;
-    flex-grow: 15;
+.profile-header-info {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding-left: 10px;
+  flex-grow: 15;
 }
 
-.profile-username{
-    font-size: 30px;
-    padding-bottom: 10px ;
-    font-weight: bold;
+.profile-username {
+  font-size: 30px;
+  padding-bottom: 10px;
+  font-weight: bold;
 }
 
-.profile-creation-date{
-    padding: 10px 0;
-
+.profile-creation-date {
+  padding: 10px 0;
 }
 
-.profile-header-date{
-    font-weight: bold;
+.profile-header-date {
+  font-weight: bold;
 }
 
-.profile-country-info{
-    display: flex;
-    flex-direction: row;
-    padding: 10px 0;
+.profile-country-info {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
 }
 
-.country-name{
-    font-weight: bold;
-    padding-left: 10px;
+.country-name {
+  font-weight: bold;
+  padding-left: 10px;
 }
 
-.profile-edit-button, .modal-button-save, .modal-button-cancel{
-    display: flex;
-    text-decoration: none;
-    background: none;
-    border: solid 1px #102542;
-    color: #102542;
-    padding-left: 5px;
-    padding-right: 5px;
-    cursor: pointer;
-    font-size: 16px;
+.profile-edit-button,
+.modal-button-save,
+.modal-button-cancel {
+  display: flex;
+  text-decoration: none;
+  background: none;
+  border: solid 1px #102542;
+  color: #102542;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
-
 
 .edition-text {
-    margin-left: auto;
-
+  margin-left: auto;
 }
 
-.edit-profile-header{
-    display: flex;
-    justify-content: flex-end;
+.edit-profile-header {
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* PROFILE MAIN*/
 
 /* stats */
-.profile-main{
-    display: flex;
-    flex-direction: row;
-    padding: 20px;
-    width: 40%;
-    min-width: 500px;
+.profile-main {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  width: 40%;
+  min-width: 500px;
 }
 
-.profile-statistics{
-    width: 100%;
-    background: none;
-    border-radius: 4px;
-    border: solid 1px #102542;
-    color: #102542;
+.profile-statistics {
+  width: 100%;
+  background: none;
+  border-radius: 4px;
+  border: solid 1px #102542;
+  color: #102542;
 }
 
-.profile-statistics-inscription{
-    font-size: 30px;
-    padding: 5px;
+.profile-statistics-inscription {
+  font-size: 30px;
+  padding: 5px;
 }
 
-.stats{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 5px;
+.stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
 }
 
-.profile-return-button{
-    display: flex;
-    align-items: flex-end;
+.profile-return-button {
+  display: flex;
+  align-items: flex-end;
 }
 
 /* MODAL SECTION  */
-.background-modal{
-    background-color: #66bb6a;
-    border: solid 1px #102542;
-    display: none;
-    position: absolute;
-    top: 50%;  
-    left: 50%; 
-    transform: translate(-50%, -50%);
+.background-modal {
+  background-color: #66bb6a;
+  border: solid 1px #102542;
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.modal-content{
-    width: 600px;
-    height: 500px;
-    user-select: none;
-}
-
-.modal-settings{
-    font-size: 30px;
-    display: flex;
-    justify-content: center;
-    color: #102542;
-    margin-bottom: 20px;
+.modal-content {
+  width: 600px;
+  height: 550px;
+  user-select: none;
 }
 
-.modal-nick,.modal-email,.modal-country,.modal-password-old,.modal-password-new,.modal-password-new-repeat{
-    display: flex;
-    flex-direction: row;
-    color: #102542;
-    text-align: right;
+.modal-settings {
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  color: #102542;
+  margin-bottom: 20px;
+}
+
+.modal-nick,
+.modal-email,
+.modal-country,
+.modal-password-old,
+.modal-password-new,
+.modal-password-new-repeat {
+  display: flex;
+  flex-direction: row;
+  color: #102542;
+  text-align: right;
 }
 
 .modal-avatar {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 50px;
 }
 
-.row-one{
-    width: 31.4%;
-    padding-right: 10px;
+.row-one {
+  width: 31.4%;
+  padding-right: 10px;
 }
 
-.modal-button{
-    display: flex;
-    justify-content: center;
+.modal-button {
+  display: flex;
+  justify-content: center;
 }
 
-.modal-button-save, .modal-button-cancel{
-    margin: 10px;
+.modal-button-save,
+.modal-button-cancel {
+  margin: 10px;
 }
 
-.red-star{
-    color:red;
-    font-size: medium;
-    margin-left: 10px;
+.modal-error {
+  text-align: center;
+  color: red;
+}
+
+.red-star {
+  color: red;
+  font-size: medium;
+  margin-left: 10px;
 }
 
 .arrow {
-    display: flex;
-    align-items: center;
-    font-size: 3.5rem;
-    color: #102542;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 3.5rem;
+  color: #102542;
+  cursor: pointer;
 }
-  
 
-.account_modal-password-old-input, .account_modal-nick-input, .account_modal-password-input-new,
+.account_modal-password-old-input,
+.account_modal-nick-input,
+.account_modal-password-input-new,
 .account_modal-password-input-new-repeat,
-.account_modal-password-old-input:-webkit-autofill, .account_modal-nick-input:-webkit-autofill, .account_modal-password-input-new:-webkit-autofill,
-.account_modal-password-input-new-repeat:-webkit-autofill{
-    margin-bottom: 8px;
-    background: none;
-    color: #102542;
-    border: solid 1px #102542;
-    border-radius: 3px;
-    padding: 3px;
-    font-size: 16px;
+.account_modal-password-old-input:-webkit-autofill,
+.account_modal-nick-input:-webkit-autofill,
+.account_modal-password-input-new:-webkit-autofill,
+.account_modal-password-input-new-repeat:-webkit-autofill {
+  margin-bottom: 8px;
+  background: none;
+  color: #102542;
+  border: solid 1px #102542;
+  border-radius: 3px;
+  padding: 3px;
+  font-size: 16px;
 }
 
-.account_modal-password-old-input:focus, .account_modal-nick-input:focus,
-.account_modal-password-input-new:focus, .account_modal-password-input-new-repeat:focus, .account_modal-country-input:focus {
-    border: solid 1px #102542;
-    outline: none;
+.account_modal-password-old-input:focus,
+.account_modal-nick-input:focus,
+.account_modal-password-input-new:focus,
+.account_modal-password-input-new-repeat:focus,
+.account_modal-country-input:focus {
+  border: solid 1px #102542;
+  outline: none;
 }

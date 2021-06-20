@@ -31,6 +31,7 @@ const Account = ({ effect, userId }) => {
   const [totalCompletionTime, setTotalCompletionTime] = useState(0);
   const [totalGamePoints, setTotalGamePoints] = useState(0);
   const [statsError, setStatsError] = useState(false);
+  const [error, setError] = useState("");
 
   const [isLogged, setIsLogged] = useState(
     JSON.parse(localStorage.getItem("isLogged")) ?? false
@@ -78,6 +79,7 @@ const Account = ({ effect, userId }) => {
   };
 
   const clearSettings = () => {
+    setError("");
     setNewPassword("");
     setOldPassword("");
     setRepeatPassword("");
@@ -121,50 +123,61 @@ const Account = ({ effect, userId }) => {
           setAvatar(icon_id);
           setCurrentPassword(password);
           setCountryName(options.find(({ value }) => value === country).label);
-          setLoading(false);          
+          setLoading(false);
         })
         .catch((error) => {
           setLoading(false);
         });
 
-        agent
+      agent
         .get(`account/stats/${userId}`)
         .then(({ data }) => {
-          const { wins, losses, draws, totalPoints, totalTime } =
-            data;
-          if(wins != null){
+          const { wins, losses, draws, totalPoints, totalTime } = data;
+          if (wins != null) {
             setWinGames(wins);
-          };
-          if(draws != null){
-          setDrawGames(draws);
           }
-          if(losses != null){
-          setLoseGames(losses);
+          if (draws != null) {
+            setDrawGames(draws);
           }
-          if(totalTime != null){
-          setTotalCompletionTime(totalTime);
+          if (losses != null) {
+            setLoseGames(losses);
           }
-          if(totalPoints != null){
-          setTotalGamePoints(totalPoints);
+          if (totalTime != null) {
+            setTotalCompletionTime(totalTime);
+          }
+          if (totalPoints != null) {
+            setTotalGamePoints(totalPoints);
           }
         })
         .catch((error) => {
           setStatsError(true);
         });
-
     }
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    agent
-      .put(`account/edit/${userId}`, {
-        icon_id: avatar,
-        username: userName,
-        password: currentPassword,
-        country: country,
-      })
-      .catch((error) => {});
+    if (newPassword !== repeatPassword) {
+      setError("Hasła są różne");
+    } else {
+      const newAvatar = temporaryAvatar.match(/\d+/)[0];
+      agent
+        .put(`account/edit`, {
+          icon_id: newAvatar,
+          username: newUsername,
+          password: oldPassword,
+          newPassword,
+          country: newCountry,
+        })
+        .then(() => {
+          setNewData();
+        })
+        .catch(({ response }) => {
+          if (response?.data) {
+            setError(response.data);
+          }
+        });
+    }
   };
   if (loading) return <Spinner></Spinner>;
 
@@ -236,11 +249,12 @@ const Account = ({ effect, userId }) => {
         </div>
         <div className="profile-main">
           <div className="profile-statistics">
-            
             <div className="profile-statistics-inscription">Statystyki</div>
             <div className="profile-statistics-number-of-games stats">
               <div id="number-of-game-text">Gry</div>
-              <div id="number-of-game-stats">{parseInt(winGames)+parseInt(drawGames)+parseInt(loseGames)}</div>
+              <div id="number-of-game-stats">
+                {parseInt(winGames) + parseInt(drawGames) + parseInt(loseGames)}
+              </div>
             </div>
             <div className="profile-statistics-number-of-points stats">
               <div id="number-of-points-text">Punkty</div>
@@ -248,19 +262,31 @@ const Account = ({ effect, userId }) => {
             </div>
             <div className="profile-statistics-W-L-D-games stats">
               <div id="W-L-D-games-text">W/P/R</div>
-              <div id="W-L-D-games-stats">{winGames}/{loseGames}/{drawGames}</div>
+              <div id="W-L-D-games-stats">
+                {winGames}/{loseGames}/{drawGames}
+              </div>
             </div>
             <div className="profile-statistics-total-game-time stats">
               <div id="total-game-time-text">Całkowity czas gry</div>
-              <div id="total-game-time-stats">{totalCompletionTime + ' s'}</div>
+              <div id="total-game-time-stats">{totalCompletionTime + " s"}</div>
             </div>
             <div className="profile-statistics-average-game-time stats">
               <div id="average-game-time-text">Średni czas gry</div>
-              <div id="average-game-time-stats">{(parseInt(winGames)+parseInt(drawGames)+parseInt(loseGames)) === 0 ? '0 s' : Math.round(totalCompletionTime/(parseInt(winGames)+parseInt(drawGames)+parseInt(loseGames))) + ' s'}</div>
+              <div id="average-game-time-stats">
+                {parseInt(winGames) +
+                  parseInt(drawGames) +
+                  parseInt(loseGames) ===
+                0
+                  ? "0 s"
+                  : Math.round(
+                      totalCompletionTime /
+                        (parseInt(winGames) +
+                          parseInt(drawGames) +
+                          parseInt(loseGames))
+                    ) + " s"}
+              </div>
             </div>
-           
           </div>
-        
         </div>
       </div>
       <div
@@ -289,9 +315,6 @@ const Account = ({ effect, userId }) => {
                   setOldPassword(event.target.value);
                 }}
               />
-              {!(currentPassword === oldPassword || oldPassword === "") && (
-                <span class="red-star">niepoprawne hasło</span>
-              )}
             </div>
             <div className="modal-password-new">
               <div className="row-one">Nowe hasło</div>
@@ -312,9 +335,6 @@ const Account = ({ effect, userId }) => {
                   setRepeatPassword(event.target.value);
                 }}
               />
-              {!(repeatPassword === newPassword || repeatPassword === "") && (
-                <span class="red-star">powtórz hasło</span>
-              )}
             </div>
             <div className="modal-country">
               <div className="modal-country-text row-one">Kraj</div>
@@ -327,6 +347,7 @@ const Account = ({ effect, userId }) => {
                 />
               </div>
             </div>
+            <p className="modal-error">{error && error}</p>
             <div className="modal-avatar">
               <div className="modal-avatar-text"></div>
               <div
@@ -352,12 +373,9 @@ const Account = ({ effect, userId }) => {
               </div>
             </div>
             <div className="modal-avatar-current"></div>
+
             <div className="modal-button">
-              <button
-                className="modal-button-save"
-                type="submit"
-                onClick={() => setNewData()}
-              >
+              <button className="modal-button-save" type="submit">
                 Ok
               </button>
               <button

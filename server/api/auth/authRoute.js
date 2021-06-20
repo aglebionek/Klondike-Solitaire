@@ -48,6 +48,7 @@ router.post("/register", async (req, res) => {
     .toString();
 
   let resp = await mysqlQuery(checkIfUserExistsQuery, [email]);
+  let user;
   if (resp.length > 0)
     return res.status(403).json({ email: "Email jest zajęty" });
 
@@ -57,7 +58,7 @@ router.post("/register", async (req, res) => {
     .readFileSync(path.join(__dirname, "../../database/queries/register.sql"))
     .toString();
 
-  resp = await mysqlQuery(query, [username, email, hashedPassword]);
+  user = await mysqlQuery(query, [username, email, hashedPassword]);
 
   if (!resp) return res.status(500).json("Problem łaczenia z bazą danych");
   resp = await mysqlQuery(checkIfUserExistsQuery, [email]);
@@ -71,11 +72,10 @@ router.post("/register", async (req, res) => {
 
   resp = await mysqlQuery(insertSettings, [id]);
   if (!resp) return res.status(500).json("Problem łaczenia z bazą danych");
-
   const key = process.env.TOKEN_KEY;
   const token = jwt.sign(
     {
-      id: resp.insertId,
+      id: user.insertId,
       username,
       email,
     },
