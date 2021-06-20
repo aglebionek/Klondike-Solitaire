@@ -292,10 +292,18 @@ function GameView({
       clearInterval(timer);
 
       if (endTime === Number.MAX_SAFE_INTEGER) {
-        setPlayersOnEndGame((prev) => [
-          ...prev,
-          { name: JSON.parse(localStorage.getItem("user")).username, score: points + bonus },
-        ]);
+        if(localStorage.getItem("user") === null){
+          setPlayersOnEndGame((prev) => [
+            ...prev,
+            { name: "Gość", score: points + bonus },
+          ]);
+        }
+        else{
+          setPlayersOnEndGame((prev) => [
+            ...prev,
+            { name: JSON.parse(localStorage.getItem("user")).username, score: points + bonus },
+          ]);
+        }
       } else {
 
         if(localStorage.getItem("gameInfo") !== null){
@@ -398,7 +406,14 @@ function GameView({
     localStorage.removeItem("isMulti");
     localStorage.removeItem("gameId");
 
-    const player = JSON.parse(localStorage.getItem("user")).username;
+    let player;
+
+    if(localStorage.getItem("user") !== null){
+      player = JSON.parse(localStorage.getItem("user")).username;
+    }
+    else{
+      player = "Gość";
+    }
 
     playersOnEndGame.sort((a, b) => b.score - a.score);
 
