@@ -95,7 +95,6 @@ function MainMenu( {effect, handleButton} ) {
                 id: undefined,
                 handicap: 0,
                 isMulti: false
-                
             });
         }
     }

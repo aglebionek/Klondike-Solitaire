@@ -397,8 +397,6 @@ export const numMoves = function (
 };
 
 export const gameResult = (finalColumns, activePlayer, playersArr, isMulti) => {
-  console.log(playersArr);
-
   if(!isMulti){
     for (const column of finalColumns) {
       if (column.length < 13) return "lose";
