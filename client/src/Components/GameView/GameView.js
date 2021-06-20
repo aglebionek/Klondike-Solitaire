@@ -38,15 +38,55 @@ function GameView({
   });
   const [startCardIndex, setStartCardIndex] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [moveNumbers, setMoveNumbers] = useState(0);
+  const [moveNumbers, setMoveNumbers] = useState(() => {
+    const localMoves = localStorage.getItem("moveNumbers");
+
+    return localMoves !== null
+      ? JSON.parse(localMoves)
+      : 0 
+  });
   const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
   const [gameNumber, setGameNumber] = useState(0);
   const [isGameEnded, setGameEnd] = useState(false);
   const [isGameLoaded, setGameLoaded] = useState(false);
   const [bonus, setBonus] = useState(1200);
-  const [gameTime, setGameTime] = useState(location.handicap);
-  const [points, setPoints] = useState(0);
+  const [gameTime, setGameTime] = useState(() => {
+    const item = localStorage.getItem("gameInfo");
+
+    if(location.handicap){
+      return location.handicap;
+    }
+
+    if(item !== null){
+      const gameInfoDate = JSON.parse(item).startDate;
+
+      return Math.floor((new Date() - new Date(gameInfoDate)) / 1000);
+    }
+
+    return 0;
+  });
+  const [points, setPoints] = useState(() => {
+    const localPoints = localStorage.getItem("points");
+
+    return localPoints !== null
+      ? parseInt(JSON.parse(localPoints))
+      : 0
+  });
+  const [endTime, setEndTime] = useState(() => {
+    return location.time
+      ? location.time
+      : JSON.parse(localStorage.getItem("gameInfo")).time
+  });
   const [playMusic, setPlayMusic] = useState(false);
+  const [isMulti, setMulti] = useState(() => {
+    if(location.isMulti !== undefined){
+      localStorage.setItem("isMulti", JSON.stringify(location.isMulti));
+      return location.isMulti;
+    }
+    else{
+      return JSON.parse(localStorage.getItem("isMulti"));
+    }
+  });
 
   const [mainColumn1, setMainColumn1] = useState([]);
   const [mainColumn2, setMainColumn2] = useState([]);
@@ -131,28 +171,44 @@ function GameView({
   let timer = useRef(null);
   const revealCardRef = useRef(null);
 
-  const columns = { ...finalColumns, ...mainColumns, ...startColumns };
+  let columns = { ...finalColumns, ...mainColumns, ...startColumns };
 
   useEffect(() => {
     let firstShuffle;
+    let localColumns = localStorage.getItem("columns");
 
-    if (initialShuffle) {
-      firstShuffle = initialShuffle;
-    } else if (shuffle) {
-      firstShuffle = shuffle;
-    } else {
-      firstShuffle = shuffleCards();
-      setShuffle(firstShuffle);
-    }
-
-    Object.entries(firstShuffle).map(([key, item]) => {
-      const newArray = [];
-      for (let i = 0; i < item.length; i++) {
-        newArray.push({ ...item[i] });
+    if(localColumns !== null){
+      for(const [key, item] of Object.entries(JSON.parse(localColumns))){
+        const newArray = [];
+        for (let i = 0; i < item.get.length; i++) {
+          newArray.push({ ...item.get[i] });
+        }
+        columns[key].set(newArray);
       }
-      columns[key].set(newArray);
-    });
-    setLoading(false);
+      
+      setLoading(false);
+    }
+    else{
+      if (initialShuffle) {
+        firstShuffle = initialShuffle;
+      } else if (shuffle) {
+        firstShuffle = shuffle;
+      } else {
+        firstShuffle = shuffleCards();
+        setShuffle(firstShuffle);
+      }
+  
+      Object.entries(firstShuffle).map(([key, item]) => {
+        const newArray = [];
+        for (let i = 0; i < item.length; i++) {
+          newArray.push({ ...item[i] });
+        }
+        columns[key].set(newArray);
+      });
+
+      setLoading(false);
+    }
+    
     if (analysis) {
       setHistory(initialHistory);
       setPoints(initialPoints);
@@ -221,10 +277,14 @@ function GameView({
       if (location.time === Number.MAX_SAFE_INTEGER) {
         setPlayersOnEndGame((prev) => [
           ...prev,
-          { name: location.players[0].username, score: points + bonus },
+          { name: JSON.parse(localStorage.getItem("user")).username, score: points + bonus },
         ]);
       } else {
-        socket.emit("end-game", { score: points + bonus });
+        socket.emit("end-game", { 
+          room: JSON.parse(localStorage.getItem("gameInfo")).roomName,
+          player: JSON.parse(localStorage.getItem("user")).username,
+          score: points + bonus 
+        });
       }
     }
   }, [isGameEnded]);
@@ -244,7 +304,11 @@ function GameView({
         startColumn1
       );
 
-      if (gameTime === location.time) {
+      localStorage.setItem("columns", JSON.stringify(columns));
+      localStorage.setItem("points", JSON.stringify(points));
+      localStorage.setItem("moveNumbers", JSON.stringify(moveNumbers));
+
+      if (gameTime === endTime) {
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       }
@@ -308,12 +372,16 @@ function GameView({
     });
 
     localStorage.removeItem("shuffle");
+    localStorage.removeItem("columns");
+    localStorage.removeItem("points");
+    localStorage.removeItem("moveNumbers");
+    localStorage.removeItem("isMulti");
 
-    const result = gameResult(finalColumnsArr);
-
-    console.log(result);
+    const player = JSON.parse(localStorage.getItem("user")).username;
 
     playersOnEndGame.sort((a, b) => b.score - a.score);
+
+    const result = gameResult(finalColumnsArr, player, playersOnEndGame, isMulti);
     return (
       <WinLoseBoard
         points={points + bonus}
@@ -381,7 +449,7 @@ function GameView({
             effect={effect}
             analysis={analysis}
             revealCardRef={revealCardRef}
-            isMulti={location.isMulti}
+            isMulti={isMulti}
           />
           <FinalColumns
             finalColumns={finalColumns}
