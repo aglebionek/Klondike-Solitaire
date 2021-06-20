@@ -35,7 +35,7 @@ const Deck = ({
         draggedCards: [startColumn1[cardIndex]],
       };
       if (cardIndex + 1 > startColumn1.length && startColumn1.length > 0) {
-        const newPoints = points - 50;
+        const newPoints = points - 2;
         if (newPoints < 0) {
           setPoints(0);
         } else setPoints(newPoints);

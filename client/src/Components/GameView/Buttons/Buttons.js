@@ -56,7 +56,7 @@ const Buttons = ({
       if (!analysis) setMoveNumbers((prev) => prev + 1);
       buttonUndo();
 
-      const newPoints = points - 20;
+      const newPoints = points - 10;
       if (newPoints < 0) setPoints(0);
       else setPoints(newPoints);
       let lastStep;

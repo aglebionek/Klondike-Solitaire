@@ -188,7 +188,7 @@ const Modal = ({
 
         <div className="winlose">
           {gameResult === "win"
-            ? "wygrałes"
+            ? "Wygrałeś"
             : gameResult === "lose"
             ? "Przegrałeś"
             : "Remis"}

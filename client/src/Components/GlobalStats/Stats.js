@@ -283,9 +283,7 @@ if (localStorage.getItem('isLogged')) {
             Poprzednia
           </button>
         </li>
-          {pageDecrementBtn}
           {renderPageNumbers}
-          {pageIncrementBtn}
         <li>
           <button 
             id={'next-page'}
