@@ -60,6 +60,13 @@ function GameView({
     return 0;
   });
   const [points, setPoints] = useState(0);
+  const [endTime, setEndTime] = useState(() => {
+    const time = location.time;
+
+    return location.time
+      ? location.time
+      : JSON.parse(localStorage.getItem("gameInfo")).time
+  });
   const [playMusic, setPlayMusic] = useState(false);
 
   const [mainColumn1, setMainColumn1] = useState([]);
@@ -238,7 +245,11 @@ function GameView({
           { name: location.players[0].username, score: points + bonus },
         ]);
       } else {
-        socket.emit("end-game", { score: points + bonus });
+        socket.emit("end-game", { 
+          room: JSON.parse(localStorage.getItem("roomData")).name,
+          player: JSON.parse(localStorage.getItem("user")).username,
+          score: points + bonus 
+        });
       }
     }
   }, [isGameEnded]);
@@ -258,9 +269,7 @@ function GameView({
         startColumn1
       );
 
-      console.log(possibleMoves)
-
-      if (gameTime === 10) {
+      if (gameTime === endTime) {
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       }

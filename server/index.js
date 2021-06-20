@@ -133,11 +133,13 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("end-game", ({ score }) => {
-    const player = getCurrentUser(socket.id);
+  socket.on("end-game", ({ player, room, score }) => {
+    if(getCurrentUser(socket.id) === undefined){
+      socket.emit('lobby-join', {player, room});
+    }
 
-    io.to(player.room).emit("write-to-end-list", {
-      player: player.username,
+    io.to(room).emit("write-to-end-list", {
+      player: player,
       score: score,
     });
   });
