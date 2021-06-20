@@ -20,6 +20,9 @@ const Settings = ({ ID }) => {
     JSON.parse(localStorage.getItem("isLogged")) ?? false
   );
   const [loading, setLoading] = useState(isLogged);
+  const [motiveCss, setMotive] = useState(
+    localStorage.getItem("motiveCss") ?? "default"
+  )
   const userId = ID;
 
   const cards = ["vA hearts cyberpunk", "vA hearts"];
@@ -31,6 +34,7 @@ const Settings = ({ ID }) => {
     else index++;
     setTemporaryCard(cards[index]);
     localStorage.setItem("motiveCss", motives[index]);
+    setMotive(localStorage.getItem("motiveCss"));
   };
 
   const previousCard = () => {
@@ -39,6 +43,7 @@ const Settings = ({ ID }) => {
     else index--;
     setTemporaryCard(cards[index]);
     localStorage.setItem("motiveCss", motives[index]);
+    setMotive(localStorage.getItem("motiveCss"));
   };
 
   const setNewCard = () => {
@@ -82,11 +87,12 @@ const Settings = ({ ID }) => {
   };
 
   var styles = require("./Settings.module.css");
-  if (isLogged) {
-    if (localStorage.getItem("motiveCss") === "cyberpunk") {
-      styles = require("./SettingsCyberpunk.module.css");
+  if(isLogged) {
+    console.info("islogged true")
+    if(motiveCss === "cyberpunk") {
+        styles = require("./SettingsCyberpunk.module.css")
     }
-  }
+  } else if (!isLogged || motiveCss === "default") styles = require("./Settings.module.css");
 
   if (loading) return <Spinner></Spinner>;
   return (

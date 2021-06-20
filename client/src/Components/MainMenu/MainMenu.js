@@ -42,6 +42,7 @@ function MainMenu( {effect, handleButton} ) {
                     setLog(false);
                     localStorage.setItem('isLogged', false);
                     localStorage.removeItem('user');
+                    window.location.reload();
                 })
                 
             return;
@@ -109,12 +110,12 @@ function MainMenu( {effect, handleButton} ) {
             setLog(false);
           });
     }, []);
-    var styles = require("./MainMenu.css");
-    if(localStorage.getItem('isLogged')) {
+    var styles = "";
+    if(isLogged) {
         if(localStorage.getItem('motiveCss') === "cyberpunk") {
-            styles = require("./MainMenuCyberpunk.css");
+            styles = require("./MainMenuCyberpunk.css")
         }
-    }
+    } else if (!isLogged || localStorage.getItem('motiveCss') === "default") styles = require("./MainMenu.css");
 
     return (<>
         <div className='main-menu'>
