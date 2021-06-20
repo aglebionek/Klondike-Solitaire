@@ -201,15 +201,15 @@ const Modal = ({
           {minutes + " " + minutesText + " " + seconds + " " + secondsText}
         </div>
 
-        <div>
+        <div className="winloseboard__button-div">
           <a
             href="/"
-            className="winloseboard__button-back"
+            className="winloseboard__button"
             onClick={handleClose}
           >
             Zamknij
           </a>
-          <button className="button" onClick={() => setGameAnalysis(true)}>
+          <button className="winloseboard__button" onClick={() => setGameAnalysis(true)}>
             Analiza rozgrywki
           </button>
         </div>
