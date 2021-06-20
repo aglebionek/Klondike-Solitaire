@@ -310,6 +310,9 @@ function GameView({
     localStorage.removeItem("shuffle");
 
     const result = gameResult(finalColumnsArr);
+
+    console.log(result);
+
     playersOnEndGame.sort((a, b) => b.score - a.score);
     return (
       <WinLoseBoard
