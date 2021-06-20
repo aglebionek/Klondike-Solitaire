@@ -42,7 +42,13 @@ function LobbyMultiplayer() {
       setUsers(usersArr);
     });
 
-    setPlayer(JSON.parse(localStorage.getItem("user")).username);
+
+    if (localStorage.getItem("user") !== null) {
+      setPlayer(JSON.parse(localStorage.getItem("user")).username);
+    }
+    else {
+      setPlayer("Gość");
+    }
 
     socket.emit('export-users');
     localStorage.removeItem("roomData");
