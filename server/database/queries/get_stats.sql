@@ -2,10 +2,10 @@ SELECT
   gameoccurrences.player_id AS playerId,
   icons.src AS icon,
   players.username AS username,
-  COUNT(gameoccurrences.is_win) AS wins, 
-  COUNT(gameoccurrences.is_lose) AS losses, 
-  COUNT(gameoccurrences.is_draw) AS draws,
-  CAST((COUNT(gameoccurrences.is_win) + 0.5 * COUNT(gameoccurrences.is_draw)) / (COUNT(gameoccurrences.is_lose) + 1) AS DECIMAL(6,2)) AS ratio
+  IFNULL(SUM(gameoccurrences.is_win), 0) AS wins, 
+  IFNULL(SUM(gameoccurrences.is_lose), 0) AS losses, 
+  IFNULL(SUM(gameoccurrences.is_draw), 0) AS draws,
+  CAST((IFNULL(SUM(gameoccurrences.is_win), 0) + 0.5 * IFNULL(SUM(gameoccurrences.is_lose), 0)) / (IFNULL(SUM(gameoccurrences.is_draw), 0) + 1) AS DECIMAL(6,2)) AS ratio
 FROM gameoccurrences
 JOIN 
   players
