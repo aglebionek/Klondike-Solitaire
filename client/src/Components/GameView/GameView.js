@@ -45,6 +45,15 @@ function GameView({
       ? JSON.parse(localMoves)
       : 0 
   });
+  const [gameId, setGameId] = useState(() => {
+    if(location.id !== undefined){
+      localStorage.setItem("gameId", JSON.stringify(location.id));
+      return location.id;
+    }
+    else{
+      return JSON.parse(localStorage.getItem("gameId"));
+    }
+  });
   const [possiblemoveNumbers, setPossibleMoveNumbers] = useState(0);
   const [gameNumber, setGameNumber] = useState(0);
   const [isGameEnded, setGameEnd] = useState(false);
@@ -72,11 +81,7 @@ function GameView({
       ? parseInt(JSON.parse(localPoints))
       : 0
   });
-  const [endTime, setEndTime] = useState(() => {
-    return location.time
-      ? location.time
-      : JSON.parse(localStorage.getItem("gameInfo")).time
-  });
+  
   const [playMusic, setPlayMusic] = useState(false);
   const [isMulti, setMulti] = useState(() => {
     if(location.isMulti !== undefined){
@@ -86,6 +91,18 @@ function GameView({
     else{
       return JSON.parse(localStorage.getItem("isMulti"));
     }
+  });
+
+  const [endTime, setEndTime] = useState(() => {
+    if(isMulti){
+      return location.time !== undefined
+        ? location.time
+        : JSON.parse(localStorage.getItem("gameInfo")).time
+    }
+    else{
+      return Number.MAX_SAFE_INTEGER
+    }
+    
   });
 
   const [mainColumn1, setMainColumn1] = useState([]);
@@ -185,7 +202,7 @@ function GameView({
         }
         columns[key].set(newArray);
       }
-      
+
       setLoading(false);
     }
     else{
@@ -274,17 +291,20 @@ function GameView({
     if (isGameEnded) {
       clearInterval(timer);
 
-      if (location.time === Number.MAX_SAFE_INTEGER) {
+      if (endTime === Number.MAX_SAFE_INTEGER) {
         setPlayersOnEndGame((prev) => [
           ...prev,
           { name: JSON.parse(localStorage.getItem("user")).username, score: points + bonus },
         ]);
       } else {
-        socket.emit("end-game", { 
-          room: JSON.parse(localStorage.getItem("gameInfo")).roomName,
-          player: JSON.parse(localStorage.getItem("user")).username,
-          score: points + bonus 
-        });
+
+        if(localStorage.getItem("gameInfo") !== null){
+          socket.emit("end-game", { 
+            room: JSON.parse(localStorage.getItem("gameInfo")).roomName,
+            player: JSON.parse(localStorage.getItem("user")).username,
+            score: points + bonus 
+          });
+        }
       }
     }
   }, [isGameEnded]);
@@ -308,12 +328,16 @@ function GameView({
       localStorage.setItem("points", JSON.stringify(points));
       localStorage.setItem("moveNumbers", JSON.stringify(moveNumbers));
 
+      console.log([gameTime, endTime]);
+
       if (gameTime === endTime) {
+        console.log("if1");
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       }
 
       if (possibleMoves === 0) {
+        console.log("if2");
         setGameEnd(true);
         setTimeout(() => setGameLoaded(true), 100);
       } else setPossibleMoveNumbers(possibleMoves);
@@ -376,6 +400,7 @@ function GameView({
     localStorage.removeItem("points");
     localStorage.removeItem("moveNumbers");
     localStorage.removeItem("isMulti");
+    localStorage.removeItem("gameId");
 
     const player = JSON.parse(localStorage.getItem("user")).username;
 
@@ -385,7 +410,7 @@ function GameView({
     return (
       <WinLoseBoard
         points={points + bonus}
-        gameId={location.id}
+        gameId={gameId}
         gameTime={gameTime}
         history={history}
         players={playersOnEndGame}

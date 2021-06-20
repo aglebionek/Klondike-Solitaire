@@ -86,9 +86,9 @@ function CreateRoom() {
   };
 
   const handleGameBegin = () => {
-    /*if(roomData.players.length <= 1){
+    if(roomData.players.length <= 1){
       return;
-    }*/
+    }
 
     const start = new Date();
     const now = start.toISOString().slice(0, 19).replace('T', ' ');
@@ -198,7 +198,7 @@ function CreateRoom() {
                 </button>
             </Link>
             <button onClick={handleRoomModifyButton} id={'Modify'}>Modyfikuj</button>
-            <button onClick={handleGameBegin}>Rozpocznij grę</button>
+            <button onClick={handleGameBegin} disabled={roomData.players.length <= 1}>Rozpocznij grę</button>
           </div>
         </div>
       </section>
