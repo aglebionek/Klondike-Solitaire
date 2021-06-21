@@ -43,16 +43,13 @@ function GameView({
   const [moveNumbers, setMoveNumbers] = useState(() => {
     const localMoves = localStorage.getItem("moveNumbers");
 
-    return localMoves !== null
-      ? JSON.parse(localMoves)
-      : 0 
+    return localMoves !== null ? JSON.parse(localMoves) : 0;
   });
   const [gameId, setGameId] = useState(() => {
-    if(location.id !== undefined){
+    if (location.id !== undefined) {
       localStorage.setItem("gameId", JSON.stringify(location.id));
       return location.id;
-    }
-    else{
+    } else {
       return JSON.parse(localStorage.getItem("gameId"));
     }
   });
@@ -64,11 +61,11 @@ function GameView({
   const [gameTime, setGameTime] = useState(() => {
     const item = localStorage.getItem("gameInfo");
 
-    if(location.handicap){
+    if (location.handicap) {
       return location.handicap;
     }
 
-    if(item !== null){
+    if (item !== null) {
       const gameInfoDate = JSON.parse(item).startDate;
 
       return Math.floor((new Date() - new Date(gameInfoDate)) / 1000);
@@ -79,32 +76,27 @@ function GameView({
   const [points, setPoints] = useState(() => {
     const localPoints = localStorage.getItem("points");
 
-    return localPoints !== null
-      ? parseInt(JSON.parse(localPoints))
-      : 0
+    return localPoints !== null ? parseInt(JSON.parse(localPoints)) : 0;
   });
-  
+
   const [playMusic, setPlayMusic] = useState(false);
   const [isMulti, setMulti] = useState(() => {
-    if(location.isMulti !== undefined){
+    if (location.isMulti !== undefined) {
       localStorage.setItem("isMulti", JSON.stringify(location.isMulti));
       return location.isMulti;
-    }
-    else{
+    } else {
       return JSON.parse(localStorage.getItem("isMulti"));
     }
   });
 
   const [endTime, setEndTime] = useState(() => {
-    if(isMulti){
+    if (isMulti) {
       return location.time !== undefined
         ? location.time
-        : JSON.parse(localStorage.getItem("gameInfo")).time
+        : JSON.parse(localStorage.getItem("gameInfo")).time;
+    } else {
+      return Number.MAX_SAFE_INTEGER;
     }
-    else{
-      return Number.MAX_SAFE_INTEGER
-    }
-    
   });
 
   const [mainColumn1, setMainColumn1] = useState([]);
@@ -196,8 +188,8 @@ function GameView({
     let firstShuffle;
     let localColumns = localStorage.getItem("columns");
 
-    if(localColumns !== null){
-      for(const [key, item] of Object.entries(JSON.parse(localColumns))){
+    if (localColumns !== null) {
+      for (const [key, item] of Object.entries(JSON.parse(localColumns))) {
         const newArray = [];
         for (let i = 0; i < item.get.length; i++) {
           newArray.push({ ...item.get[i] });
@@ -206,8 +198,7 @@ function GameView({
       }
 
       setLoading(false);
-    }
-    else{
+    } else {
       if (initialShuffle) {
         firstShuffle = initialShuffle;
       } else if (shuffle) {
@@ -216,7 +207,7 @@ function GameView({
         firstShuffle = shuffleCards();
         setShuffle(firstShuffle);
       }
-  
+
       Object.entries(firstShuffle).map(([key, item]) => {
         const newArray = [];
         for (let i = 0; i < item.length; i++) {
@@ -227,7 +218,7 @@ function GameView({
 
       setLoading(false);
     }
-    
+
     if (analysis) {
       setHistory(initialHistory);
       setPoints(initialPoints);
@@ -294,25 +285,26 @@ function GameView({
       clearInterval(timer);
 
       if (endTime === Number.MAX_SAFE_INTEGER) {
-        if(localStorage.getItem("user") === null){
+        if (localStorage.getItem("user") === null) {
           setPlayersOnEndGame((prev) => [
             ...prev,
             { name: "Gość", score: points + bonus },
           ]);
-        }
-        else{
+        } else {
           setPlayersOnEndGame((prev) => [
             ...prev,
-            { name: JSON.parse(localStorage.getItem("user")).username, score: points + bonus },
+            {
+              name: JSON.parse(localStorage.getItem("user")).username,
+              score: points + bonus,
+            },
           ]);
         }
       } else {
-
-        if(localStorage.getItem("gameInfo") !== null){
-          socket.emit("end-game", { 
+        if (localStorage.getItem("gameInfo") !== null) {
+          socket.emit("end-game", {
             room: JSON.parse(localStorage.getItem("gameInfo")).roomName,
             player: JSON.parse(localStorage.getItem("user")).username,
-            score: points + bonus 
+            score: points + bonus,
           });
         }
       }
@@ -389,9 +381,15 @@ function GameView({
   if (isLoading) return <div>loading...</div>;
 
   var styles;
-  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+  if (
+    localStorage.getItem("motiveCss") !== "cyberpunk" ||
+    localStorage.getItem("isLogged") === "false"
+  ) {
     styles = gameViewStyles;
-  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+  } else if (
+    localStorage.getItem("motiveCss") === "cyberpunk" &&
+    localStorage.getItem("isLogged") === "true"
+  ) {
     styles = gameViewStylesCyberpunk;
   }
 
@@ -409,16 +407,20 @@ function GameView({
 
     let player;
 
-    if(localStorage.getItem("user") !== null){
+    if (localStorage.getItem("user") !== null) {
       player = JSON.parse(localStorage.getItem("user")).username;
-    }
-    else{
+    } else {
       player = "Gość";
     }
 
     playersOnEndGame.sort((a, b) => b.score - a.score);
 
-    const result = gameResult(finalColumnsArr, player, playersOnEndGame, isMulti);
+    const result = gameResult(
+      finalColumnsArr,
+      player,
+      playersOnEndGame,
+      isMulti
+    );
     return (
       <WinLoseBoard
         points={points + bonus}
