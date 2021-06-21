@@ -1,12 +1,7 @@
 import React from 'react';
+import ThemeSelector from '../ThemeSelector/ThemeSelector';
 
 function PasswordReset (){
-  var styles = require("./PasswordReset.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-      styles = require("./PasswordResetCyberpunk.css");
-    }
-  }
     return (
     <div className="password__reset__container">
       <a href="/" className="password__reset__back">
@@ -42,4 +37,4 @@ function PasswordReset (){
     </div>
   );
 }
-export default PasswordReset
+export default ThemeSelector(PasswordReset);

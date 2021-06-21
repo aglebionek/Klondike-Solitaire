@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import "./Login.css";
 import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from "../../agent/agent.js";
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 import { GrWindows } from "react-icons/gr";
 
 function Login() {
@@ -63,13 +63,6 @@ function Login() {
     beep.volume = 1;
     beep.play();
   };
-  var styles = require("./Login.css");
-  if (isLoggedIn) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-      styles = require("./LoginCyberpunk.css");
-    }
-    return <Redirect to="/" />;
-  }
   return (
     <div className="login__container">
       <a href="/" className="login__back" onMouseDown={buttonSound}
@@ -128,4 +121,4 @@ function Login() {
     </div>
   );
 }
-export default Login;
+export default ThemeSelector(Login);

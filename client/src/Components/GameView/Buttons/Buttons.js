@@ -3,6 +3,8 @@ import { GrUndo } from "react-icons/gr";
 import { RiRestartLine, RiShareForwardFill } from "react-icons/ri";
 import buttonUndoSound from "../../../soundtrack/SoundDesign/button_undo.mp3";
 import buttonHoverSound from "../../../soundtrack/SoundDesign/menu_hover.mp3";
+import buttonsStylesCyberpunk from "./ButtonsCyberpunk.module.css";
+import buttonsStyles from "./Buttons.module.css";
 
 const Buttons = ({
   history,
@@ -177,12 +179,13 @@ const Buttons = ({
     }
   };
 
-  var styles = require("./Buttons.module.css");
-  if (localStorage.getItem("isLogged")) {
-    if (localStorage.getItem("motiveCss") === "cyberpunk") {
-      styles = require("./ButtonsCyberpunk.module.css");
-    }
+  var styles;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+    styles = buttonsStyles
+  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+    styles = buttonsStylesCyberpunk;
   }
+  
   return (
     <div className={styles.buttons}>
       <button

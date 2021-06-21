@@ -64,11 +64,7 @@ const DraggableCard = ({
   };
   const convertRankToClass = "v" + item.rank;
   var cardStyle = "";
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        cardStyle += "cyberpunk";
-    }
-  }
+  if(localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") cardStyle += "cyberpunk";
 
 
   const handleDragEnd = (e) => {

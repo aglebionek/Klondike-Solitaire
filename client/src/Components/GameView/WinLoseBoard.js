@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import "./WinLose.css";
 import GameView from "./GameView";
 import Animation from "./game_end_animations/Animation";
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 
 import agent from '../../agent/agent';
 
@@ -174,13 +175,6 @@ const Modal = ({
     secondsText = "Sekunda";
   }
 
-  var styles = require("./WinLose.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-      styles = require("./WinLoseCyberpunk.css");
-    }
-  }
-
   return (
     <div className={showHideClassName}>
       <section className="modal-main">
@@ -217,4 +211,4 @@ const Modal = ({
     </div>
   );
 };
-export default StatsBoard;
+export default ThemeSelector(StatsBoard);

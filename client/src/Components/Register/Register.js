@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import buttonMenuClick from "../../soundtrack/SoundDesign/menu_click.mp3";
 import buttonHoverSound from "../../soundtrack/SoundDesign/menu_hover.mp3";
 import agent from "../../agent/agent.js";
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -93,14 +94,6 @@ function Register() {
     beep.play();
   };
 
-  var styles = require("./Register.css");
-
-  if (isLoggedIn) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-      styles = require("./RegisterCyberpunk.css");
-    }
-    return <Redirect to="/" />;
-  } 
   return (
     <div className="register__container">
       <div className="register__back">
@@ -195,4 +188,4 @@ function Register() {
     </div>
   );
 }
-export default Register;
+export default ThemeSelector(Register);

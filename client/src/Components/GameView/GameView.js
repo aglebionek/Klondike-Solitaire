@@ -14,6 +14,8 @@ import cardRight from "../../soundtrack/SoundDesign/card_right.mp3";
 import Statistics from "./Statistics/Statistics";
 import { useLocation } from "react-router-dom";
 import WinLoseBoard from "./WinLoseBoard";
+import gameViewStylesCyberpunk from "./GameViewCyberpunk.module.css";
+import gameViewStyles from "./GameView.module.css";
 
 import socket from "../Mutiplayer/socketConfig";
 
@@ -386,12 +388,11 @@ function GameView({
 
   if (isLoading) return <div>loading...</div>;
 
-  var styles = require("./GameView.module.css");
-
-  if (localStorage.getItem("isLogged")) {
-    if (localStorage.getItem("motiveCss") === "cyberpunk") {
-      styles = require("./GameViewCyberpunk.module.css");
-    }
+  var styles;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+    styles = gameViewStyles;
+  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+    styles = gameViewStylesCyberpunk;
   }
 
   if (isGameLoaded) {

@@ -3,6 +3,8 @@ import { check4Stack } from "../../../utils/card";
 import FinalColumnItem from "../FinalColumnItem/FinalColumnItem";
 import DraggableCard from "../DraggableCard/DraggableCard";
 import Drop from "../Drop/drop";
+import finalColumnsStyles from "./FinalColumns.module.css";
+import finalColumnsStylesCyberpunk from "./FinalColumnsCyberpunk.module.css";
 
 const FinalColumns = ({
   finalColumns,
@@ -92,12 +94,14 @@ const FinalColumns = ({
     }
     setDraggingCard({ title: "", array: [] });
   };
-  var styles = require("./FinalColumns.module.css");
-  if (localStorage.getItem("isLogged")) {
-    if (localStorage.getItem("motiveCss") === "cyberpunk") {
-      styles = require("./FinalColumnsCyberpunk.module.css");
-    }
+
+  var styles;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+    styles = finalColumnsStyles;
+  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+    styles = finalColumnsStylesCyberpunk;
   }
+
   return (
     <div className={styles.finalColumnContainer}>
       {Object.entries(finalColumns).map(([key, column]) => {

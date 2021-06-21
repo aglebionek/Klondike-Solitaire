@@ -8,6 +8,7 @@ import agent from "../../agent/agent.js";
 import Spinner from "../Spinner/Spinner";
 import accountSelectStyle from "./AccountSelectStyle";
 import accountSelectStyleCyberpunk from "./AccountSelectStyleCyberpunk";
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 
 const Account = ({ effect, userId }) => {
   const [show, setShow] = useState(false);
@@ -181,13 +182,11 @@ const Account = ({ effect, userId }) => {
   };
   if (loading) return <Spinner></Spinner>;
 
-  var styles = require("./Account.css");
-  var selectStyle = accountSelectStyle;
-  if (isLogged) {
-    if (localStorage.getItem("motiveCss") === "cyberpunk") {
-      styles = require("./AccountCyberpunk.css");
-      selectStyle = accountSelectStyleCyberpunk;
-    }
+  var selectStyle;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk") {
+    selectStyle = accountSelectStyle;
+  } else {
+    selectStyle = accountSelectStyleCyberpunk;
   }
 
   return (
@@ -393,4 +392,4 @@ const Account = ({ effect, userId }) => {
   );
 };
 
-export default Account;
+export default ThemeSelector(Account);

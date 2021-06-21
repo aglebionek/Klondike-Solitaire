@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import socket from './../socketConfig.js';
 import { useHistory } from "react-router-dom";
 import agent from '../../../agent/agent';
+import ThemeSelector from "../../ThemeSelector/ThemeSelector.js";
 import createRoomSelectStyle from "./CreateRoomSelectStyle.js";
 import createRoomSelectStyleCyberpunk from "./CreateRoomSelectStyleCyberpunk.js";
 
@@ -151,13 +152,11 @@ function CreateRoom() {
     }
   });
 
-  var styles = require("./CreateRoom.css");
-  var selectStyle = createRoomSelectStyle;
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-      styles = require("./CreateRoomCyberpunk.css");
-      selectStyle = createRoomSelectStyleCyberpunk;
-    }
+  var selectStyle;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+   selectStyle = createRoomSelectStyle;
+  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+    selectStyle = createRoomSelectStyleCyberpunk;
   }
 
   if (roomData.isCreated && !roomData.isBeingModified) {
@@ -255,4 +254,4 @@ function CreateRoom() {
   }
 }
 
-export default CreateRoom;
+export default ThemeSelector(CreateRoom);
