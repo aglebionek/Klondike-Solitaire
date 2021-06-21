@@ -4,7 +4,7 @@ import GameView from "./GameView";
 import Animation from "./game_end_animations/Animation";
 import ThemeSelector from "../ThemeSelector/ThemeSelector";
 
-import agent from '../../agent/agent';
+import agent from "../../agent/agent";
 
 class StatsBoard extends Component {
   constructor(props) {
@@ -32,17 +32,19 @@ class StatsBoard extends Component {
   saveScore = () => {
     agent.post("/game/insert-game-occur", {
       player_id: JSON.parse(localStorage.getItem("user")).id,
-      game_id: this.state.gameId, 
-      points: this.state.points, 
-      completion_time: this.state.gameTime, 
-      moves: this.state.moveNumbers, 
-      starting_distribution: '', 
-      is_win: this.state.gameResult === 'win',
-      is_lose: this.state.gameResult === 'lose',
-      is_draw: !(this.state.gameResult === 'win' || this.state.gameResult === 'lose'),
+      game_id: this.state.gameId,
+      points: this.state.points,
+      completion_time: this.state.gameTime,
+      moves: this.state.moveNumbers,
+      starting_distribution: "",
+      is_win: this.state.gameResult === "win",
+      is_lose: this.state.gameResult === "lose",
+      is_draw: !(
+        this.state.gameResult === "win" || this.state.gameResult === "lose"
+      ),
       key: 317 * (Math.floor(Math.random() * 100) + 1),
     });
-  }
+  };
 
   showModal = () => {
     this.setState({ show: true });
@@ -105,38 +107,31 @@ const Modal = ({
   const showHideClassName = show ? "modal display-block" : "modal display-none";
   const [gameAnalysis, setGameAnalysis] = useState(false);
   const SingleOrMulti = (players) => {
-    if (players.length > 1) {
+    if (players?.length > 1) {
       return (
         <table id="players">
           <thead>
             <tr>
-              <td>
-                Gracz
-              </td>
-              <td>
-                Wynik
-              </td>
+              <td>Gracz</td>
+              <td>Wynik</td>
             </tr>
           </thead>
           <tbody>
-            {
-              players.map((player, index) => (
-                <tr key={index}>
-                  <td>{player.name}</td>
-                  <td>{player.score}</td>
-                </tr>
-              ))
-            }
+            {players.map((player, index) => (
+              <tr key={index}>
+                <td>{player.name}</td>
+                <td>{player.score}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       );
-    }
-    else{
+    } else {
       return (
         <div>
           <div className="statistics">Punkty: {points}</div>
         </div>
-      )
+      );
     }
   };
   if (gameAnalysis) {
@@ -196,14 +191,13 @@ const Modal = ({
         </div>
 
         <div className="winloseboard__button-div">
-          <a
-            href="/"
-            className="winloseboard__button"
-            onClick={handleClose}
-          >
+          <a href="/" className="winloseboard__button" onClick={handleClose}>
             Zamknij
           </a>
-          <button className="winloseboard__button" onClick={() => setGameAnalysis(true)}>
+          <button
+            className="winloseboard__button"
+            onClick={() => setGameAnalysis(true)}
+          >
             Analiza rozgrywki
           </button>
         </div>

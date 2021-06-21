@@ -397,24 +397,21 @@ export const numMoves = function (
 };
 
 export const gameResult = (finalColumns, activePlayer, playersArr, isMulti) => {
-  if(!isMulti){
+  if (isMulti == null || isMulti == "undefined" || isMulti === false) {
     for (const column of finalColumns) {
       if (column.length < 13) return "lose";
     }
     return "win";
-  }
-  else{
+  } else {
     const index = playersArr.findIndex((element) => {
       return element.name === activePlayer;
     });
 
-    if(index === 0){
+    if (index === 0) {
       return "win";
-    }
-    else if(index === playersArr.length - 1){
+    } else if (index === playersArr.length - 1) {
       return "lose";
-    }
-    else{
+    } else {
       return "draw";
     }
   }
