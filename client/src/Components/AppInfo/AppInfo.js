@@ -59,6 +59,10 @@ function AppInfo() {
         Link do dokumentacji developerskiej
       </h3>
       <p><a href="https://klondikedocs.netlify.app/#/">https://klondikedocs.netlify.app/#/</a></p>
+	  <h3>
+        Link do dokumentacji testowej
+      </h3>
+      <p><a href="http://gstfnk.atthost24.pl/io-test-docs/#/">http://gstfnk.atthost24.pl/io-test-docs/#/</a></p>
     </div>
   )
 }
