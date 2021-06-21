@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import ThemeSelector from '../../ThemeSelector/ThemeSelector.js';
 
 import socket from './../socketConfig.js';
 import agent from '../../../agent/agent';
@@ -56,13 +57,6 @@ function JoinRoom () {
     }
   });
 
-  var styles = require("./JoinRoom.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-      styles = require("./JoinRoomCyberpunk.css");
-    }
-  }
-
   return (
     <section className="joined-room">
       <div className="lobby__modal-container">
@@ -101,4 +95,4 @@ function JoinRoom () {
   );
 }
 
-export default JoinRoom;
+export default ThemeSelector(JoinRoom);

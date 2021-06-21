@@ -1,5 +1,6 @@
 import React from 'react';
 import Spinner from "../Spinner/Spinner";
+import ThemeSelector from '../ThemeSelector/ThemeSelector';
 
 var _ = require('lodash')
 
@@ -7,12 +8,7 @@ const Posts = ({statsList, loading, userID}) => {
     if (loading) return (
         <Spinner></Spinner>
     )
-    var styles = require("./Posts.css");
-    if (localStorage.getItem('isLogged')) {
-        if(localStorage.getItem('motiveCss') === "cyberpunk") {
-            styles = require("./PostsCyberpunk.css");
-        }
-    }
+    
     return <table width="100%" id={'stats-table'} cellSpacing="0" cellPadding="5">
         <tbody>
         {statsList.map(row => (
@@ -29,4 +25,4 @@ const Posts = ({statsList, loading, userID}) => {
     </table>;
 };
 
-export default Posts
+export default ThemeSelector(Posts);

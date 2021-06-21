@@ -2,6 +2,8 @@ import React, { useImperativeHandle } from "react";
 import Card from "../Card/Card";
 import DraggableCard from "../DraggableCard/DraggableCard";
 import cardDraw from "../../../soundtrack/SoundDesign/card_draw.mp3";
+import deckStyles from "./Deck.module.css";
+import deckStylesCyberpunk from "./DeckCyberpunk.module.css";
 
 const Deck = ({
   startColumn1,
@@ -53,11 +55,11 @@ const Deck = ({
     beep.play();
   };
 
-  var styles = require("./Deck.module.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        styles = require("./DeckCyberpunk.module.css");
-    }
+  var styles;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+    styles = deckStyles;
+  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+    styles = deckStylesCyberpunk;
   }
 
   return (

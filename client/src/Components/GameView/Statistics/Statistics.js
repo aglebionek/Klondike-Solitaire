@@ -1,4 +1,6 @@
 import React from "react";
+import staticticsStyles from "./Statistics.module.css";
+import staticticsStylesCyberpunk from "./StatisticsCyberpunk.module.css";
 
 const Statistics = ({
   points,
@@ -12,12 +14,14 @@ const Statistics = ({
   if (seconds < 10) {
     seconds = "0" + seconds;
   }
-  var styles = require("./Statistics.module.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        styles = require("./StatisticsCyberpunk.module.css");
-    }
+
+  var styles;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+    styles = staticticsStyles;
+  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+    styles = staticticsStylesCyberpunk;
   }
+
   return (
     <div className={styles.statistics}>
       <div>Punkty: {points}</div>

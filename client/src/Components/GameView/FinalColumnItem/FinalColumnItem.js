@@ -4,11 +4,8 @@ import styles from "./FinalColumnItem.module.css";
 const FinalColumnItem = ({ item }) => {
   const convertRankToClass = "v" + item.rank;
   var cardStyle = "";
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        cardStyle += "cyberpunk";
-    }
-  }
+  if(localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") cardStyle += "cyberpunk";
+  
   return (
     <div className={styles.card} style={{ zIndex: 2 }}>
       <div className={"card " + convertRankToClass + " " + item.shape + " " + cardStyle}>

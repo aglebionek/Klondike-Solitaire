@@ -40,13 +40,9 @@ const Custom = ({ draggingCard }) => {
       currentOffset: monitor.getSourceClientOffset(),
       isDragging: monitor.isDragging(),
     }));
-
+  
   var cardStyle = "";
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-        cardStyle += "cyberpunk";
-    }
-  }
+  if(localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") cardStyle += "cyberpunk";
   return (
     <div style={layerStyles}>
       <div

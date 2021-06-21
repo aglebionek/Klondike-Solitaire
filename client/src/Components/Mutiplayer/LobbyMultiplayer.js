@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 import agent from '../../agent/agent';
 
 // socket client
@@ -60,13 +61,6 @@ function LobbyMultiplayer() {
     }
   });
 
-  var styles = require("./LobbyMultiplayer.css");
-  if(localStorage.getItem('isLogged')) {
-    if(localStorage.getItem('motiveCss') === "cyberpunk") {
-      styles = require("./LobbyMultiplayerCyberpunk.css");
-    }
-  }
-
   return (
     <>
     <div className="multiplayer__container">
@@ -110,4 +104,4 @@ function LobbyMultiplayer() {
     </>
   );
 }
-export default LobbyMultiplayer;
+export default ThemeSelector(LobbyMultiplayer);

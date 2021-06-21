@@ -5,6 +5,8 @@ import buttonClickSound from "../../soundtrack/SoundDesign/menu_click.mp3";
 import Spinner from "../Spinner/Spinner";
 import agent from "../../agent/agent.js";
 import CardMotives from "../CardMotives/CardMotives";
+import settingsStyles from "./Settings.module.css";
+import settingsStylesCyberpunk from "./SettingsCyberpunk.module.css";
 
 const Settings = ({ ID }) => {
   const [isCardSelectionOpen, setCardSelectionOpen] = useState(false);
@@ -86,13 +88,12 @@ const Settings = ({ ID }) => {
     }
   };
 
-  var styles = require("./Settings.module.css");
-  if(isLogged) {
-    console.info("islogged true")
-    if(motiveCss === "cyberpunk") {
-        styles = require("./SettingsCyberpunk.module.css")
-    }
-  } else if (!isLogged || motiveCss === "default") styles = require("./Settings.module.css");
+  var styles;
+  if (localStorage.getItem("motiveCss") !== "cyberpunk" || localStorage.getItem("isLogged") === "false") {
+    styles = settingsStyles;
+  } else if (localStorage.getItem("motiveCss") === "cyberpunk" && localStorage.getItem("isLogged") === "true") {
+    styles = settingsStylesCyberpunk;
+  }
 
   if (loading) return <Spinner></Spinner>;
   return (
